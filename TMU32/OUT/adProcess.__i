@@ -1,1 +1,0 @@
-"adConvert\adProcess.c" LARGE BROWSE INCDIR(main,header_files,dataProcess,watchDog,ledProcess,mcu,adConvert,IDB,protect_j,alarm,key,timer,command) DEBUG OBJECTEXTEND PRINT(.\adProcess.lst) OBJECT(.\OUT\adProcess.obj)
