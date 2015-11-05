@@ -1,4 +1,4 @@
-C51 COMPILER V9.52.0.0   MCUINIT                                                           11/05/2015 15:24:03 PAGE 1   
+C51 COMPILER V9.52.0.0   MCUINIT                                                           11/05/2015 16:02:00 PAGE 1   
 
 
 C51 COMPILER V9.52.0.0, COMPILATION OF MODULE MCUINIT
@@ -62,7 +62,7 @@ line level    source
   52   1        P2MDOUT &= ~0x58;
   53   1      
   54   1        P3MDIN  |= 0x3F;
-C51 COMPILER V9.52.0.0   MCUINIT                                                           11/05/2015 15:24:03 PAGE 2   
+C51 COMPILER V9.52.0.0   MCUINIT                                                           11/05/2015 16:02:00 PAGE 2   
 
   55   1        P3MDOUT &= ~0x3F;
   56   1        P4MDIN  = ~0x00;
@@ -126,7 +126,7 @@ line level    source
  114          
  115          
 
-C51 COMPILER V9.52.0.0   MCUINIT                                                           11/05/2015 15:24:03 PAGE 3   
+C51 COMPILER V9.52.0.0   MCUINIT                                                           11/05/2015 16:02:00 PAGE 3   
 
 
 MODULE INFORMATION:   STATIC OVERLAYABLE

@@ -1,4 +1,4 @@
-C51 COMPILER V9.52.0.0   UPDATE                                                            11/05/2015 15:24:04 PAGE 1   
+C51 COMPILER V9.52.0.0   UPDATE                                                            11/05/2015 16:02:01 PAGE 1   
 
 
 C51 COMPILER V9.52.0.0, COMPILATION OF MODULE UPDATE
@@ -62,7 +62,7 @@ line level    source
   51   1          char xdata* data ptr;         // a pointer to xdata located in data space, points to the first FLASH p
              -age that will be erased
   52   1      
-C51 COMPILER V9.52.0.0   UPDATE                                                            11/05/2015 15:24:04 PAGE 2   
+C51 COMPILER V9.52.0.0   UPDATE                                                            11/05/2015 16:02:01 PAGE 2   
 
   53   1          if( address > 0xFBFF )
   54   1              return;
@@ -126,7 +126,7 @@ line level    source
  112   2              tmpAddr ++;
  113   2              tmpPtr ++;
  114   2          }
-C51 COMPILER V9.52.0.0   UPDATE                                                            11/05/2015 15:24:04 PAGE 3   
+C51 COMPILER V9.52.0.0   UPDATE                                                            11/05/2015 16:02:01 PAGE 3   
 
  115   1      }
  116          
@@ -190,7 +190,7 @@ line level    source
  174                                      
  175          *【输     出】无
  176          *【作     者】陈杰
-C51 COMPILER V9.52.0.0   UPDATE                                                            11/05/2015 15:24:04 PAGE 4   
+C51 COMPILER V9.52.0.0   UPDATE                                                            11/05/2015 16:02:01 PAGE 4   
 
  177          *【日     期】2014-1-11
  178          *****************************************************/
@@ -254,7 +254,7 @@ line level    source
  236          
  237          
  238          
-C51 COMPILER V9.52.0.0   UPDATE                                                            11/05/2015 15:24:04 PAGE 5   
+C51 COMPILER V9.52.0.0   UPDATE                                                            11/05/2015 16:02:01 PAGE 5   
 
  239          
  240          

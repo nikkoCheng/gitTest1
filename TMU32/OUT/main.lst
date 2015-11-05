@@ -1,4 +1,4 @@
-C51 COMPILER V9.52.0.0   MAIN                                                              11/05/2015 15:24:03 PAGE 1   
+C51 COMPILER V9.52.0.0   MAIN                                                              11/05/2015 16:02:00 PAGE 1   
 
 
 C51 COMPILER V9.52.0.0, COMPILATION OF MODULE MAIN
@@ -62,7 +62,7 @@ line level    source
   52   1          while(1)
   53   1          {   
   54   2              xx.c[0] = 2;
-C51 COMPILER V9.52.0.0   MAIN                                                              11/05/2015 15:24:03 PAGE 2   
+C51 COMPILER V9.52.0.0   MAIN                                                              11/05/2015 16:02:00 PAGE 2   
 
   55   2              xx.c[1] = 2;
   56   2              xx.c[2] = 2;
@@ -103,42 +103,43 @@ line level    source
   91   2      
   92   2              if(flag30ms)
   93   2              {
-  94   3                flag30ms = 0;
-  95   3                  if(num_byte == 0)
-  96   3                  {
-  97   4                    num_byte = 1;
-  98   4                    read_id(0,0,(unsigned char*)localid_buf);
-  99   4                    WatchDog();
- 100   4                  }
- 101   3                  else
- 102   3                  {
- 103   4                      num_byte = 0;
- 104   4                      read_id(0,1,(unsigned char*)localid_buf);
- 105   4                      WatchDog();
- 106   4                      refresh_current_id();
- 107   4                      memory_clear((unsigned char*)localid_buf,sizeof(localid_buf));
- 108   4                      read_id_96();
- 109   4                  }
- 110   3              }
- 111   2                
- 112   2              if( flag60ms )             
- 113   2              {
- 114   3                  flag60ms = 0;
- 115   3                  index ++; 
- 116   3                  uart1_timeout();        
-C51 COMPILER V9.52.0.0   MAIN                                                              11/05/2015 15:24:03 PAGE 3   
+  94   3                /*sssssssssssssssss*/
+  95   3                flag30ms = 0;
+  96   3                  if(num_byte == 0)
+  97   3                  {
+  98   4                    num_byte = 1;
+  99   4                    read_id(0,0,(unsigned char*)localid_buf);
+ 100   4                    WatchDog();
+ 101   4                  }
+ 102   3                  else
+ 103   3                  {
+ 104   4                      num_byte = 0;
+ 105   4                      read_id(0,1,(unsigned char*)localid_buf);
+ 106   4                      WatchDog();
+ 107   4                      refresh_current_id();
+ 108   4                      memory_clear((unsigned char*)localid_buf,sizeof(localid_buf));
+ 109   4                      read_id_96();
+ 110   4                  }
+ 111   3              }
+ 112   2                
+ 113   2              if( flag60ms )             
+ 114   2              {
+ 115   3                  flag60ms = 0;
+ 116   3                  index ++; 
+C51 COMPILER V9.52.0.0   MAIN                                                              11/05/2015 16:02:00 PAGE 3   
 
- 117   3                  port_state_process();
- 118   3                  slot_aging_time();  
- 119   3            
- 120   3                if(index >= 20)
- 121   3                {
- 122   4                    index = 0;
- 123   4                    fmu_cmd_update_file_timer_count();
- 124   4                }
- 125   3              }
- 126   2          }
- 127   1      }
+ 117   3                  uart1_timeout();        
+ 118   3                  port_state_process();
+ 119   3                  slot_aging_time();  
+ 120   3            
+ 121   3                if(index >= 20)
+ 122   3                {
+ 123   4                    index = 0;
+ 124   4                    fmu_cmd_update_file_timer_count();
+ 125   4                }
+ 126   3              }
+ 127   2          }
+ 128   1      }
 
 
 MODULE INFORMATION:   STATIC OVERLAYABLE

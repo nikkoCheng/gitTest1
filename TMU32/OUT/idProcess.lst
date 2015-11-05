@@ -1,4 +1,4 @@
-C51 COMPILER V9.52.0.0   IDPROCESS                                                         11/05/2015 15:24:03 PAGE 1   
+C51 COMPILER V9.52.0.0   IDPROCESS                                                         11/05/2015 16:02:01 PAGE 1   
 
 
 C51 COMPILER V9.52.0.0, COMPILATION OF MODULE IDPROCESS
@@ -62,7 +62,7 @@ line level    source
   51   4                else
   52   4                {
   53   5                      if(memory_compare(error_id_temp[lport], localid_buf[lport], 32))
-C51 COMPILER V9.52.0.0   IDPROCESS                                                         11/05/2015 15:24:03 PAGE 2   
+C51 COMPILER V9.52.0.0   IDPROCESS                                                         11/05/2015 16:02:01 PAGE 2   
 
   54   5                      {
   55   6                          memory_copy(error_id_temp[lport],localid_buf[lport],32);
@@ -126,7 +126,7 @@ line level    source
  113   2          {
  114   3            for(j=0;j<16;j++)
  115   3            {
-C51 COMPILER V9.52.0.0   IDPROCESS                                                         11/05/2015 15:24:03 PAGE 3   
+C51 COMPILER V9.52.0.0   IDPROCESS                                                         11/05/2015 16:02:01 PAGE 3   
 
  116   4                buf[i*32+len*16+j] = buff[i][j];
  117   4            } 

@@ -1,4 +1,4 @@
-C51 COMPILER V9.52.0.0   UART1                                                             11/05/2015 15:24:03 PAGE 1   
+C51 COMPILER V9.52.0.0   UART1                                                             11/05/2015 16:02:00 PAGE 1   
 
 
 C51 COMPILER V9.52.0.0, COMPILATION OF MODULE UART1
@@ -62,7 +62,7 @@ line level    source
   52   1          REN0 = 1;
   53   1      }
   54          
-C51 COMPILER V9.52.0.0   UART1                                                             11/05/2015 15:24:03 PAGE 2   
+C51 COMPILER V9.52.0.0   UART1                                                             11/05/2015 16:02:00 PAGE 2   
 
   55          /*串口发送数据*/
   56          void uart1_trans_enable(void)
@@ -126,7 +126,7 @@ line level    source
  114   3                  case 3:                                       /*LENGTH*/
  115   3                      uart1.uartState ++;
  116   3                      *uart1.rxPtr ++ = uart1Tmp;
-C51 COMPILER V9.52.0.0   UART1                                                             11/05/2015 15:24:03 PAGE 3   
+C51 COMPILER V9.52.0.0   UART1                                                             11/05/2015 16:02:00 PAGE 3   
 
  117   3                      uart1.rxLen = ( uart1Tmp ) - 4;   /*uart1.rxLen = (SBUF - 4) & 0x1F;*/
  118   3                      break;

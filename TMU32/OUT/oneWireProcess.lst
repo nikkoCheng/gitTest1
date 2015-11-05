@@ -1,4 +1,4 @@
-C51 COMPILER V9.52.0.0   ONEWIREPROCESS                                                    11/05/2015 15:24:04 PAGE 1   
+C51 COMPILER V9.52.0.0   ONEWIREPROCESS                                                    11/05/2015 16:02:01 PAGE 1   
 
 
 C51 COMPILER V9.52.0.0, COMPILATION OF MODULE ONEWIREPROCESS
@@ -62,7 +62,7 @@ line level    source
   51   1      
   52   1          temp_num = 8;
   53   1          union1.whole = addr;
-C51 COMPILER V9.52.0.0   ONEWIREPROCESS                                                    11/05/2015 15:24:04 PAGE 2   
+C51 COMPILER V9.52.0.0   ONEWIREPROCESS                                                    11/05/2015 16:02:01 PAGE 2   
 
   54   1          temp_data = dat;
   55   1        
@@ -126,7 +126,7 @@ line level    source
  112   1          for ( i = 0; i < 3; i++)
  113   1          {
  114   2              temp_reg[i] = one_wire_read_byte(cPortNum, one_wire_is_overdrive[cPortNum]);
-C51 COMPILER V9.52.0.0   ONEWIREPROCESS                                                    11/05/2015 15:24:04 PAGE 3   
+C51 COMPILER V9.52.0.0   ONEWIREPROCESS                                                    11/05/2015 16:02:01 PAGE 3   
 
  115   2              WatchDog();
  116   2          }
@@ -190,7 +190,7 @@ line level    source
  172   1          {
  173   2              //由于不知道DS2431目前处于什么模式，所以先强制使其为标准模式，在标准模式下，将其设置为高速模式//
  174   2              one_wire_set_speed(ONE_WIRE_STANDARD_SPEED);
-C51 COMPILER V9.52.0.0   ONEWIREPROCESS                                                    11/05/2015 15:24:04 PAGE 4   
+C51 COMPILER V9.52.0.0   ONEWIREPROCESS                                                    11/05/2015 16:02:01 PAGE 4   
 
  175   2        
  176   2              if( one_wire_start_get_ack(cPortNum))
@@ -254,7 +254,7 @@ line level    source
  234          /****************************************************
  235          *【函数名】one_wire_read12_memory_block
  236          *【功     能】从12个DS2431中读取数据(从目标地址最多可连续读至0X008F 处)
-C51 COMPILER V9.52.0.0   ONEWIREPROCESS                                                    11/05/2015 15:24:04 PAGE 5   
+C51 COMPILER V9.52.0.0   ONEWIREPROCESS                                                    11/05/2015 16:02:01 PAGE 5   
 
  237          *【输     入】 ecvPtr        接受读取数据的指针
  238          
@@ -318,7 +318,7 @@ line level    source
  296          
  297          unsigned char one_wire_get_rom( unsigned char cPortNum, unsigned char *recvPtr)
  298          {
-C51 COMPILER V9.52.0.0   ONEWIREPROCESS                                                    11/05/2015 15:24:04 PAGE 6   
+C51 COMPILER V9.52.0.0   ONEWIREPROCESS                                                    11/05/2015 16:02:01 PAGE 6   
 
  299   1          unsigned char *temp_data;
  300   1          unsigned char temp_num;   

@@ -1,4 +1,4 @@
-C51 COMPILER V9.52.0.0   NETCOMMAND                                                        11/05/2015 15:24:03 PAGE 1   
+C51 COMPILER V9.52.0.0   NETCOMMAND                                                        11/05/2015 16:02:01 PAGE 1   
 
 
 C51 COMPILER V9.52.0.0, COMPILATION OF MODULE NETCOMMAND
@@ -62,7 +62,7 @@ line level    source
   51   1          if( mainInfo.slotAging )     /*2秒后地址清零*/
   52   1              mainInfo.slotAging --;   
   53   1      
-C51 COMPILER V9.52.0.0   NETCOMMAND                                                        11/05/2015 15:24:03 PAGE 2   
+C51 COMPILER V9.52.0.0   NETCOMMAND                                                        11/05/2015 16:02:01 PAGE 2   
 
   54   1          if( mainInfo.slotDelay )
   55   1              mainInfo.slotDelay --;   /*收到地址,2秒后内允许下行发送*/
@@ -126,7 +126,7 @@ line level    source
  113          
  114          // 计算累加和校验字节
  115          unsigned char uart_fcs(unsigned char *ptr, unsigned char len)
-C51 COMPILER V9.52.0.0   NETCOMMAND                                                        11/05/2015 15:24:03 PAGE 3   
+C51 COMPILER V9.52.0.0   NETCOMMAND                                                        11/05/2015 16:02:01 PAGE 3   
 
  116          {
  117   1        unsigned char sum;
@@ -190,7 +190,7 @@ line level    source
  174   1          
  175   1        WatchDog();
 *** WARNING C206 IN LINE 175 OF command\netCommand.c: 'WatchDog': missing function-prototype
-C51 COMPILER V9.52.0.0   NETCOMMAND                                                        11/05/2015 15:24:03 PAGE 4   
+C51 COMPILER V9.52.0.0   NETCOMMAND                                                        11/05/2015 16:02:01 PAGE 4   
 
  176   1        earseCodeFlash(TMU_NUM_INFO_ADDR);
  177   1        WatchDog();
@@ -254,7 +254,7 @@ line level    source
  234   1        mainInfo.id[cPortNum-1].eid_96_flag = 1; 
  235   1        mainInfo.id[cPortNum-1].eid_96_send_flag = 0;
  236   1      }
-C51 COMPILER V9.52.0.0   NETCOMMAND                                                        11/05/2015 15:24:03 PAGE 5   
+C51 COMPILER V9.52.0.0   NETCOMMAND                                                        11/05/2015 16:02:01 PAGE 5   
 
  237          
  238          
@@ -318,7 +318,7 @@ line level    source
  296   3              }
  297   2              *srcPtr++ = addr_temp[2] + 1;
  298   2              
-C51 COMPILER V9.52.0.0   NETCOMMAND                                                        11/05/2015 15:24:03 PAGE 6   
+C51 COMPILER V9.52.0.0   NETCOMMAND                                                        11/05/2015 16:02:01 PAGE 6   
 
  299   2              *srcPtr++ = mainInfo.portState[addr_temp[0]];
  300   2              *srcPtr++ = mainInfo.portState[addr_temp[1]];
@@ -382,7 +382,7 @@ line level    source
  358   1      #endif
  359   1      
  360   1          switch ( uart1.rxBuffer[5] )
-C51 COMPILER V9.52.0.0   NETCOMMAND                                                        11/05/2015 15:24:03 PAGE 7   
+C51 COMPILER V9.52.0.0   NETCOMMAND                                                        11/05/2015 16:02:01 PAGE 7   
 
  361   1          {   
  362   2              case CMD_SET_SLOT_ADDRESS:      /*设置盘号*/
@@ -446,7 +446,7 @@ line level    source
  420   4              }else
  421   3              {
  422   4                CPU_RUN_LED_0;
-C51 COMPILER V9.52.0.0   NETCOMMAND                                                        11/05/2015 15:24:03 PAGE 8   
+C51 COMPILER V9.52.0.0   NETCOMMAND                                                        11/05/2015 16:02:01 PAGE 8   
 
  423   4                update_tmp = 1;
  424   4              }
@@ -510,7 +510,7 @@ line level    source
  482   1        for(i=0;i<12;i++)
  483   1        {
  484   2            if(mainInfo.id[i].eid_96_flag == 1)
-C51 COMPILER V9.52.0.0   NETCOMMAND                                                        11/05/2015 15:24:03 PAGE 9   
+C51 COMPILER V9.52.0.0   NETCOMMAND                                                        11/05/2015 16:02:01 PAGE 9   
 
  485   2            {
  486   3              one_wire_read_memory_block( i,32, eid_96_temp, 96);
@@ -574,7 +574,7 @@ line level    source
  544   1        else  /*标签不相同*/
  545   1          {
  546   2              if( id_check_null(mainInfo.id[lPortTmp].local_id) )
-C51 COMPILER V9.52.0.0   NETCOMMAND                                                        11/05/2015 15:24:03 PAGE 10  
+C51 COMPILER V9.52.0.0   NETCOMMAND                                                        11/05/2015 16:02:01 PAGE 10  
 
  547   2              {
  548   3                if( mainInfo.id[lPortTmp].local_id[31] != CRC8_Table(mainInfo.id[lPortTmp].local_id,31) )

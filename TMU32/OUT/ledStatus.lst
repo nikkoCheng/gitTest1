@@ -1,4 +1,4 @@
-C51 COMPILER V9.52.0.0   LEDSTATUS                                                         11/05/2015 15:24:03 PAGE 1   
+C51 COMPILER V9.52.0.0   LEDSTATUS                                                         11/05/2015 16:02:01 PAGE 1   
 
 
 C51 COMPILER V9.52.0.0, COMPILATION OF MODULE LEDSTATUS
@@ -62,7 +62,7 @@ line level    source
   51   1        if(led11)
   52   1          P4 |= 0x10;
   53   1        else
-C51 COMPILER V9.52.0.0   LEDSTATUS                                                         11/05/2015 15:24:03 PAGE 2   
+C51 COMPILER V9.52.0.0   LEDSTATUS                                                         11/05/2015 16:02:01 PAGE 2   
 
   54   1          P4 &= ~0x10;
   55   1        if(led12)
@@ -126,7 +126,7 @@ line level    source
  113   3                              tmpAll |= tmpi;
  114   3                          break;
  115   3      
-C51 COMPILER V9.52.0.0   LEDSTATUS                                                         11/05/2015 15:24:03 PAGE 3   
+C51 COMPILER V9.52.0.0   LEDSTATUS                                                         11/05/2015 16:02:01 PAGE 3   
 
  116   3                      case LED_STATE_QUICK:
  117   3                flag |= 0x10;

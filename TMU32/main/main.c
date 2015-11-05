@@ -91,6 +91,7 @@ while(1)
 
 				if(flag30ms)
 				{
+					/*sssssssssssssssss*/
 					flag30ms = 0;
 						if(num_byte == 0)
 						{
