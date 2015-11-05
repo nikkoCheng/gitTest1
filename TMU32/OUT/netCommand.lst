@@ -1,0 +1,636 @@
+C51 COMPILER V9.52.0.0   NETCOMMAND                                                        11/05/2015 15:24:03 PAGE 1   
+
+
+C51 COMPILER V9.52.0.0, COMPILATION OF MODULE NETCOMMAND
+OBJECT MODULE PLACED IN .\OUT\netCommand.obj
+COMPILER INVOKED BY: d:\Keil\C51\BIN\C51.EXE command\netCommand.c LARGE BROWSE INCDIR(main;include;mcu;uart;command;eepr
+                    -om;ledProcess;update;crc;delay;timer;tmu_number) DEBUG OBJECTEXTEND PRINT(.\OUT\netCommand.lst) TABS(2) OBJECT(.\OUT\net
+                    -Command.obj)
+
+line level    source
+
+   1          #include "typedef.h"
+   2          #include "ledStatus.h"
+   3          #include "netCommand.h"
+   4          #include "tmuProcess.h"
+   5          #include "idProcess.h"
+   6          #include "c8051f340.h"
+   7          #include "uart1.h"
+   8          #include "cmdCode.h"
+   9          #include "share.h"
+  10          #include "hardInfo.h"
+  11          #include "update.h"
+  12          #include "ds2431Process.h"
+  13          #include "oneWireProcess.h"
+  14          #include "variable.h"
+  15          #include "delay.h"
+  16          #include "crc.h"
+  17          #include "tmunum.h"
+  18          
+  19          static unsigned char nextFramSendFlag;
+  20          extern unsigned char localid_buf[12][32];
+  21                 unsigned char eid_96_temp[96]; 
+  22                 unsigned char port_num;
+  23          
+  24          void slot_address_init(void)
+  25          {
+  26   1        static unsigned char temp;
+  27   1        unsigned char table[9] = {0,6,5,4,3,2,1,7,8};
+  28   1      
+  29   1              temp = P0 & 0x0F;
+  30   1              mainInfo.slotAddress = table[temp];
+  31   1      }
+  32          
+  33          void slot_aging_time_init(unsigned char value)
+  34          {
+  35   1          mainInfo.slotAging = DEFAULT_SLOT_AGING_TIME*value;
+  36   1      }
+  37          
+  38          void slot_delay_time_init(void)
+  39          {
+  40   1          mainInfo.slotDelay = DEFAULT_SLOT_DELAY_TIME;
+  41   1      }
+  42          
+  43          /*50ms调用1次*/
+  44          void slot_aging_time(void)
+  45          {
+  46   1          static unsigned char count = 0,i=11;
+  47   1          unsigned char tempValue;
+  48   1        
+  49   1          tempValue = get_tmu_addr_mode();
+  50   1      
+  51   1          if( mainInfo.slotAging )     /*2秒后地址清零*/
+  52   1              mainInfo.slotAging --;   
+  53   1      
+C51 COMPILER V9.52.0.0   NETCOMMAND                                                        11/05/2015 15:24:03 PAGE 2   
+
+  54   1          if( mainInfo.slotDelay )
+  55   1              mainInfo.slotDelay --;   /*收到地址,2秒后内允许下行发送*/
+  56   1      
+  57   1          if( mainInfo.slotAging == 0 )
+  58   1          {
+  59   2              if(DYNEMIC_TMU_FLAG == tempValue)
+  60   2              {
+  61   3                  mainInfo.slotAddress =0;
+  62   3                  linkFmu =0;
+  63   3              }
+  64   2              else if(STATIC_TMU_FLAG == tempValue)
+  65   2              {
+  66   3                  linkFmu =0;
+  67   3              }
+  68   2          }
+  69   1      
+  70   1              if(DYNEMIC_TMU_FLAG == tempValue)
+  71   1              {
+  72   2                      if( (linkFmu) && (mainInfo.slotDelay==0) )  
+  73   2                      {
+  74   3                          down_tx_enable();
+  75   3                      }
+  76   2                      else
+  77   2                      {
+  78   3                          down_tx_disable();
+  79   3                        
+  80   3                          /*端口灯轮流亮*/
+  81   3                          count = (count+1) % 3;
+  82   3                          if( count == 0 )
+  83   3                          {
+  84   4                              i = i % PORT_ALL_NUM;
+  85   4                              mainInfo.ledState[i] = LED_STATE_OFF;
+  86   4      
+  87   4                              i = (i + 1) % PORT_ALL_NUM;
+  88   4                              mainInfo.ledState[i] = LED_STATE_ON;
+  89   4                          }
+  90   3                          refresh_led();
+  91   3                      }
+  92   2              }
+  93   1              else if(STATIC_TMU_FLAG == tempValue)
+  94   1              {
+  95   2                    if( 0 == linkFmu)
+  96   2                    {
+  97   3                              count = 0;//(count+1) % 3;
+  98   3                              if( count == 0 )
+  99   3                              {
+ 100   4                                  i = i % PORT_ALL_NUM;
+ 101   4                                  mainInfo.ledState[i] = LED_STATE_OFF;
+ 102   4      
+ 103   4                                  i = (i + 1) % PORT_ALL_NUM;
+ 104   4                                  mainInfo.ledState[i] = LED_STATE_ON;
+ 105   4                              }
+ 106   3                              refresh_led();            
+ 107   3                    }           
+ 108   2                  
+ 109   2              }
+ 110   1      
+ 111   1      }
+ 112          
+ 113          
+ 114          // 计算累加和校验字节
+ 115          unsigned char uart_fcs(unsigned char *ptr, unsigned char len)
+C51 COMPILER V9.52.0.0   NETCOMMAND                                                        11/05/2015 15:24:03 PAGE 3   
+
+ 116          {
+ 117   1        unsigned char sum;
+ 118   1        unsigned char i;
+ 119   1        unsigned char *tempPtr;
+ 120   1      
+ 121   1        sum     = 0;  
+ 122   1        tempPtr = ptr;
+ 123   1      
+ 124   1        for(i=0; i<len; i++, tempPtr++)
+ 125   1          sum += *tempPtr;
+ 126   1        
+ 127   1        return (~sum);
+ 128   1      }
+ 129          
+ 130          
+ 131          void uart_frame_pack()
+ 132          {
+ 133   1          unsigned char *ptr;
+ 134   1      
+ 135   1          ptr = uart1.ackBuffer;
+ 136   1      
+ 137   1          *ptr ++ = UART_DEVICE_SYN1;         /*数据包头*/
+ 138   1          *ptr ++ = UART_DEVICE_SYN2;
+ 139   1          *ptr ++ = mainInfo.slotAddress;
+ 140   1          *ptr ++ = uart1.txLen;
+ 141   1      
+ 142   1           ptr = uart1.ackBuffer + uart1.txLen - 1;
+ 143   1                             
+ 144   1          *ptr = uart_fcs(uart1.ackBuffer, uart1.txLen-1);   /*计算FCS*/
+ 145   1      
+ 146   1          uart1.txPtr = uart1.ackBuffer;
+ 147   1      }
+ 148          
+ 149          /*命令CMD1  查询模块型号*/
+ 150          void uart1_set_slot_address(void)
+ 151          {   
+ 152   1          unsigned char *ptr;
+ 153   1          unsigned char tempValue;
+ 154   1          unsigned char code * data ptrCode;
+ 155   1      
+ 156   1          uart1.txLen = 2 + FRAME_DEVICE_FIX_BYTES + 22 + 6;    //消息类型和命令码2个，除去数据体外的5字节，22是
+             -协议里的               /*长度*/
+ 157   1          uart1.ackBuffer[4] = RET_TYPE;             /*类型*/
+ 158   1          uart1.ackBuffer[5] = CMD_SET_SLOT_ADDRESS;
+ 159   1      
+ 160   1          nextFramSendFlag = 0;
+ 161   1          tempValue = get_tmu_addr_mode();
+ 162   1        
+ 163   1      
+ 164   1          if(DYNEMIC_TMU_FLAG == tempValue)
+ 165   1          {
+ 166   2              mainInfo.slotAddress = uart1.rxBuffer[6];//动态地址
+ 167   2              linkFmu = 1;//盘在线
+ 168   2          }
+ 169   1          else if(mainInfo.slotAddress == uart1.rxBuffer[6])
+ 170   1          {
+ 171   2              slot_address_init();
+ 172   2              linkFmu = 1;        
+ 173   2          }
+ 174   1          
+ 175   1        WatchDog();
+*** WARNING C206 IN LINE 175 OF command\netCommand.c: 'WatchDog': missing function-prototype
+C51 COMPILER V9.52.0.0   NETCOMMAND                                                        11/05/2015 15:24:03 PAGE 4   
+
+ 176   1        earseCodeFlash(TMU_NUM_INFO_ADDR);
+ 177   1        WatchDog();
+ 178   1        writeInnerFlash(TMU_NUM_INFO_ADDR, 10, x);
+*** ERROR C202 IN LINE 178 OF command\netCommand.c: 'x': undefined identifier
+ 179   1        ptrCode = (char code *)TMU_NUM_INFO_ADDR;
+ 180   1          
+ 181   1          
+ 182   1          
+ 183   1          ptr = &uart1.ackBuffer[6];
+ 184   1          get_device_info(ptr);
+ 185   1      }
+ 186          
+ 187          
+ 188          
+ 189          
+ 190          void uart1_rd_label(void)
+ 191          {
+ 192   1        unsigned char *srcPtr,*destPtr;
+ 193   1        unsigned char cPortNum,len,addr;
+ 194   1        uart1.ackBuffer[4] = RET_TYPE;             /*类型*/
+ 195   1          uart1.ackBuffer[5] = CMD_RD_LABEL;
+ 196   1        srcPtr = &uart1.rxBuffer[6];
+ 197   1        destPtr = &uart1.ackBuffer[6];
+ 198   1        cPortNum = *srcPtr++;
+ 199   1        addr = *srcPtr++;
+ 200   1        len  = *srcPtr++;
+ 201   1        memory_clear(destPtr,len);
+ 202   1        one_wire_read_memory_block( cPortNum,addr, destPtr, len);
+ 203   1        uart1.txLen = len+7;
+ 204   1      }
+ 205          /*命令写标签*/
+ 206          void uart1_wr_label(void)
+ 207          {
+ 208   1        unsigned char *srcPtr;
+ 209   1        unsigned char cPortNum,len,addr;
+ 210   1        unsigned char i = 0;
+ 211   1          unsigned char tempArry[96];
+ 212   1        uart1.ackBuffer[4] = RET_TYPE;             /*类型*/
+ 213   1          uart1.ackBuffer[5] = CMD_WR_LABEL;
+ 214   1      
+ 215   1        srcPtr = &uart1.rxBuffer[6];
+ 216   1        cPortNum = *srcPtr++;
+ 217   1        addr = *srcPtr++;
+ 218   1        len  = *srcPtr++;
+ 219   1        memory_copy(tempArry,srcPtr,len);
+ 220   1        
+ 221   1        uart1.txLen = 7;
+ 222   1        uart_frame_pack();
+ 223   1        uart1_trans_enable();
+ 224   1        while(uart1.txLen);
+ 225   1        while(len)
+ 226   1        {
+ 227   2          one_wire_write_eight_byte( cPortNum-1,addr+i*8, &tempArry[i*8]);
+ 228   2          delay_ms(10);
+ 229   2          len = len-8;
+ 230   2          i++;  
+ 231   2        } 
+ 232   1        
+ 233   1        mainInfo.id[cPortNum-1].eid_32_flag = 1;
+ 234   1        mainInfo.id[cPortNum-1].eid_96_flag = 1; 
+ 235   1        mainInfo.id[cPortNum-1].eid_96_send_flag = 0;
+ 236   1      }
+C51 COMPILER V9.52.0.0   NETCOMMAND                                                        11/05/2015 15:24:03 PAGE 5   
+
+ 237          
+ 238          
+ 239          
+ 240          
+ 241          /*命令CMD3  轮询命令*/
+ 242          void uart1_poll_current(void)
+ 243          {
+ 244   1          unsigned char *srcPtr, *destPtr;
+ 245   1          unsigned char i;
+ 246   1          unsigned int  tmp;  
+ 247   1          unsigned char addr = 0;
+ 248   1          unsigned char addr_temp[3]={0,0,0};
+ 249   1      
+ 250   1      
+ 251   1          uart1.ackBuffer[4] = RET_TYPE;             //类型//
+ 252   1          uart1.ackBuffer[5] = CMD_RD_CURRENT;
+ 253   1      
+ 254   1          //接收LED灯状态//
+ 255   1          srcPtr = &uart1.rxBuffer[6];
+ 256   1          destPtr = &mainInfo.rcvLedState[0];//
+ 257   1          for(i=0; i<PORT_ALL_NUM; i++)
+ 258   1          {
+ 259   2              *destPtr++ = *srcPtr++;
+ 260   2          }
+ 261   1          addr = uart1.rxBuffer[18];//////////////////
+ 262   1          if(addr<1 || addr>12)
+ 263   1          {return;}
+ 264   1          srcPtr = &uart1.rxBuffer[19];
+ 265   1          memory_copy(mainInfo.id[addr-1].desig_id,srcPtr,32);  
+ 266   1          srcPtr += 32; 
+ 267   1          memory_copy(mainInfo.id[(addr)%12].desig_id,srcPtr,32);
+ 268   1          srcPtr += 32; 
+ 269   1          memory_copy(mainInfo.id[(addr+1)%12].desig_id,srcPtr,32);
+ 270   1          srcPtr += 32; 
+ 271   1          
+ 272   1          port_state_process();
+ 273   1              
+ 274   1          srcPtr = &uart1.ackBuffer[6];
+ 275   1          port_num = addr - 1;
+ 276   1          
+ 277   1          addr_temp[0] = inquire_port_change();
+ 278   1          if(0xFE != addr_temp[0])
+ 279   1          {
+ 280   2              *srcPtr++ = addr_temp[0] + 1;
+ 281   2              
+ 282   2              addr_temp[1] = inquire_port_change();
+ 283   2              if(addr_temp[1] == 0xFE )
+ 284   2              {
+ 285   3                addr_temp[1] = port_num;
+ 286   3                port_num = (port_num+1)%12;
+ 287   3              }
+ 288   2              *srcPtr++ = addr_temp[1] + 1;
+ 289   2                
+ 290   2              
+ 291   2              addr_temp[2] = inquire_port_change();
+ 292   2              if(addr_temp[2] == 0xFE )
+ 293   2              {
+ 294   3                addr_temp[2] = port_num;
+ 295   3                port_num = (port_num+1)%12;
+ 296   3              }
+ 297   2              *srcPtr++ = addr_temp[2] + 1;
+ 298   2              
+C51 COMPILER V9.52.0.0   NETCOMMAND                                                        11/05/2015 15:24:03 PAGE 6   
+
+ 299   2              *srcPtr++ = mainInfo.portState[addr_temp[0]];
+ 300   2              *srcPtr++ = mainInfo.portState[addr_temp[1]];
+ 301   2              *srcPtr++ = mainInfo.portState[addr_temp[2]];
+ 302   2              
+ 303   2                
+ 304   2              memory_copy(srcPtr,(unsigned char *)&mainInfo.id[addr_temp[0]].local_id,32);
+ 305   2              srcPtr += 32;
+ 306   2              memory_copy(srcPtr,(unsigned char *)&mainInfo.id[addr_temp[1]].local_id,32);
+ 307   2              srcPtr += 32;
+ 308   2              memory_copy(srcPtr,(unsigned char *)&mainInfo.id[addr_temp[2]].local_id,32);
+ 309   2              srcPtr += 32;
+ 310   2          }
+ 311   1          else
+ 312   1          {
+ 313   2              addr_temp[0] = inquire_port_96();
+ 314   2              if( 0 != addr_temp[0] )
+ 315   2              {
+ 316   3                *srcPtr++ = 0xF0 + addr_temp[0];
+ 317   3                memory_copy(srcPtr,&mainInfo.id[addr_temp[0]-1].local_id[32],96);         
+ 318   3                srcPtr += 96;
+ 319   3              }
+ 320   2              else
+ 321   2              {
+ 322   3                            addr_temp[0] = port_num;
+ 323   3                            addr_temp[1] = port_num + 1;
+ 324   3                            addr_temp[2] = port_num + 2;
+ 325   3                            
+ 326   3                            *srcPtr++ = addr_temp[0] + 1;
+ 327   3                            *srcPtr++ = addr_temp[1] + 1;
+ 328   3                            *srcPtr++ = addr_temp[2] + 1;
+ 329   3                            
+ 330   3                            *srcPtr++ = mainInfo.portState[addr_temp[0]];
+ 331   3                            *srcPtr++ = mainInfo.portState[addr_temp[1]];
+ 332   3                            *srcPtr++ = mainInfo.portState[addr_temp[2]];
+ 333   3                            
+ 334   3                              
+ 335   3                            memory_copy(srcPtr,(unsigned char *)&mainInfo.id[addr_temp[0]].local_id,32);
+ 336   3                            srcPtr += 32;
+ 337   3                            memory_copy(srcPtr,(unsigned char *)&mainInfo.id[addr_temp[1]].local_id,32);
+ 338   3                            srcPtr += 32;
+ 339   3                            memory_copy(srcPtr,(unsigned char *)&mainInfo.id[addr_temp[2]].local_id,32);
+ 340   3                            srcPtr += 32;
+ 341   3              }
+ 342   2          }
+ 343   1          
+ 344   1              
+ 345   1          tmp = srcPtr - &uart1.ackBuffer;   
+ 346   1          uart1.txLen = tmp + 1;  //长度//    
+ 347   1      }
+ 348          
+ 349          void uart1_command(void)
+ 350          {
+ 351   1        char cTmp;
+ 352   1        static unsigned char update_tmp;  //升级标志位，实现指示灯闪烁
+ 353   1          unsigned char tempValue;
+ 354   1      #if 1
+ 355   1          cTmp = uart_fcs(uart1.rxBuffer, uart1.rxBuffer[3]);
+ 356   1          if( cTmp) /*校验是否正确*/
+ 357   1              return;
+ 358   1      #endif
+ 359   1      
+ 360   1          switch ( uart1.rxBuffer[5] )
+C51 COMPILER V9.52.0.0   NETCOMMAND                                                        11/05/2015 15:24:03 PAGE 7   
+
+ 361   1          {   
+ 362   2              case CMD_SET_SLOT_ADDRESS:      /*设置盘号*/
+ 363   2                
+ 364   2                  tempValue = get_tmu_addr_mode();
+ 365   2                  if(DYNEMIC_TMU_FLAG == tempValue)//如果盘地址为动态地址
+ 366   2                  {
+ 367   3                      if( (mainInfo.slotAddress == 0) && (uart1.rxBuffer[6] != 0) )
+ 368   3                      { 
+ 369   4                          slot_delay_time_init();
+ 370   4                          uart1_set_slot_address();
+ 371   4                      }
+ 372   3                      else if((uart1.rxBuffer[6] == mainInfo.slotAddress) && (uart1.rxBuffer[6] != 0) )
+ 373   3                      { 
+ 374   4                          uart1_set_slot_address(); 
+ 375   4                      }
+ 376   3                  }
+ 377   2                  else if(STATIC_TMU_FLAG == tempValue)//如果盘地址为静态地址
+ 378   2                  {
+ 379   3                      if( (linkFmu == 0) && (uart1.rxBuffer[6] == mainInfo.slotAddress) )
+ 380   3                      { 
+ 381   4                          slot_delay_time_init();
+ 382   4                          linkFmu = 1;
+ 383   4                          uart1_set_slot_address();
+ 384   4                      }
+ 385   3                      else if((linkFmu == 1) && (uart1.rxBuffer[6] == mainInfo.slotAddress))
+ 386   3                      {
+ 387   4                        linkFmu = 1;
+ 388   4                        uart1_set_slot_address();
+ 389   4                      }
+ 390   3                  }
+ 391   2                  break;
+ 392   2      
+ 393   2              case CMD_RD_CURRENT:            /*查询当前端口id*/
+ 394   2      
+ 395   2            if( ((uart1.rxBuffer[2]&0x0F) != 0) && ((uart1.rxBuffer[2]&0x0F) == mainInfo.slotAddress) )
+ 396   2              {
+ 397   3                  uart1_poll_current();
+ 398   3              }
+ 399   2                  break;
+ 400   2          case CMD_RD_LABEL:              /*读标签*/
+ 401   2            if( ((uart1.rxBuffer[2]&0x0F) != 0) && ((uart1.rxBuffer[2]&0x0F) == mainInfo.slotAddress) )
+ 402   2            {            
+ 403   3              uart1_rd_label();
+ 404   3            }
+ 405   2            break;
+ 406   2          case CMD_WR_LABEL:        /*写标签*/  
+ 407   2                  if( ((uart1.rxBuffer[2]&0x0F) != 0) && ((uart1.rxBuffer[2]&0x0F) == mainInfo.slotAddress) )
+ 408   2            {
+ 409   3                    uart1_wr_label();
+ 410   3            }
+ 411   2                  break;  
+ 412   2      
+ 413   2          case CMD_UPDATE:        /*升级文件处理*/
+ 414   2            if( ((uart1.rxBuffer[2]&0x0F) != 0) && ((uart1.rxBuffer[2]&0x0F) == mainInfo.slotAddress) )
+ 415   2            {
+ 416   3              if(update_tmp)
+ 417   3              {
+ 418   4                CPU_RUN_LED_1;
+ 419   4                update_tmp = 0;
+ 420   4              }else
+ 421   3              {
+ 422   4                CPU_RUN_LED_0;
+C51 COMPILER V9.52.0.0   NETCOMMAND                                                        11/05/2015 15:24:03 PAGE 8   
+
+ 423   4                update_tmp = 1;
+ 424   4              }
+ 425   3              update_file();
+ 426   3            }     
+ 427   2            break;
+ 428   2              default:
+ 429   2            CPU_RUN_LED_1;
+ 430   2                  break;
+ 431   2          }   
+ 432   1      }
+ 433          
+ 434          void uart_process(void)
+ 435          {
+ 436   1          unsigned char tempValue;
+ 437   1        
+ 438   1        if(uart1.uartState==UART_RX_FRAME_OK )
+ 439   1        {
+ 440   2              uart1_command();
+ 441   2              tempValue = get_tmu_addr_mode();
+ 442   2      
+ 443   2              if(STATIC_TMU_FLAG == tempValue)//如果是静态地址，检测该地址数据才初始化盘在线状态
+ 444   2              {
+ 445   3                  if(mainInfo.slotAddress == (uart1.rxBuffer[2]&0x0F))
+ 446   3                  {
+ 447   4                      slot_aging_time_init(2);
+ 448   4                  }
+ 449   3                  if(linkFmu)//盘在线，则回复命令处理结果，否则不回复
+ 450   3                  {
+ 451   4                      if( uart1.txLen )
+ 452   4                      {
+ 453   5                          uart_frame_pack();
+ 454   5                          uart1_trans_enable();
+ 455   5                      } 
+ 456   4                    //  while(uart1.txLen);
+ 457   4                      //delay_ms(5);
+ 458   4                    
+ 459   4                      //read_id_96();
+ 460   4                  }
+ 461   3              }
+ 462   2              else if(DYNEMIC_TMU_FLAG == tempValue)//动态地址盘
+ 463   2              {
+ 464   3                  slot_aging_time_init(1);
+ 465   3                  if( uart1.txLen )
+ 466   3                  {
+ 467   4                      uart_frame_pack();
+ 468   4                      uart1_trans_enable();
+ 469   4                  } 
+ 470   3                //  while(uart1.txLen);
+ 471   3                //  read_id_96();
+ 472   3              }
+ 473   2              uart1.uartState = 0;
+ 474   2        }
+ 475   1      
+ 476   1          uart1_rcv_enable();
+ 477   1      }
+ 478          
+ 479          void read_id_96(void)
+ 480          {
+ 481   1        unsigned char i;
+ 482   1        for(i=0;i<12;i++)
+ 483   1        {
+ 484   2            if(mainInfo.id[i].eid_96_flag == 1)
+C51 COMPILER V9.52.0.0   NETCOMMAND                                                        11/05/2015 15:24:03 PAGE 9   
+
+ 485   2            {
+ 486   3              one_wire_read_memory_block( i,32, eid_96_temp, 96);
+ 487   3              memory_copy(&mainInfo.id[i].local_id[32],eid_96_temp,96); 
+ 488   3              mainInfo.id[i].eid_96_flag = 0;
+ 489   3              mainInfo.id[i].eid_96_send_flag = 1;
+ 490   3              break;        
+ 491   3            }     
+ 492   2        }
+ 493   1      }
+ 494          
+ 495          void port_state_process(void)
+ 496          {
+ 497   1          unsigned char i;
+ 498   1          if( !linkFmu )  
+ 499   1              return;
+ 500   1      
+ 501   1          for(i=0; i<PORT_ALL_NUM; i++)
+ 502   1          {
+ 503   2              switch(mainInfo.rcvLedState[i])
+ 504   2              {
+ 505   3                  case ENUM_LED_STATUS_OFF:
+ 506   3                  case ENUM_LED_STATUS_SLOW:
+ 507   3                  case ENUM_LED_STATUS_QUICK:
+ 508   3                  case ENUM_LED_STATUS_ON:              
+ 509   3                        mainInfo.portState[i] = port_status_1_port_process(i);
+ 510   3                        mainInfo.ledState[i] = mainInfo.rcvLedState[i];
+ 511   3                        break;
+ 512   3                  
+ 513   3                  case ENUM_LED_STATUS_AUTO:
+ 514   3                        mainInfo.portState[i] = port_status_1_port_process(i);
+ 515   3                        break;
+ 516   3                  default:
+ 517   3                        mainInfo.ledState[i] = LED_STATE_OFF;
+ 518   3                        break;
+ 519   3              }
+ 520   2          }
+ 521   1          
+ 522   1      }
+ 523          
+ 524          unsigned char port_status_1_port_process(unsigned char lPortTmp)
+ 525          {
+ 526   1          unsigned char *ptrNative, *ptrDesig;
+ 527   1          unsigned char curAlarmStatus;
+ 528   1        
+ 529   1          ptrNative = mainInfo.id[lPortTmp].local_id;
+ 530   1          ptrDesig = mainInfo.id[lPortTmp].desig_id;
+ 531   1        
+ 532   1          if( !memory_compare(ptrNative, ptrDesig, 32) )/**-标签相同*/
+ 533   1          {
+ 534   2              if( id_check_null(mainInfo.id[lPortTmp].local_id) )
+ 535   2              {
+ 536   3                  curAlarmStatus = ENUM_ALARM_DATA_STATUS_ID_OK;  //端口有标签正常
+ 537   3              }
+ 538   2              else
+ 539   2              {
+ 540   3                  curAlarmStatus = ENUM_ALARM_DATA_STATUS_NULL_OK;//端口无标签正常
+ 541   3              }
+ 542   2              mainInfo.ledState[lPortTmp] = LED_STATE_OFF;
+ 543   2          }
+ 544   1        else  /*标签不相同*/
+ 545   1          {
+ 546   2              if( id_check_null(mainInfo.id[lPortTmp].local_id) )
+C51 COMPILER V9.52.0.0   NETCOMMAND                                                        11/05/2015 15:24:03 PAGE 10  
+
+ 547   2              {
+ 548   3                if( mainInfo.id[lPortTmp].local_id[31] != CRC8_Table(mainInfo.id[lPortTmp].local_id,31) )
+ 549   3                { 
+ 550   4                    curAlarmStatus = ENUM_ALARM_DATA_STATUS_ID_WRONG;//端口标签无效
+ 551   4                    mainInfo.ledState[lPortTmp] = LED_STATE_QUICK;
+ 552   4                }
+ 553   3                else
+ 554   3                {
+ 555   4                  curAlarmStatus = ENUM_ALARM_DATA_STATUS_ID_ERR; //端口有标签异常
+ 556   4                  mainInfo.ledState[lPortTmp] = LED_STATE_QUICK;
+ 557   4                }
+ 558   3              }
+ 559   2              else
+ 560   2              {
+ 561   3                  curAlarmStatus = ENUM_ALARM_DATA_STATUS_NULL_ERR;//端口无标签异常
+ 562   3                  mainInfo.ledState[lPortTmp] = LED_STATE_QUICK;          
+ 563   3              }
+ 564   2            }
+ 565   1          return curAlarmStatus;
+ 566   1      }
+ 567          
+ 568          unsigned char inquire_port_change(void)
+ 569          {
+ 570   1        unsigned char i;
+ 571   1        for(i=0;i<12;i++)
+ 572   1        {
+ 573   2        //  if(mainInfo.id[port_num].eid_32_flag  == 1 || mainInfo.portState[port_num] == ENUM_ALARM_DATA_STATUS_N
+             -ULL_ERR || mainInfo.portState[port_num] == ENUM_ALARM_DATA_STATUS_ID_ERR)
+ 574   2          if(mainInfo.id[port_num].eid_32_flag  == 1 )
+ 575   2          {
+ 576   3              mainInfo.id[port_num].eid_32_flag = 0;
+ 577   3              i = port_num;
+ 578   3              port_num = (port_num+1)%12;
+ 579   3              return i;
+ 580   3            }
+ 581   2            
+ 582   2            port_num = (port_num+1)%12;
+ 583   2        }
+ 584   1        
+ 585   1        return 0xFE;
+ 586   1      }
+ 587          
+ 588          unsigned char inquire_port_96(void)
+ 589          {
+ 590   1        unsigned char i;
+ 591   1        for(i=0;i<12;i++)
+ 592   1        {
+ 593   2            if( 1 == mainInfo.id[i].eid_96_send_flag )
+ 594   2            {
+ 595   3              mainInfo.id[i].eid_96_send_flag = 0;
+ 596   3              return i+1;
+ 597   3            }   
+ 598   2        }
+ 599   1        
+ 600   1        return 0;
+ 601   1      }
+
+C51 COMPILATION COMPLETE.  1 WARNING(S),  1 ERROR(S)

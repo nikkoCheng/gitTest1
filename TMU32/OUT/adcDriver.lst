@@ -1,0 +1,173 @@
+C51 COMPILER V7.09   ADCDRIVER                                                             02/13/2012 10:58:48 PAGE 1   
+
+
+C51 COMPILER V7.09, COMPILATION OF MODULE ADCDRIVER
+OBJECT MODULE PLACED IN .\OUT\adcDriver.obj
+COMPILER INVOKED BY: C:\Keil\C51\BIN\C51.EXE adConvert\adcDriver.c LARGE BROWSE INCDIR(main,header_files,dataProcess,wat
+                    -chDog,ledProcess,mcu,adConvert,IDB,protect_j,alarm,key,timer,command) DEBUG OBJECTEXTEND PRINT(.\OUT\adcDriver.lst) OBJE
+                    -CT(.\OUT\adcDriver.obj)
+
+line level    source
+
+   1          #include "typeDef.h"
+   2          #include "adcDriver.h"
+   3          //#include  "c8051F020.h"
+   4          
+   5          union  myunion data adResult;
+   6          
+   7          
+   8          void Adc0_SFR_CNF(void)
+   9          {
+  10   1              ADC0_AIN_CFR;    /*configure AIN  */
+  11   1              ADC0_CONF_CFR;          /*configure CLK, GAIN*/
+  12   1              ADC0_CTR_CFR;    /*configure  justfy,track mode, start mode */
+  13   1      
+  14   1              ADC0_REF_CFR;    /*ADC REF configure*/
+  15   1      
+  16   1      
+  17   1      
+  18   1             //ADC0_CHANNEL0; 
+  19   1              //ADC0_EN;              /*enable AD conversion*/
+  20   1      }
+  21          
+  22          
+  23          void Adc_Data_Init(void)
+  24          {
+  25   1      ;
+  26   1      }
+  27          
+  28          
+  29          void Ad_Latch_AIN0(void)
+  30          {
+  31   1              ADC0_CHANNEL0;
+  32   1      }
+  33          
+  34          void Ad_Latch_AIN1(void)
+  35          {
+  36   1              ADC0_CHANNEL1;
+  37   1      }
+  38          
+  39          void Ad_Latch_AIN2(void)
+  40          {
+  41   1              ADC0_CHANNEL2;
+  42   1      }
+  43          
+  44          void Ad_Latch_AIN3(void)
+  45          {
+  46   1              ADC0_CHANNEL3;
+  47   1      }
+  48          
+  49          void Ad_Latch_AIN4(void)
+  50          {
+  51   1              ADC0_CHANNEL4;
+  52   1      }
+  53          
+C51 COMPILER V7.09   ADCDRIVER                                                             02/13/2012 10:58:48 PAGE 2   
+
+  54          void Ad_Latch_AIN5(void)
+  55          {
+  56   1              ADC0_CHANNEL5;
+  57   1      }
+  58          
+  59          void Ad_Latch_AIN6(void)
+  60          {
+  61   1              ADC0_CHANNEL6;
+  62   1      }
+  63          
+  64          void Ad_Latch_AIN7(void)
+  65          {
+  66   1              ADC0_CHANNEL7;
+  67   1      }
+  68          
+  69          
+  70                  U16 iAdDataTmp ;
+  71          void Ad_020_Read(void)
+  72          {
+  73   1              U8 cFlag;
+  74   1              
+  75   1              ADC0_CONVERT_DATA_CLR;
+  76   1              ADC0_CONVERT_EN;
+  77   1              ADC0_CONVERT_START;
+  78   1              
+  79   1              cFlag = ADC0_CONVERT_STA;
+  80   1              while(cFlag == ADC0_CONVERT_PROGRESS)
+  81   1              {
+  82   2                      cFlag = ADC0_CONVERT_STA;                       /*wait convertion complete*/
+  83   2                      //NOP();
+  84   2              }
+  85   1      
+  86   1              cFlag = ADC0_CONVERT_DATA_STA;
+  87   1              while( cFlag == ADC0_DATA_NO)
+  88   1              {
+  89   2                      cFlag = ADC0_CONVERT_DATA_STA;          /*wait convertion data ok*/
+  90   2                      //NOP();
+  91   2              }
+  92   1      
+  93   1              
+  94   1              adResult.half.highByte = (ADC0_DATA_H) &0x0F;
+  95   1              adResult.half.lowByte  = ADC0_DATA_L;
+  96   1              iAdDataTmp = adResult.whole;    
+  97   1      }
+  98          
+  99          
+ 100          U16 Ad_Read(U8 cChannel)
+ 101          {
+ 102   1              switch(cChannel)
+ 103   1              {
+ 104   2              default:
+ 105   2              case 0:
+ 106   2                      Ad_Latch_AIN0();
+ 107   2                      break;
+ 108   2                      
+ 109   2              case 1:
+ 110   2                      Ad_Latch_AIN1();                
+ 111   2                      break;
+ 112   2                      
+ 113   2              case 2:
+ 114   2                      Ad_Latch_AIN2();                
+ 115   2                      break;
+C51 COMPILER V7.09   ADCDRIVER                                                             02/13/2012 10:58:48 PAGE 3   
+
+ 116   2      
+ 117   2              case 3:
+ 118   2                      Ad_Latch_AIN3();                
+ 119   2                      break;
+ 120   2      
+ 121   2              case 4:
+ 122   2                      Ad_Latch_AIN4();                
+ 123   2                      break;
+ 124   2      
+ 125   2              case 5:
+ 126   2                      Ad_Latch_AIN5();                
+ 127   2                      break;
+ 128   2      
+ 129   2              case 6:
+ 130   2                      Ad_Latch_AIN6();                
+ 131   2                      break;
+ 132   2      
+ 133   2              case 7:
+ 134   2                      Ad_Latch_AIN7();                
+ 135   2                      break;
+ 136   2                      
+ 137   2              }
+ 138   1      
+ 139   1              Ad_020_Read();
+ 140   1      
+ 141   1              return iAdDataTmp;
+ 142   1      }
+ 143          
+ 144          
+
+
+MODULE INFORMATION:   STATIC OVERLAYABLE
+   CODE SIZE        =    233    ----
+   CONSTANT SIZE    =   ----    ----
+   XDATA SIZE       =      2    ----
+   PDATA SIZE       =   ----    ----
+   DATA SIZE        =      2    ----
+   IDATA SIZE       =   ----    ----
+   BIT SIZE         =   ----    ----
+END OF MODULE INFORMATION.
+
+
+C51 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)

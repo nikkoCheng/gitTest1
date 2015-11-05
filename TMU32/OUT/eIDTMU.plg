@@ -1,0 +1,1068 @@
+<html>
+<body>
+<pre>
+<h1>µVision2 Build Log</h1>
+<h2>Project:</h2>
+E:\XHB\iODN130409\TMU130409\eIDTMU_Uv2_Uv2.uv2
+Project File Date:  05/20/2013
+
+<h2>Output:</h2>
+Build target 'Target 1'
+compiling main.c...
+LEDPROCESS\LEDSTATUS.H(19): error C308: invalid integer const expression
+compiling netCommand.c...
+LEDPROCESS\LEDSTATUS.H(19): error C308: invalid integer const expression
+compiling at24C01.c...
+EEPROM\IICPROCESS.H(11): error C308: invalid integer const expression
+LEDPROCESS\LEDSTATUS.H(19): error C308: invalid integer const expression
+compiling idProcess.c...
+EEPROM\IICPROCESS.H(11): error C308: invalid integer const expression
+LEDPROCESS\LEDSTATUS.H(19): error C308: invalid integer const expression
+EEPROM\IDPROCESS.C(68): error C187: not an lvalue
+Project build/rebuild aborted.
+Target not created
+compiling main.c...
+LEDPROCESS\LEDSTATUS.H(19): error C308: invalid integer const expression
+main\main.c - 1 Error(s), 0 Warning(s).
+compiling main.c...
+main\main.c - 0 Error(s), 0 Warning(s).
+Build target 'Target 1'
+compiling netCommand.c...
+compiling at24C01.c...
+EEPROM\IICPROCESS.H(11): error C308: invalid integer const expression
+compiling idProcess.c...
+EEPROM\IICPROCESS.H(11): error C308: invalid integer const expression
+EEPROM\IDPROCESS.C(68): error C187: not an lvalue
+compiling iicProcess.c...
+EEPROM\IICPROCESS.H(11): error C308: invalid integer const expression
+compiling tmuProcess.c...
+compiling ledStatus.c...
+Target not created
+Build target 'Target 1'
+compiling at24C01.c...
+EEPROM\IICPROCESS.H(13): error C146: 'P2_3': invalid base address
+EEPROM\IICPROCESS.H(14): error C146: 'P2_5': invalid base address
+EEPROM\IICPROCESS.H(15): error C146: 'P2_7': invalid base address
+EEPROM\IICPROCESS.H(16): error C146: 'P3_3': invalid base address
+EEPROM\IICPROCESS.H(17): error C146: 'P0_0': invalid base address
+EEPROM\IICPROCESS.H(18): error C146: 'P0_2': invalid base address
+EEPROM\IICPROCESS.H(19): error C146: 'P2_2': invalid base address
+EEPROM\IICPROCESS.H(20): error C146: 'P2_0': invalid base address
+EEPROM\IICPROCESS.H(21): error C146: 'P1_6': invalid base address
+EEPROM\IICPROCESS.H(22): error C146: 'P1_4': invalid base address
+EEPROM\IICPROCESS.H(23): error C146: 'P1_1': invalid base address
+EEPROM\IICPROCESS.H(24): error C146: 'P1_2': invalid base address
+EEPROM\IICPROCESS.H(26): error C146: 'P0_3': invalid base address
+EEPROM\IICPROCESS.H(27): error C146: 'P0_3': invalid base address
+EEPROM\IICPROCESS.H(28): error C146: 'P0_3': invalid base address
+EEPROM\IICPROCESS.H(29): error C146: 'P0_3': invalid base address
+EEPROM\IICPROCESS.H(30): error C146: 'P0_3': invalid base address
+EEPROM\IICPROCESS.H(31): error C146: 'P0_3': invalid base address
+EEPROM\IICPROCESS.H(32): error C146: 'P1_0': invalid base address
+EEPROM\IICPROCESS.H(33): error C146: 'P1_0': invalid base address
+EEPROM\IICPROCESS.H(34): error C146: 'P1_0': invalid base address
+EEPROM\IICPROCESS.H(35): error C146: 'P1_0': invalid base address
+EEPROM\IICPROCESS.H(36): error C146: 'P1_0': invalid base address
+EEPROM\IICPROCESS.H(37): error C146: 'P1_0': invalid base address
+compiling idProcess.c...
+EEPROM\IICPROCESS.H(13): error C146: 'P2_3': invalid base address
+EEPROM\IICPROCESS.H(14): error C146: 'P2_5': invalid base address
+EEPROM\IICPROCESS.H(15): error C146: 'P2_7': invalid base address
+EEPROM\IICPROCESS.H(16): error C146: 'P3_3': invalid base address
+EEPROM\IICPROCESS.H(17): error C146: 'P0_0': invalid base address
+EEPROM\IICPROCESS.H(18): error C146: 'P0_2': invalid base address
+EEPROM\IICPROCESS.H(19): error C146: 'P2_2': invalid base address
+EEPROM\IICPROCESS.H(20): error C146: 'P2_0': invalid base address
+EEPROM\IICPROCESS.H(21): error C146: 'P1_6': invalid base address
+EEPROM\IICPROCESS.H(22): error C146: 'P1_4': invalid base address
+EEPROM\IICPROCESS.H(23): error C146: 'P1_1': invalid base address
+EEPROM\IICPROCESS.H(24): error C146: 'P1_2': invalid base address
+EEPROM\IICPROCESS.H(26): error C146: 'P0_3': invalid base address
+EEPROM\IICPROCESS.H(27): error C146: 'P0_3': invalid base address
+EEPROM\IICPROCESS.H(28): error C146: 'P0_3': invalid base address
+EEPROM\IICPROCESS.H(29): error C146: 'P0_3': invalid base address
+EEPROM\IICPROCESS.H(30): error C146: 'P0_3': invalid base address
+EEPROM\IICPROCESS.H(31): error C146: 'P0_3': invalid base address
+EEPROM\IICPROCESS.H(32): error C146: 'P1_0': invalid base address
+EEPROM\IICPROCESS.H(33): error C146: 'P1_0': invalid base address
+EEPROM\IICPROCESS.H(34): error C146: 'P1_0': invalid base address
+EEPROM\IICPROCESS.H(35): error C146: 'P1_0': invalid base address
+EEPROM\IICPROCESS.H(36): error C146: 'P1_0': invalid base address
+EEPROM\IICPROCESS.H(37): error C146: 'P1_0': invalid base address
+EEPROM\IDPROCESS.C(68): error C187: not an lvalue
+compiling iicProcess.c...
+EEPROM\IICPROCESS.H(13): error C146: 'P2_3': invalid base address
+EEPROM\IICPROCESS.H(14): error C146: 'P2_5': invalid base address
+EEPROM\IICPROCESS.H(15): error C146: 'P2_7': invalid base address
+EEPROM\IICPROCESS.H(16): error C146: 'P3_3': invalid base address
+EEPROM\IICPROCESS.H(17): error C146: 'P0_0': invalid base address
+EEPROM\IICPROCESS.H(18): error C146: 'P0_2': invalid base address
+EEPROM\IICPROCESS.H(19): error C146: 'P2_2': invalid base address
+EEPROM\IICPROCESS.H(20): error C146: 'P2_0': invalid base address
+EEPROM\IICPROCESS.H(21): error C146: 'P1_6': invalid base address
+EEPROM\IICPROCESS.H(22): error C146: 'P1_4': invalid base address
+EEPROM\IICPROCESS.H(23): error C146: 'P1_1': invalid base address
+EEPROM\IICPROCESS.H(24): error C146: 'P1_2': invalid base address
+EEPROM\IICPROCESS.H(26): error C146: 'P0_3': invalid base address
+EEPROM\IICPROCESS.H(27): error C146: 'P0_3': invalid base address
+EEPROM\IICPROCESS.H(28): error C146: 'P0_3': invalid base address
+EEPROM\IICPROCESS.H(29): error C146: 'P0_3': invalid base address
+EEPROM\IICPROCESS.H(30): error C146: 'P0_3': invalid base address
+EEPROM\IICPROCESS.H(31): error C146: 'P0_3': invalid base address
+EEPROM\IICPROCESS.H(32): error C146: 'P1_0': invalid base address
+EEPROM\IICPROCESS.H(33): error C146: 'P1_0': invalid base address
+EEPROM\IICPROCESS.H(34): error C146: 'P1_0': invalid base address
+EEPROM\IICPROCESS.H(35): error C146: 'P1_0': invalid base address
+EEPROM\IICPROCESS.H(36): error C146: 'P1_0': invalid base address
+EEPROM\IICPROCESS.H(37): error C146: 'P1_0': invalid base address
+EEPROM\IICPROCESS.C(15): error C202: 'IIC_SDA1': undefined identifier
+EEPROM\IICPROCESS.C(18): error C202: 'IIC_SCL1': undefined identifier
+EEPROM\IICPROCESS.C(24): error C202: 'IIC_SDA2': undefined identifier
+EEPROM\IICPROCESS.C(27): error C202: 'IIC_SCL2': undefined identifier
+EEPROM\IICPROCESS.C(33): error C202: 'IIC_SDA3': undefined identifier
+EEPROM\IICPROCESS.C(36): error C202: 'IIC_SCL3': undefined identifier
+EEPROM\IICPROCESS.C(42): error C202: 'IIC_SDA4': undefined identifier
+EEPROM\IICPROCESS.C(45): error C202: 'IIC_SCL4': undefined identifier
+EEPROM\IICPROCESS.C(51): error C202: 'IIC_SDA5': undefined identifier
+EEPROM\IICPROCESS.C(54): error C202: 'IIC_SCL5': undefined identifier
+EEPROM\IICPROCESS.C(60): error C202: 'IIC_SDA6': undefined identifier
+EEPROM\IICPROCESS.C(63): error C202: 'IIC_SCL6': undefined identifier
+EEPROM\IICPROCESS.C(69): error C202: 'IIC_SDA7': undefined identifier
+EEPROM\IICPROCESS.C(72): error C202: 'IIC_SCL7': undefined identifier
+EEPROM\IICPROCESS.C(78): error C202: 'IIC_SDA8': undefined identifier
+EEPROM\IICPROCESS.C(81): error C202: 'IIC_SCL8': undefined identifier
+EEPROM\IICPROCESS.C(87): error C202: 'IIC_SDA9': undefined identifier
+EEPROM\IICPROCESS.C(90): error C202: 'IIC_SCL9': undefined identifier
+EEPROM\IICPROCESS.C(96): error C202: 'IIC_SDA10': undefined identifier
+EEPROM\IICPROCESS.C(99): error C202: 'IIC_SCL10': undefined identifier
+EEPROM\IICPROCESS.C(105): error C202: 'IIC_SDA11': undefined identifier
+EEPROM\IICPROCESS.C(108): error C202: 'IIC_SCL11': undefined identifier
+EEPROM\IICPROCESS.C(114): error C202: 'IIC_SDA12': undefined identifier
+EEPROM\IICPROCESS.C(117): error C202: 'IIC_SCL12': undefined identifier
+EEPROM\IICPROCESS.C(131): error C202: 'IIC_SDA1': undefined identifier
+EEPROM\IICPROCESS.C(133): error C202: 'IIC_SCL1': undefined identifier
+EEPROM\IICPROCESS.C(133): error C202: 'IIC_SCL1': undefined identifier
+EEPROM\IICPROCESS.C(135): error C202: 'IIC_SDA1': undefined identifier
+EEPROM\IICPROCESS.C(137): error C202: 'IIC_SCL1': undefined identifier
+EEPROM\IICPROCESS.C(137): error C202: 'IIC_SCL1': undefined identifier
+EEPROM\IICPROCESS.C(142): error C202: 'IIC_SDA2': undefined identifier
+EEPROM\IICPROCESS.C(144): error C202: 'IIC_SCL2': undefined identifier
+EEPROM\IICPROCESS.C(144): error C202: 'IIC_SCL2': undefined identifier
+EEPROM\IICPROCESS.C(146): error C202: 'IIC_SDA2': undefined identifier
+EEPROM\IICPROCESS.C(148): error C202: 'IIC_SCL2': undefined identifier
+EEPROM\IICPROCESS.C(148): error C202: 'IIC_SCL2': undefined identifier
+EEPROM\IICPROCESS.C(153): error C202: 'IIC_SDA3': undefined identifier
+EEPROM\IICPROCESS.C(155): error C202: 'IIC_SCL3': undefined identifier
+EEPROM\IICPROCESS.C(155): error C202: 'IIC_SCL3': undefined identifier
+EEPROM\IICPROCESS.C(157): error C202: 'IIC_SDA3': undefined identifier
+EEPROM\IICPROCESS.C(159): error C202: 'IIC_SCL3': undefined identifier
+EEPROM\IICPROCESS.C(159): error C202: 'IIC_SCL3': undefined identifier
+EEPROM\IICPROCESS.C(164): error C202: 'IIC_SDA4': undefined identifier
+EEPROM\IICPROCESS.C(166): error C202: 'IIC_SCL4': undefined identifier
+EEPROM\IICPROCESS.C(166): error C202: 'IIC_SCL4': undefined identifier
+EEPROM\IICPROCESS.C(168): error C202: 'IIC_SDA4': undefined identifier
+EEPROM\IICPROCESS.C(170): error C202: 'IIC_SCL4': undefined identifier
+EEPROM\IICPROCESS.C(170): error C202: 'IIC_SCL4': undefined identifier
+EEPROM\IICPROCESS.C(175): error C202: 'IIC_SDA5': undefined identifier
+EEPROM\IICPROCESS.C(177): error C202: 'IIC_SCL5': undefined identifier
+EEPROM\IICPROCESS.C(177): error C202: 'IIC_SCL5': undefined identifier
+EEPROM\IICPROCESS.C(179): error C202: 'IIC_SDA5': undefined identifier
+EEPROM\IICPROCESS.C(181): error C202: 'IIC_SCL5': undefined identifier
+EEPROM\IICPROCESS.C(181): error C202: 'IIC_SCL5': undefined identifier
+EEPROM\IICPROCESS.C(186): error C202: 'IIC_SDA6': undefined identifier
+EEPROM\IICPROCESS.C(188): error C202: 'IIC_SCL6': undefined identifier
+EEPROM\IICPROCESS.C(188): error C202: 'IIC_SCL6': undefined identifier
+EEPROM\IICPROCESS.C(190): error C202: 'IIC_SDA6': undefined identifier
+EEPROM\IICPROCESS.C(192): error C202: 'IIC_SCL6': undefined identifier
+EEPROM\IICPROCESS.C(192): error C202: 'IIC_SCL6': undefined identifier
+EEPROM\IICPROCESS.C(197): error C202: 'IIC_SDA7': undefined identifier
+EEPROM\IICPROCESS.C(199): error C202: 'IIC_SCL7': undefined identifier
+EEPROM\IICPROCESS.C(199): error C202: 'IIC_SCL7': undefined identifier
+EEPROM\IICPROCESS.C(201): error C202: 'IIC_SDA7': undefined identifier
+EEPROM\IICPROCESS.C(203): error C202: 'IIC_SCL7': undefined identifier
+EEPROM\IICPROCESS.C(203): error C202: 'IIC_SCL7': undefined identifier
+EEPROM\IICPROCESS.C(208): error C202: 'IIC_SDA8': undefined identifier
+EEPROM\IICPROCESS.C(210): error C202: 'IIC_SCL8': undefined identifier
+EEPROM\IICPROCESS.C(210): error C202: 'IIC_SCL8': undefined identifier
+EEPROM\IICPROCESS.C(212): error C202: 'IIC_SDA8': undefined identifier
+EEPROM\IICPROCESS.C(214): error C202: 'IIC_SCL8': undefined identifier
+EEPROM\IICPROCESS.C(214): error C202: 'IIC_SCL8': undefined identifier
+EEPROM\IICPROCESS.C(219): error C202: 'IIC_SDA9': undefined identifier
+EEPROM\IICPROCESS.C(221): error C202: 'IIC_SCL9': undefined identifier
+EEPROM\IICPROCESS.C(221): error C202: 'IIC_SCL9': undefined identifier
+EEPROM\IICPROCESS.C(223): error C202: 'IIC_SDA9': undefined identifier
+EEPROM\IICPROCESS.C(225): error C202: 'IIC_SCL9': undefined identifier
+EEPROM\IICPROCESS.C(225): error C202: 'IIC_SCL9': undefined identifier
+EEPROM\IICPROCESS.C(230): error C202: 'IIC_SDA10': undefined identifier
+EEPROM\IICPROCESS.C(232): error C202: 'IIC_SCL10': undefined identifier
+EEPROM\IICPROCESS.C(232): error C202: 'IIC_SCL10': undefined identifier
+EEPROM\IICPROCESS.C(234): error C202: 'IIC_SDA10': undefined identifier
+EEPROM\IICPROCESS.C(236): error C202: 'IIC_SCL10': undefined identifier
+EEPROM\IICPROCESS.C(236): error C202: 'IIC_SCL10': undefined identifier
+EEPROM\IICPROCESS.C(241): error C202: 'IIC_SDA11': undefined identifier
+EEPROM\IICPROCESS.C(243): error C202: 'IIC_SCL11': undefined identifier
+EEPROM\IICPROCESS.C(243): error C202: 'IIC_SCL11': undefined identifier
+EEPROM\IICPROCESS.C(245): error C202: 'IIC_SDA11': undefined identifier
+EEPROM\IICPROCESS.C(247): error C202: 'IIC_SCL11': undefined identifier
+EEPROM\IICPROCESS.C(247): error C202: 'IIC_SCL11': undefined identifier
+EEPROM\IICPROCESS.C(252): error C202: 'IIC_SDA12': undefined identifier
+EEPROM\IICPROCESS.C(254): error C202: 'IIC_SCL12': undefined identifier
+EEPROM\IICPROCESS.C(254): error C202: 'IIC_SCL12': undefined identifier
+EEPROM\IICPROCESS.C(256): error C202: 'IIC_SDA12': undefined identifier
+EEPROM\IICPROCESS.C(258): error C202: 'IIC_SCL12': undefined identifier
+EEPROM\IICPROCESS.C(258): error C202: 'IIC_SCL12': undefined identifier
+EEPROM\IICPROCESS.C(271): error C202: 'IIC_SDA1': undefined identifier
+EEPROM\IICPROCESS.C(274): error C202: 'IIC_SCL1': undefined identifier
+EEPROM\IICPROCESS.C(277): error C202: 'IIC_SDA1': undefined identifier
+EEPROM\IICPROCESS.C(283): error C202: 'IIC_SDA2': undefined identifier
+EEPROM\IICPROCESS.C(286): error C202: 'IIC_SCL2': undefined identifier
+EEPROM\IICPROCESS.C(289): error C202: 'IIC_SDA2': undefined identifier
+EEPROM\IICPROCESS.C(295): error C202: 'IIC_SDA3': undefined identifier
+EEPROM\IICPROCESS.C(298): error C202: 'IIC_SCL2': undefined identifier
+EEPROM\IICPROCESS.C(301): error C202: 'IIC_SDA3': undefined identifier
+EEPROM\IICPROCESS.C(307): error C202: 'IIC_SDA4': undefined identifier
+EEPROM\IICPROCESS.C(310): error C202: 'IIC_SCL3': undefined identifier
+EEPROM\IICPROCESS.C(313): error C202: 'IIC_SDA4': undefined identifier
+EEPROM\IICPROCESS.C(319): error C202: 'IIC_SDA5': undefined identifier
+EEPROM\IICPROCESS.C(322): error C202: 'IIC_SCL5': undefined identifier
+EEPROM\IICPROCESS.C(325): error C202: 'IIC_SDA5': undefined identifier
+EEPROM\IICPROCESS.C(331): error C202: 'IIC_SDA6': undefined identifier
+EEPROM\IICPROCESS.C(334): error C202: 'IIC_SCL6': undefined identifier
+EEPROM\IICPROCESS.C(337): error C202: 'IIC_SDA6': undefined identifier
+EEPROM\IICPROCESS.C(343): error C202: 'IIC_SDA7': undefined identifier
+EEPROM\IICPROCESS.C(346): error C202: 'IIC_SCL7': undefined identifier
+EEPROM\IICPROCESS.C(349): error C202: 'IIC_SDA7': undefined identifier
+EEPROM\IICPROCESS.C(355): error C202: 'IIC_SDA8': undefined identifier
+EEPROM\IICPROCESS.C(358): error C202: 'IIC_SCL8': undefined identifier
+EEPROM\IICPROCESS.C(361): error C202: 'IIC_SDA8': undefined identifier
+EEPROM\IICPROCESS.C(367): error C202: 'IIC_SDA9': undefined identifier
+EEPROM\IICPROCESS.C(370): error C202: 'IIC_SCL9': undefined identifier
+EEPROM\IICPROCESS.C(373): error C202: 'IIC_SDA9': undefined identifier
+EEPROM\IICPROCESS.C(379): error C202: 'IIC_SDA10': undefined identifier
+EEPROM\IICPROCESS.C(382): error C202: 'IIC_SCL10': undefined identifier
+EEPROM\IICPROCESS.C(385): error C202: 'IIC_SDA10': undefined identifier
+EEPROM\IICPROCESS.C(391): error C202: 'IIC_SDA11': undefined identifier
+EEPROM\IICPROCESS.C(394): error C202: 'IIC_SCL11': undefined identifier
+EEPROM\IICPROCESS.C(397): error C202: 'IIC_SDA11': undefined identifier
+EEPROM\IICPROCESS.C(403): error C202: 'IIC_SDA12': undefined identifier
+EEPROM\IICPROCESS.C(406): error C202: 'IIC_SCL12': undefined identifier
+EEPROM\IICPROCESS.C(409): error C202: 'IIC_SDA12': undefined identifier
+EEPROM\IICPROCESS.C(423): error C202: 'IIC_SDA1': undefined identifier
+EEPROM\IICPROCESS.C(426): error C202: 'IIC_SCL1': undefined identifier
+EEPROM\IICPROCESS.C(426): error C202: 'IIC_SCL1': undefined identifier
+EEPROM\IICPROCESS.C(427): error C202: 'IIC_SDA1': undefined identifier
+EEPROM\IICPROCESS.C(429): error C202: 'IIC_SCL1': undefined identifier
+EEPROM\IICPROCESS.C(429): error C202: 'IIC_SCL1': undefined identifier
+EEPROM\IICPROCESS.C(434): error C202: 'IIC_SCL1': undefined identifier
+EEPROM\IICPROCESS.C(434): error C202: 'IIC_SCL1': undefined identifier
+EEPROM\IICPROCESS.C(441): error C202: 'IIC_SDA2': undefined identifier
+EEPROM\IICPROCESS.C(444): error C202: 'IIC_SCL2': undefined identifier
+EEPROM\IICPROCESS.C(444): error C202: 'IIC_SCL2': undefined identifier
+EEPROM\IICPROCESS.C(445): error C202: 'IIC_SDA2': undefined identifier
+EEPROM\IICPROCESS.C(447): error C202: 'IIC_SCL2': undefined identifier
+EEPROM\IICPROCESS.C(447): error C202: 'IIC_SCL2': undefined identifier
+EEPROM\IICPROCESS.C(452): error C202: 'IIC_SCL2': undefined identifier
+EEPROM\IICPROCESS.C(452): error C202: 'IIC_SCL2': undefined identifier
+EEPROM\IICPROCESS.C(459): error C202: 'IIC_SDA3': undefined identifier
+EEPROM\IICPROCESS.C(462): error C202: 'IIC_SCL3': undefined identifier
+EEPROM\IICPROCESS.C(462): error C202: 'IIC_SCL3': undefined identifier
+EEPROM\IICPROCESS.C(463): error C202: 'IIC_SDA3': undefined identifier
+EEPROM\IICPROCESS.C(465): error C202: 'IIC_SCL3': undefined identifier
+EEPROM\IICPROCESS.C(465): error C202: 'IIC_SCL3': undefined identifier
+EEPROM\IICPROCESS.C(470): error C202: 'IIC_SCL3': undefined identifier
+EEPROM\IICPROCESS.C(470): error C202: 'IIC_SCL3': undefined identifier
+EEPROM\IICPROCESS.C(477): error C202: 'IIC_SDA4': undefined identifier
+EEPROM\IICPROCESS.C(480): error C202: 'IIC_SCL4': undefined identifier
+EEPROM\IICPROCESS.C(480): error C202: 'IIC_SCL4': undefined identifier
+EEPROM\IICPROCESS.C(481): error C202: 'IIC_SDA4': undefined identifier
+EEPROM\IICPROCESS.C(483): error C202: 'IIC_SCL4': undefined identifier
+EEPROM\IICPROCESS.C(483): error C202: 'IIC_SCL4': undefined identifier
+EEPROM\IICPROCESS.C(488): error C202: 'IIC_SCL4': undefined identifier
+EEPROM\IICPROCESS.C(488): error C202: 'IIC_SCL4': undefined identifier
+EEPROM\IICPROCESS.C(495): error C202: 'IIC_SDA5': undefined identifier
+EEPROM\IICPROCESS.C(498): error C202: 'IIC_SCL5': undefined identifier
+EEPROM\IICPROCESS.C(498): error C202: 'IIC_SCL5': undefined identifier
+EEPROM\IICPROCESS.C(499): error C202: 'IIC_SDA5': undefined identifier
+EEPROM\IICPROCESS.C(501): error C202: 'IIC_SCL5': undefined identifier
+EEPROM\IICPROCESS.C(501): error C202: 'IIC_SCL5': undefined identifier
+EEPROM\IICPROCESS.C(506): error C202: 'IIC_SCL5': undefined identifier
+EEPROM\IICPROCESS.C(506): error C202: 'IIC_SCL5': undefined identifier
+EEPROM\IICPROCESS.C(513): error C202: 'IIC_SDA6': undefined identifier
+EEPROM\IICPROCESS.C(516): error C202: 'IIC_SCL6': undefined identifier
+EEPROM\IICPROCESS.C(516): error C202: 'IIC_SCL6': undefined identifier
+EEPROM\IICPROCESS.C(517): error C202: 'IIC_SDA6': undefined identifier
+EEPROM\IICPROCESS.C(519): error C202: 'IIC_SCL6': undefined identifier
+EEPROM\IICPROCESS.C(519): error C202: 'IIC_SCL6': undefined identifier
+EEPROM\IICPROCESS.C(524): error C202: 'IIC_SCL6': undefined identifier
+EEPROM\IICPROCESS.C(524): error C202: 'IIC_SCL6': undefined identifier
+EEPROM\IICPROCESS.C(531): error C202: 'IIC_SDA7': undefined identifier
+EEPROM\IICPROCESS.C(534): error C202: 'IIC_SCL7': undefined identifier
+EEPROM\IICPROCESS.C(534): error C202: 'IIC_SCL7': undefined identifier
+EEPROM\IICPROCESS.C(535): error C202: 'IIC_SDA7': undefined identifier
+EEPROM\IICPROCESS.C(537): error C202: 'IIC_SCL7': undefined identifier
+EEPROM\IICPROCESS.C(537): error C202: 'IIC_SCL7': undefined identifier
+EEPROM\IICPROCESS.C(542): error C202: 'IIC_SCL7': undefined identifier
+EEPROM\IICPROCESS.C(542): error C202: 'IIC_SCL7': undefined identifier
+EEPROM\IICPROCESS.C(549): error C202: 'IIC_SDA8': undefined identifier
+EEPROM\IICPROCESS.C(553): error C202: 'IIC_SCL8': undefined identifier
+EEPROM\IICPROCESS.C(553): error C202: 'IIC_SCL8': undefined identifier
+EEPROM\IICPROCESS.C(554): error C202: 'IIC_SDA8': undefined identifier
+EEPROM\IICPROCESS.C(556): error C202: 'IIC_SCL8': undefined identifier
+EEPROM\IICPROCESS.C(556): error C202: 'IIC_SCL8': undefined identifier
+EEPROM\IICPROCESS.C(561): error C202: 'IIC_SCL8': undefined identifier
+EEPROM\IICPROCESS.C(561): error C202: 'IIC_SCL8': undefined identifier
+EEPROM\IICPROCESS.C(568): error C202: 'IIC_SDA9': undefined identifier
+EEPROM\IICPROCESS.C(571): error C202: 'IIC_SCL9': undefined identifier
+EEPROM\IICPROCESS.C(571): error C202: 'IIC_SCL9': undefined identifier
+EEPROM\IICPROCESS.C(572): error C202: 'IIC_SDA9': undefined identifier
+EEPROM\IICPROCESS.C(574): error C202: 'IIC_SCL9': undefined identifier
+EEPROM\IICPROCESS.C(574): error C202: 'IIC_SCL9': undefined identifier
+EEPROM\IICPROCESS.C(579): error C202: 'IIC_SCL9': undefined identifier
+EEPROM\IICPROCESS.C(579): error C202: 'IIC_SCL9': undefined identifier
+EEPROM\IICPROCESS.C(586): error C202: 'IIC_SDA10': undefined identifier
+EEPROM\IICPROCESS.C(589): error C202: 'IIC_SCL10': undefined identifier
+EEPROM\IICPROCESS.C(589): error C202: 'IIC_SCL10': undefined identifier
+EEPROM\IICPROCESS.C(590): error C202: 'IIC_SDA10': undefined identifier
+EEPROM\IICPROCESS.C(592): error C202: 'IIC_SCL10': undefined identifier
+EEPROM\IICPROCESS.C(592): error C202: 'IIC_SCL10': undefined identifier
+EEPROM\IICPROCESS.C(597): error C202: 'IIC_SCL10': undefined identifier
+EEPROM\IICPROCESS.C(597): error C202: 'IIC_SCL10': undefined identifier
+EEPROM\IICPROCESS.C(604): error C202: 'IIC_SDA11': undefined identifier
+EEPROM\IICPROCESS.C(607): error C202: 'IIC_SCL11': undefined identifier
+EEPROM\IICPROCESS.C(607): error C202: 'IIC_SCL11': undefined identifier
+EEPROM\IICPROCESS.C(608): error C202: 'IIC_SDA11': undefined identifier
+EEPROM\IICPROCESS.C(610): error C202: 'IIC_SCL11': undefined identifier
+EEPROM\IICPROCESS.C(610): error C202: 'IIC_SCL11': undefined identifier
+EEPROM\IICPROCESS.C(615): error C202: 'IIC_SCL11': undefined identifier
+EEPROM\IICPROCESS.C(615): error C202: 'IIC_SCL11': undefined identifier
+EEPROM\IICPROCESS.C(622): error C202: 'IIC_SDA12': undefined identifier
+EEPROM\IICPROCESS.C(625): error C202: 'IIC_SCL12': undefined identifier
+EEPROM\IICPROCESS.C(625): error C202: 'IIC_SCL12': undefined identifier
+EEPROM\IICPROCESS.C(626): error C202: 'IIC_SDA12': undefined identifier
+EEPROM\IICPROCESS.C(628): error C202: 'IIC_SCL12': undefined identifier
+EEPROM\IICPROCESS.C(628): error C202: 'IIC_SCL12': undefined identifier
+EEPROM\IICPROCESS.C(633): error C202: 'IIC_SCL12': undefined identifier
+EEPROM\IICPROCESS.C(633): error C202: 'IIC_SCL12': undefined identifier
+EEPROM\IICPROCESS.C(648): error C202: 'IIC_SDA1': undefined identifier
+EEPROM\IICPROCESS.C(649): error C202: 'IIC_SCL1': undefined identifier
+EEPROM\IICPROCESS.C(649): error C202: 'IIC_SCL1': undefined identifier
+EEPROM\IICPROCESS.C(650): error C202: 'IIC_SDA1': undefined identifier
+EEPROM\IICPROCESS.C(655): error C202: 'IIC_SDA2': undefined identifier
+EEPROM\IICPROCESS.C(656): error C202: 'IIC_SCL2': undefined identifier
+EEPROM\IICPROCESS.C(656): error C202: 'IIC_SCL2': undefined identifier
+EEPROM\IICPROCESS.C(657): error C202: 'IIC_SDA2': undefined identifier
+EEPROM\IICPROCESS.C(662): error C202: 'IIC_SDA3': undefined identifier
+EEPROM\IICPROCESS.C(663): error C202: 'IIC_SCL3': undefined identifier
+EEPROM\IICPROCESS.C(663): error C202: 'IIC_SCL3': undefined identifier
+EEPROM\IICPROCESS.C(664): error C202: 'IIC_SDA3': undefined identifier
+EEPROM\IICPROCESS.C(669): error C202: 'IIC_SDA4': undefined identifier
+EEPROM\IICPROCESS.C(670): error C202: 'IIC_SCL4': undefined identifier
+EEPROM\IICPROCESS.C(670): error C202: 'IIC_SCL4': undefined identifier
+EEPROM\IICPROCESS.C(671): error C202: 'IIC_SDA4': undefined identifier
+EEPROM\IICPROCESS.C(676): error C202: 'IIC_SDA5': undefined identifier
+EEPROM\IICPROCESS.C(677): error C202: 'IIC_SCL5': undefined identifier
+EEPROM\IICPROCESS.C(677): error C202: 'IIC_SCL5': undefined identifier
+EEPROM\IICPROCESS.C(678): error C202: 'IIC_SDA5': undefined identifier
+EEPROM\IICPROCESS.C(683): error C202: 'IIC_SDA6': undefined identifier
+EEPROM\IICPROCESS.C(684): error C202: 'IIC_SCL6': undefined identifier
+EEPROM\IICPROCESS.C(684): error C202: 'IIC_SCL6': undefined identifier
+EEPROM\IICPROCESS.C(685): error C202: 'IIC_SDA6': undefined identifier
+EEPROM\IICPROCESS.C(690): error C202: 'IIC_SDA7': undefined identifier
+EEPROM\IICPROCESS.C(691): error C202: 'IIC_SCL7': undefined identifier
+EEPROM\IICPROCESS.C(691): error C202: 'IIC_SCL7': undefined identifier
+EEPROM\IICPROCESS.C(692): error C202: 'IIC_SDA7': undefined identifier
+EEPROM\IICPROCESS.C(697): error C202: 'IIC_SDA8': undefined identifier
+EEPROM\IICPROCESS.C(698): error C202: 'IIC_SCL8': undefined identifier
+EEPROM\IICPROCESS.C(698): error C202: 'IIC_SCL8': undefined identifier
+EEPROM\IICPROCESS.C(699): error C202: 'IIC_SDA8': undefined identifier
+EEPROM\IICPROCESS.C(704): error C202: 'IIC_SDA9': undefined identifier
+EEPROM\IICPROCESS.C(705): error C202: 'IIC_SCL9': undefined identifier
+EEPROM\IICPROCESS.C(705): error C202: 'IIC_SCL9': undefined identifier
+EEPROM\IICPROCESS.C(706): error C202: 'IIC_SDA9': undefined identifier
+EEPROM\IICPROCESS.C(711): error C202: 'IIC_SDA10': undefined identifier
+EEPROM\IICPROCESS.C(712): error C202: 'IIC_SCL10': undefined identifier
+EEPROM\IICPROCESS.C(712): error C202: 'IIC_SCL10': undefined identifier
+EEPROM\IICPROCESS.C(713): error C202: 'IIC_SDA10': undefined identifier
+EEPROM\IICPROCESS.C(718): error C202: 'IIC_SDA11': undefined identifier
+EEPROM\IICPROCESS.C(719): error C202: 'IIC_SCL11': undefined identifier
+EEPROM\IICPROCESS.C(719): error C202: 'IIC_SCL11': undefined identifier
+EEPROM\IICPROCESS.C(720): error C202: 'IIC_SDA11': undefined identifier
+EEPROM\IICPROCESS.C(725): error C202: 'IIC_SDA12': undefined identifier
+EEPROM\IICPROCESS.C(726): error C202: 'IIC_SCL12': undefined identifier
+EEPROM\IICPROCESS.C(726): error C202: 'IIC_SCL12': undefined identifier
+EEPROM\IICPROCESS.C(727): error C202: 'IIC_SDA12': undefined identifier
+EEPROM\IICPROCESS.C(761): error C202: 'IIC_SDA1': undefined identifier
+EEPROM\IICPROCESS.C(763): error C202: 'IIC_SDA1': undefined identifier
+EEPROM\IICPROCESS.C(766): error C202: 'IIC_SCL1': undefined identifier
+EEPROM\IICPROCESS.C(766): error C202: 'IIC_SCL1': undefined identifier
+EEPROM\IICPROCESS.C(775): error C202: 'IIC_SDA2': undefined identifier
+EEPROM\IICPROCESS.C(777): error C202: 'IIC_SDA2': undefined identifier
+EEPROM\IICPROCESS.C(780): error C202: 'IIC_SCL2': undefined identifier
+EEPROM\IICPROCESS.C(780): error C202: 'IIC_SCL2': undefined identifier
+EEPROM\IICPROCESS.C(789): error C202: 'IIC_SDA3': undefined identifier
+EEPROM\IICPROCESS.C(791): error C202: 'IIC_SDA3': undefined identifier
+EEPROM\IICPROCESS.C(794): error C202: 'IIC_SCL3': undefined identifier
+EEPROM\IICPROCESS.C(794): error C202: 'IIC_SCL3': undefined identifier
+EEPROM\IICPROCESS.C(803): error C202: 'IIC_SDA4': undefined identifier
+EEPROM\IICPROCESS.C(805): error C202: 'IIC_SDA4': undefined identifier
+EEPROM\IICPROCESS.C(808): error C202: 'IIC_SCL4': undefined identifier
+EEPROM\IICPROCESS.C(808): error C202: 'IIC_SCL4': undefined identifier
+EEPROM\IICPROCESS.C(817): error C202: 'IIC_SDA5': undefined identifier
+EEPROM\IICPROCESS.C(819): error C202: 'IIC_SDA5': undefined identifier
+EEPROM\IICPROCESS.C(822): error C202: 'IIC_SCL5': undefined identifier
+EEPROM\IICPROCESS.C(822): error C202: 'IIC_SCL5': undefined identifier
+EEPROM\IICPROCESS.C(831): error C202: 'IIC_SDA6': undefined identifier
+EEPROM\IICPROCESS.C(833): error C202: 'IIC_SDA6': undefined identifier
+EEPROM\IICPROCESS.C(836): error C202: 'IIC_SCL6': undefined identifier
+EEPROM\IICPROCESS.C(836): error C202: 'IIC_SCL6': undefined identifier
+EEPROM\IICPROCESS.C(845): error C202: 'IIC_SDA7': undefined identifier
+EEPROM\IICPROCESS.C(847): error C202: 'IIC_SDA7': undefined identifier
+EEPROM\IICPROCESS.C(850): error C202: 'IIC_SCL7': undefined identifier
+EEPROM\IICPROCESS.C(850): error C202: 'IIC_SCL7': undefined identifier
+EEPROM\IICPROCESS.C(859): error C202: 'IIC_SDA8': undefined identifier
+EEPROM\IICPROCESS.C(861): error C202: 'IIC_SDA8': undefined identifier
+EEPROM\IICPROCESS.C(864): error C202: 'IIC_SCL8': undefined identifier
+EEPROM\IICPROCESS.C(864): error C202: 'IIC_SCL8': undefined identifier
+EEPROM\IICPROCESS.C(873): error C202: 'IIC_SDA9': undefined identifier
+EEPROM\IICPROCESS.C(875): error C202: 'IIC_SDA9': undefined identifier
+EEPROM\IICPROCESS.C(878): error C202: 'IIC_SCL9': undefined identifier
+EEPROM\IICPROCESS.C(878): error C202: 'IIC_SCL9': undefined identifier
+EEPROM\IICPROCESS.C(887): error C202: 'IIC_SDA10': undefined identifier
+EEPROM\IICPROCESS.C(889): error C202: 'IIC_SDA10': undefined identifier
+EEPROM\IICPROCESS.C(892): error C202: 'IIC_SCL10': undefined identifier
+EEPROM\IICPROCESS.C(892): error C202: 'IIC_SCL10': undefined identifier
+EEPROM\IICPROCESS.C(901): error C202: 'IIC_SDA11': undefined identifier
+EEPROM\IICPROCESS.C(903): error C202: 'IIC_SDA11': undefined identifier
+EEPROM\IICPROCESS.C(906): error C202: 'IIC_SCL11': undefined identifier
+EEPROM\IICPROCESS.C(906): error C202: 'IIC_SCL11': undefined identifier
+EEPROM\IICPROCESS.C(915): error C202: 'IIC_SDA12': undefined identifier
+EEPROM\IICPROCESS.C(917): error C202: 'IIC_SDA12': undefined identifier
+EEPROM\IICPROCESS.C(920): error C202: 'IIC_SCL12': undefined identifier
+EEPROM\IICPROCESS.C(920): error C202: 'IIC_SCL12': undefined identifier
+EEPROM\IICPROCESS.C(939): error C202: 'IIC_SCL1': undefined identifier
+EEPROM\IICPROCESS.C(939): error C202: 'IIC_SCL1': undefined identifier
+EEPROM\IICPROCESS.C(940): error C202: 'IIC_SDA1': undefined identifier
+EEPROM\IICPROCESS.C(943): error C202: 'IIC_SCL1': undefined identifier
+EEPROM\IICPROCESS.C(943): error C202: 'IIC_SCL1': undefined identifier
+EEPROM\IICPROCESS.C(952): error C202: 'IIC_SCL2': undefined identifier
+EEPROM\IICPROCESS.C(952): error C202: 'IIC_SCL2': undefined identifier
+EEPROM\IICPROCESS.C(953): error C202: 'IIC_SDA2': undefined identifier
+EEPROM\IICPROCESS.C(956): error C202: 'IIC_SCL2': undefined identifier
+EEPROM\IICPROCESS.C(956): error C202: 'IIC_SCL2': undefined identifier
+EEPROM\IICPROCESS.C(965): error C202: 'IIC_SCL3': undefined identifier
+EEPROM\IICPROCESS.C(965): error C202: 'IIC_SCL3': undefined identifier
+EEPROM\IICPROCESS.C(966): error C202: 'IIC_SDA3': undefined identifier
+EEPROM\IICPROCESS.C(969): error C202: 'IIC_SCL3': undefined identifier
+EEPROM\IICPROCESS.C(969): error C202: 'IIC_SCL3': undefined identifier
+EEPROM\IICPROCESS.C(978): error C202: 'IIC_SCL4': undefined identifier
+EEPROM\IICPROCESS.C(978): error C202: 'IIC_SCL4': undefined identifier
+EEPROM\IICPROCESS.C(979): error C202: 'IIC_SDA4': undefined identifier
+EEPROM\IICPROCESS.C(982): error C202: 'IIC_SCL4': undefined identifier
+EEPROM\IICPROCESS.C(982): error C202: 'IIC_SCL4': undefined identifier
+EEPROM\IICPROCESS.C(991): error C202: 'IIC_SCL5': undefined identifier
+EEPROM\IICPROCESS.C(991): error C202: 'IIC_SCL5': undefined identifier
+EEPROM\IICPROCESS.C(992): error C202: 'IIC_SDA5': undefined identifier
+EEPROM\IICPROCESS.C(995): error C202: 'IIC_SCL5': undefined identifier
+EEPROM\IICPROCESS.C(995): error C202: 'IIC_SCL5': undefined identifier
+EEPROM\IICPROCESS.C(1004): error C202: 'IIC_SCL6': undefined identifier
+EEPROM\IICPROCESS.C(1004): error C202: 'IIC_SCL6': undefined identifier
+EEPROM\IICPROCESS.C(1005): error C202: 'IIC_SDA6': undefined identifier
+EEPROM\IICPROCESS.C(1008): error C202: 'IIC_SCL6': undefined identifier
+EEPROM\IICPROCESS.C(1008): error C202: 'IIC_SCL6': undefined identifier
+EEPROM\IICPROCESS.C(1017): error C202: 'IIC_SCL7': undefined identifier
+EEPROM\IICPROCESS.C(1017): error C202: 'IIC_SCL7': undefined identifier
+EEPROM\IICPROCESS.C(1018): error C202: 'IIC_SDA7': undefined identifier
+EEPROM\IICPROCESS.C(1021): error C202: 'IIC_SCL7': undefined identifier
+EEPROM\IICPROCESS.C(1021): error C202: 'IIC_SCL7': undefined identifier
+EEPROM\IICPROCESS.C(1030): error C202: 'IIC_SCL8': undefined identifier
+EEPROM\IICPROCESS.C(1030): error C202: 'IIC_SCL8': undefined identifier
+EEPROM\IICPROCESS.C(1031): error C202: 'IIC_SDA8': undefined identifier
+EEPROM\IICPROCESS.C(1034): error C202: 'IIC_SCL8': undefined identifier
+EEPROM\IICPROCESS.C(1034): error C202: 'IIC_SCL8': undefined identifier
+EEPROM\IICPROCESS.C(1043): error C202: 'IIC_SCL9': undefined identifier
+EEPROM\IICPROCESS.C(1043): error C202: 'IIC_SCL9': undefined identifier
+EEPROM\IICPROCESS.C(1044): error C202: 'IIC_SDA9': undefined identifier
+EEPROM\IICPROCESS.C(1047): error C202: 'IIC_SCL9': undefined identifier
+EEPROM\IICPROCESS.C(1047): error C202: 'IIC_SCL9': undefined identifier
+EEPROM\IICPROCESS.C(1056): error C202: 'IIC_SCL10': undefined identifier
+EEPROM\IICPROCESS.C(1056): error C202: 'IIC_SCL10': undefined identifier
+EEPROM\IICPROCESS.C(1057): error C202: 'IIC_SDA10': undefined identifier
+EEPROM\IICPROCESS.C(1060): error C202: 'IIC_SCL10': undefined identifier
+EEPROM\IICPROCESS.C(1060): error C202: 'IIC_SCL10': undefined identifier
+EEPROM\IICPROCESS.C(1069): error C202: 'IIC_SCL11': undefined identifier
+EEPROM\IICPROCESS.C(1069): error C202: 'IIC_SCL11': undefined identifier
+EEPROM\IICPROCESS.C(1070): error C202: 'IIC_SDA11': undefined identifier
+EEPROM\IICPROCESS.C(1073): error C202: 'IIC_SCL11': undefined identifier
+EEPROM\IICPROCESS.C(1073): error C202: 'IIC_SCL11': undefined identifier
+EEPROM\IICPROCESS.C(1082): error C202: 'IIC_SCL12': undefined identifier
+EEPROM\IICPROCESS.C(1082): error C202: 'IIC_SCL12': undefined identifier
+EEPROM\IICPROCESS.C(1083): error C202: 'IIC_SDA12': undefined identifier
+EEPROM\IICPROCESS.C(1086): error C202: 'IIC_SCL12': undefined identifier
+EEPROM\IICPROCESS.C(1086): error C202: 'IIC_SCL12': undefined identifier
+Target not created
+Build target 'Target 1'
+compiling at24C01.c...
+EEPROM\IICPROCESS.H(13): error C146: 'P2_3': invalid base address
+EEPROM\IICPROCESS.H(14): error C146: 'P2_5': invalid base address
+EEPROM\IICPROCESS.H(15): error C146: 'P2_7': invalid base address
+EEPROM\IICPROCESS.H(16): error C146: 'P3_3': invalid base address
+EEPROM\IICPROCESS.H(17): error C146: 'P0_0': invalid base address
+EEPROM\IICPROCESS.H(18): error C146: 'P0_2': invalid base address
+EEPROM\IICPROCESS.H(19): error C146: 'P2_2': invalid base address
+EEPROM\IICPROCESS.H(20): error C146: 'P2_0': invalid base address
+EEPROM\IICPROCESS.H(21): error C146: 'P1_6': invalid base address
+EEPROM\IICPROCESS.H(22): error C146: 'P1_4': invalid base address
+EEPROM\IICPROCESS.H(23): error C146: 'P1_1': invalid base address
+EEPROM\IICPROCESS.H(24): error C146: 'P1_2': invalid base address
+EEPROM\IICPROCESS.H(26): error C146: 'P0_3': invalid base address
+EEPROM\IICPROCESS.H(27): error C146: 'P0_3': invalid base address
+EEPROM\IICPROCESS.H(28): error C146: 'P0_3': invalid base address
+EEPROM\IICPROCESS.H(29): error C146: 'P0_3': invalid base address
+EEPROM\IICPROCESS.H(30): error C146: 'P0_3': invalid base address
+EEPROM\IICPROCESS.H(31): error C146: 'P0_3': invalid base address
+EEPROM\IICPROCESS.H(32): error C146: 'P1_0': invalid base address
+EEPROM\IICPROCESS.H(33): error C146: 'P1_0': invalid base address
+EEPROM\IICPROCESS.H(34): error C146: 'P1_0': invalid base address
+EEPROM\IICPROCESS.H(35): error C146: 'P1_0': invalid base address
+EEPROM\IICPROCESS.H(36): error C146: 'P1_0': invalid base address
+EEPROM\IICPROCESS.H(37): error C146: 'P1_0': invalid base address
+compiling idProcess.c...
+EEPROM\IICPROCESS.H(13): error C146: 'P2_3': invalid base address
+EEPROM\IICPROCESS.H(14): error C146: 'P2_5': invalid base address
+EEPROM\IICPROCESS.H(15): error C146: 'P2_7': invalid base address
+EEPROM\IICPROCESS.H(16): error C146: 'P3_3': invalid base address
+EEPROM\IICPROCESS.H(17): error C146: 'P0_0': invalid base address
+EEPROM\IICPROCESS.H(18): error C146: 'P0_2': invalid base address
+EEPROM\IICPROCESS.H(19): error C146: 'P2_2': invalid base address
+EEPROM\IICPROCESS.H(20): error C146: 'P2_0': invalid base address
+EEPROM\IICPROCESS.H(21): error C146: 'P1_6': invalid base address
+EEPROM\IICPROCESS.H(22): error C146: 'P1_4': invalid base address
+EEPROM\IICPROCESS.H(23): error C146: 'P1_1': invalid base address
+EEPROM\IICPROCESS.H(24): error C146: 'P1_2': invalid base address
+EEPROM\IICPROCESS.H(26): error C146: 'P0_3': invalid base address
+EEPROM\IICPROCESS.H(27): error C146: 'P0_3': invalid base address
+EEPROM\IICPROCESS.H(28): error C146: 'P0_3': invalid base address
+EEPROM\IICPROCESS.H(29): error C146: 'P0_3': invalid base address
+EEPROM\IICPROCESS.H(30): error C146: 'P0_3': invalid base address
+EEPROM\IICPROCESS.H(31): error C146: 'P0_3': invalid base address
+EEPROM\IICPROCESS.H(32): error C146: 'P1_0': invalid base address
+EEPROM\IICPROCESS.H(33): error C146: 'P1_0': invalid base address
+EEPROM\IICPROCESS.H(34): error C146: 'P1_0': invalid base address
+EEPROM\IICPROCESS.H(35): error C146: 'P1_0': invalid base address
+EEPROM\IICPROCESS.H(36): error C146: 'P1_0': invalid base address
+EEPROM\IICPROCESS.H(37): error C146: 'P1_0': invalid base address
+EEPROM\IDPROCESS.C(68): error C187: not an lvalue
+compiling iicProcess.c...
+EEPROM\IICPROCESS.H(13): error C146: 'P2_3': invalid base address
+EEPROM\IICPROCESS.H(14): error C146: 'P2_5': invalid base address
+EEPROM\IICPROCESS.H(15): error C146: 'P2_7': invalid base address
+EEPROM\IICPROCESS.H(16): error C146: 'P3_3': invalid base address
+EEPROM\IICPROCESS.H(17): error C146: 'P0_0': invalid base address
+EEPROM\IICPROCESS.H(18): error C146: 'P0_2': invalid base address
+EEPROM\IICPROCESS.H(19): error C146: 'P2_2': invalid base address
+EEPROM\IICPROCESS.H(20): error C146: 'P2_0': invalid base address
+EEPROM\IICPROCESS.H(21): error C146: 'P1_6': invalid base address
+EEPROM\IICPROCESS.H(22): error C146: 'P1_4': invalid base address
+EEPROM\IICPROCESS.H(23): error C146: 'P1_1': invalid base address
+EEPROM\IICPROCESS.H(24): error C146: 'P1_2': invalid base address
+EEPROM\IICPROCESS.H(26): error C146: 'P0_3': invalid base address
+EEPROM\IICPROCESS.H(27): error C146: 'P0_3': invalid base address
+EEPROM\IICPROCESS.H(28): error C146: 'P0_3': invalid base address
+EEPROM\IICPROCESS.H(29): error C146: 'P0_3': invalid base address
+EEPROM\IICPROCESS.H(30): error C146: 'P0_3': invalid base address
+EEPROM\IICPROCESS.H(31): error C146: 'P0_3': invalid base address
+EEPROM\IICPROCESS.H(32): error C146: 'P1_0': invalid base address
+EEPROM\IICPROCESS.H(33): error C146: 'P1_0': invalid base address
+EEPROM\IICPROCESS.H(34): error C146: 'P1_0': invalid base address
+EEPROM\IICPROCESS.H(35): error C146: 'P1_0': invalid base address
+EEPROM\IICPROCESS.H(36): error C146: 'P1_0': invalid base address
+EEPROM\IICPROCESS.H(37): error C146: 'P1_0': invalid base address
+EEPROM\IICPROCESS.C(15): error C202: 'IIC_SDA1': undefined identifier
+EEPROM\IICPROCESS.C(18): error C202: 'IIC_SCL1': undefined identifier
+EEPROM\IICPROCESS.C(24): error C202: 'IIC_SDA2': undefined identifier
+EEPROM\IICPROCESS.C(27): error C202: 'IIC_SCL2': undefined identifier
+EEPROM\IICPROCESS.C(33): error C202: 'IIC_SDA3': undefined identifier
+EEPROM\IICPROCESS.C(36): error C202: 'IIC_SCL3': undefined identifier
+EEPROM\IICPROCESS.C(42): error C202: 'IIC_SDA4': undefined identifier
+EEPROM\IICPROCESS.C(45): error C202: 'IIC_SCL4': undefined identifier
+EEPROM\IICPROCESS.C(51): error C202: 'IIC_SDA5': undefined identifier
+EEPROM\IICPROCESS.C(54): error C202: 'IIC_SCL5': undefined identifier
+EEPROM\IICPROCESS.C(60): error C202: 'IIC_SDA6': undefined identifier
+EEPROM\IICPROCESS.C(63): error C202: 'IIC_SCL6': undefined identifier
+EEPROM\IICPROCESS.C(69): error C202: 'IIC_SDA7': undefined identifier
+EEPROM\IICPROCESS.C(72): error C202: 'IIC_SCL7': undefined identifier
+EEPROM\IICPROCESS.C(78): error C202: 'IIC_SDA8': undefined identifier
+EEPROM\IICPROCESS.C(81): error C202: 'IIC_SCL8': undefined identifier
+EEPROM\IICPROCESS.C(87): error C202: 'IIC_SDA9': undefined identifier
+EEPROM\IICPROCESS.C(90): error C202: 'IIC_SCL9': undefined identifier
+EEPROM\IICPROCESS.C(96): error C202: 'IIC_SDA10': undefined identifier
+EEPROM\IICPROCESS.C(99): error C202: 'IIC_SCL10': undefined identifier
+EEPROM\IICPROCESS.C(105): error C202: 'IIC_SDA11': undefined identifier
+EEPROM\IICPROCESS.C(108): error C202: 'IIC_SCL11': undefined identifier
+EEPROM\IICPROCESS.C(114): error C202: 'IIC_SDA12': undefined identifier
+EEPROM\IICPROCESS.C(117): error C202: 'IIC_SCL12': undefined identifier
+EEPROM\IICPROCESS.C(131): error C202: 'IIC_SDA1': undefined identifier
+EEPROM\IICPROCESS.C(133): error C202: 'IIC_SCL1': undefined identifier
+EEPROM\IICPROCESS.C(133): error C202: 'IIC_SCL1': undefined identifier
+EEPROM\IICPROCESS.C(135): error C202: 'IIC_SDA1': undefined identifier
+EEPROM\IICPROCESS.C(137): error C202: 'IIC_SCL1': undefined identifier
+EEPROM\IICPROCESS.C(137): error C202: 'IIC_SCL1': undefined identifier
+EEPROM\IICPROCESS.C(142): error C202: 'IIC_SDA2': undefined identifier
+EEPROM\IICPROCESS.C(144): error C202: 'IIC_SCL2': undefined identifier
+EEPROM\IICPROCESS.C(144): error C202: 'IIC_SCL2': undefined identifier
+EEPROM\IICPROCESS.C(146): error C202: 'IIC_SDA2': undefined identifier
+EEPROM\IICPROCESS.C(148): error C202: 'IIC_SCL2': undefined identifier
+EEPROM\IICPROCESS.C(148): error C202: 'IIC_SCL2': undefined identifier
+EEPROM\IICPROCESS.C(153): error C202: 'IIC_SDA3': undefined identifier
+EEPROM\IICPROCESS.C(155): error C202: 'IIC_SCL3': undefined identifier
+EEPROM\IICPROCESS.C(155): error C202: 'IIC_SCL3': undefined identifier
+EEPROM\IICPROCESS.C(157): error C202: 'IIC_SDA3': undefined identifier
+EEPROM\IICPROCESS.C(159): error C202: 'IIC_SCL3': undefined identifier
+EEPROM\IICPROCESS.C(159): error C202: 'IIC_SCL3': undefined identifier
+EEPROM\IICPROCESS.C(164): error C202: 'IIC_SDA4': undefined identifier
+EEPROM\IICPROCESS.C(166): error C202: 'IIC_SCL4': undefined identifier
+EEPROM\IICPROCESS.C(166): error C202: 'IIC_SCL4': undefined identifier
+EEPROM\IICPROCESS.C(168): error C202: 'IIC_SDA4': undefined identifier
+EEPROM\IICPROCESS.C(170): error C202: 'IIC_SCL4': undefined identifier
+EEPROM\IICPROCESS.C(170): error C202: 'IIC_SCL4': undefined identifier
+EEPROM\IICPROCESS.C(175): error C202: 'IIC_SDA5': undefined identifier
+EEPROM\IICPROCESS.C(177): error C202: 'IIC_SCL5': undefined identifier
+EEPROM\IICPROCESS.C(177): error C202: 'IIC_SCL5': undefined identifier
+EEPROM\IICPROCESS.C(179): error C202: 'IIC_SDA5': undefined identifier
+EEPROM\IICPROCESS.C(181): error C202: 'IIC_SCL5': undefined identifier
+EEPROM\IICPROCESS.C(181): error C202: 'IIC_SCL5': undefined identifier
+EEPROM\IICPROCESS.C(186): error C202: 'IIC_SDA6': undefined identifier
+EEPROM\IICPROCESS.C(188): error C202: 'IIC_SCL6': undefined identifier
+EEPROM\IICPROCESS.C(188): error C202: 'IIC_SCL6': undefined identifier
+EEPROM\IICPROCESS.C(190): error C202: 'IIC_SDA6': undefined identifier
+EEPROM\IICPROCESS.C(192): error C202: 'IIC_SCL6': undefined identifier
+EEPROM\IICPROCESS.C(192): error C202: 'IIC_SCL6': undefined identifier
+EEPROM\IICPROCESS.C(197): error C202: 'IIC_SDA7': undefined identifier
+EEPROM\IICPROCESS.C(199): error C202: 'IIC_SCL7': undefined identifier
+EEPROM\IICPROCESS.C(199): error C202: 'IIC_SCL7': undefined identifier
+EEPROM\IICPROCESS.C(201): error C202: 'IIC_SDA7': undefined identifier
+EEPROM\IICPROCESS.C(203): error C202: 'IIC_SCL7': undefined identifier
+EEPROM\IICPROCESS.C(203): error C202: 'IIC_SCL7': undefined identifier
+EEPROM\IICPROCESS.C(208): error C202: 'IIC_SDA8': undefined identifier
+EEPROM\IICPROCESS.C(210): error C202: 'IIC_SCL8': undefined identifier
+EEPROM\IICPROCESS.C(210): error C202: 'IIC_SCL8': undefined identifier
+EEPROM\IICPROCESS.C(212): error C202: 'IIC_SDA8': undefined identifier
+EEPROM\IICPROCESS.C(214): error C202: 'IIC_SCL8': undefined identifier
+EEPROM\IICPROCESS.C(214): error C202: 'IIC_SCL8': undefined identifier
+EEPROM\IICPROCESS.C(219): error C202: 'IIC_SDA9': undefined identifier
+EEPROM\IICPROCESS.C(221): error C202: 'IIC_SCL9': undefined identifier
+EEPROM\IICPROCESS.C(221): error C202: 'IIC_SCL9': undefined identifier
+EEPROM\IICPROCESS.C(223): error C202: 'IIC_SDA9': undefined identifier
+EEPROM\IICPROCESS.C(225): error C202: 'IIC_SCL9': undefined identifier
+EEPROM\IICPROCESS.C(225): error C202: 'IIC_SCL9': undefined identifier
+EEPROM\IICPROCESS.C(230): error C202: 'IIC_SDA10': undefined identifier
+EEPROM\IICPROCESS.C(232): error C202: 'IIC_SCL10': undefined identifier
+EEPROM\IICPROCESS.C(232): error C202: 'IIC_SCL10': undefined identifier
+EEPROM\IICPROCESS.C(234): error C202: 'IIC_SDA10': undefined identifier
+EEPROM\IICPROCESS.C(236): error C202: 'IIC_SCL10': undefined identifier
+EEPROM\IICPROCESS.C(236): error C202: 'IIC_SCL10': undefined identifier
+EEPROM\IICPROCESS.C(241): error C202: 'IIC_SDA11': undefined identifier
+EEPROM\IICPROCESS.C(243): error C202: 'IIC_SCL11': undefined identifier
+EEPROM\IICPROCESS.C(243): error C202: 'IIC_SCL11': undefined identifier
+EEPROM\IICPROCESS.C(245): error C202: 'IIC_SDA11': undefined identifier
+EEPROM\IICPROCESS.C(247): error C202: 'IIC_SCL11': undefined identifier
+EEPROM\IICPROCESS.C(247): error C202: 'IIC_SCL11': undefined identifier
+EEPROM\IICPROCESS.C(252): error C202: 'IIC_SDA12': undefined identifier
+EEPROM\IICPROCESS.C(254): error C202: 'IIC_SCL12': undefined identifier
+EEPROM\IICPROCESS.C(254): error C202: 'IIC_SCL12': undefined identifier
+EEPROM\IICPROCESS.C(256): error C202: 'IIC_SDA12': undefined identifier
+EEPROM\IICPROCESS.C(258): error C202: 'IIC_SCL12': undefined identifier
+EEPROM\IICPROCESS.C(258): error C202: 'IIC_SCL12': undefined identifier
+EEPROM\IICPROCESS.C(271): error C202: 'IIC_SDA1': undefined identifier
+EEPROM\IICPROCESS.C(274): error C202: 'IIC_SCL1': undefined identifier
+EEPROM\IICPROCESS.C(277): error C202: 'IIC_SDA1': undefined identifier
+EEPROM\IICPROCESS.C(283): error C202: 'IIC_SDA2': undefined identifier
+EEPROM\IICPROCESS.C(286): error C202: 'IIC_SCL2': undefined identifier
+EEPROM\IICPROCESS.C(289): error C202: 'IIC_SDA2': undefined identifier
+EEPROM\IICPROCESS.C(295): error C202: 'IIC_SDA3': undefined identifier
+EEPROM\IICPROCESS.C(298): error C202: 'IIC_SCL2': undefined identifier
+EEPROM\IICPROCESS.C(301): error C202: 'IIC_SDA3': undefined identifier
+EEPROM\IICPROCESS.C(307): error C202: 'IIC_SDA4': undefined identifier
+EEPROM\IICPROCESS.C(310): error C202: 'IIC_SCL3': undefined identifier
+EEPROM\IICPROCESS.C(313): error C202: 'IIC_SDA4': undefined identifier
+EEPROM\IICPROCESS.C(319): error C202: 'IIC_SDA5': undefined identifier
+EEPROM\IICPROCESS.C(322): error C202: 'IIC_SCL5': undefined identifier
+EEPROM\IICPROCESS.C(325): error C202: 'IIC_SDA5': undefined identifier
+EEPROM\IICPROCESS.C(331): error C202: 'IIC_SDA6': undefined identifier
+EEPROM\IICPROCESS.C(334): error C202: 'IIC_SCL6': undefined identifier
+EEPROM\IICPROCESS.C(337): error C202: 'IIC_SDA6': undefined identifier
+EEPROM\IICPROCESS.C(343): error C202: 'IIC_SDA7': undefined identifier
+EEPROM\IICPROCESS.C(346): error C202: 'IIC_SCL7': undefined identifier
+EEPROM\IICPROCESS.C(349): error C202: 'IIC_SDA7': undefined identifier
+EEPROM\IICPROCESS.C(355): error C202: 'IIC_SDA8': undefined identifier
+EEPROM\IICPROCESS.C(358): error C202: 'IIC_SCL8': undefined identifier
+EEPROM\IICPROCESS.C(361): error C202: 'IIC_SDA8': undefined identifier
+EEPROM\IICPROCESS.C(367): error C202: 'IIC_SDA9': undefined identifier
+EEPROM\IICPROCESS.C(370): error C202: 'IIC_SCL9': undefined identifier
+EEPROM\IICPROCESS.C(373): error C202: 'IIC_SDA9': undefined identifier
+EEPROM\IICPROCESS.C(379): error C202: 'IIC_SDA10': undefined identifier
+EEPROM\IICPROCESS.C(382): error C202: 'IIC_SCL10': undefined identifier
+EEPROM\IICPROCESS.C(385): error C202: 'IIC_SDA10': undefined identifier
+EEPROM\IICPROCESS.C(391): error C202: 'IIC_SDA11': undefined identifier
+EEPROM\IICPROCESS.C(394): error C202: 'IIC_SCL11': undefined identifier
+EEPROM\IICPROCESS.C(397): error C202: 'IIC_SDA11': undefined identifier
+EEPROM\IICPROCESS.C(403): error C202: 'IIC_SDA12': undefined identifier
+EEPROM\IICPROCESS.C(406): error C202: 'IIC_SCL12': undefined identifier
+EEPROM\IICPROCESS.C(409): error C202: 'IIC_SDA12': undefined identifier
+EEPROM\IICPROCESS.C(423): error C202: 'IIC_SDA1': undefined identifier
+EEPROM\IICPROCESS.C(426): error C202: 'IIC_SCL1': undefined identifier
+EEPROM\IICPROCESS.C(426): error C202: 'IIC_SCL1': undefined identifier
+EEPROM\IICPROCESS.C(427): error C202: 'IIC_SDA1': undefined identifier
+EEPROM\IICPROCESS.C(429): error C202: 'IIC_SCL1': undefined identifier
+EEPROM\IICPROCESS.C(429): error C202: 'IIC_SCL1': undefined identifier
+EEPROM\IICPROCESS.C(434): error C202: 'IIC_SCL1': undefined identifier
+EEPROM\IICPROCESS.C(434): error C202: 'IIC_SCL1': undefined identifier
+EEPROM\IICPROCESS.C(441): error C202: 'IIC_SDA2': undefined identifier
+EEPROM\IICPROCESS.C(444): error C202: 'IIC_SCL2': undefined identifier
+EEPROM\IICPROCESS.C(444): error C202: 'IIC_SCL2': undefined identifier
+EEPROM\IICPROCESS.C(445): error C202: 'IIC_SDA2': undefined identifier
+EEPROM\IICPROCESS.C(447): error C202: 'IIC_SCL2': undefined identifier
+EEPROM\IICPROCESS.C(447): error C202: 'IIC_SCL2': undefined identifier
+EEPROM\IICPROCESS.C(452): error C202: 'IIC_SCL2': undefined identifier
+EEPROM\IICPROCESS.C(452): error C202: 'IIC_SCL2': undefined identifier
+EEPROM\IICPROCESS.C(459): error C202: 'IIC_SDA3': undefined identifier
+EEPROM\IICPROCESS.C(462): error C202: 'IIC_SCL3': undefined identifier
+EEPROM\IICPROCESS.C(462): error C202: 'IIC_SCL3': undefined identifier
+EEPROM\IICPROCESS.C(463): error C202: 'IIC_SDA3': undefined identifier
+EEPROM\IICPROCESS.C(465): error C202: 'IIC_SCL3': undefined identifier
+EEPROM\IICPROCESS.C(465): error C202: 'IIC_SCL3': undefined identifier
+EEPROM\IICPROCESS.C(470): error C202: 'IIC_SCL3': undefined identifier
+EEPROM\IICPROCESS.C(470): error C202: 'IIC_SCL3': undefined identifier
+EEPROM\IICPROCESS.C(477): error C202: 'IIC_SDA4': undefined identifier
+EEPROM\IICPROCESS.C(480): error C202: 'IIC_SCL4': undefined identifier
+EEPROM\IICPROCESS.C(480): error C202: 'IIC_SCL4': undefined identifier
+EEPROM\IICPROCESS.C(481): error C202: 'IIC_SDA4': undefined identifier
+EEPROM\IICPROCESS.C(483): error C202: 'IIC_SCL4': undefined identifier
+EEPROM\IICPROCESS.C(483): error C202: 'IIC_SCL4': undefined identifier
+EEPROM\IICPROCESS.C(488): error C202: 'IIC_SCL4': undefined identifier
+EEPROM\IICPROCESS.C(488): error C202: 'IIC_SCL4': undefined identifier
+EEPROM\IICPROCESS.C(495): error C202: 'IIC_SDA5': undefined identifier
+EEPROM\IICPROCESS.C(498): error C202: 'IIC_SCL5': undefined identifier
+EEPROM\IICPROCESS.C(498): error C202: 'IIC_SCL5': undefined identifier
+EEPROM\IICPROCESS.C(499): error C202: 'IIC_SDA5': undefined identifier
+EEPROM\IICPROCESS.C(501): error C202: 'IIC_SCL5': undefined identifier
+EEPROM\IICPROCESS.C(501): error C202: 'IIC_SCL5': undefined identifier
+EEPROM\IICPROCESS.C(506): error C202: 'IIC_SCL5': undefined identifier
+EEPROM\IICPROCESS.C(506): error C202: 'IIC_SCL5': undefined identifier
+EEPROM\IICPROCESS.C(513): error C202: 'IIC_SDA6': undefined identifier
+EEPROM\IICPROCESS.C(516): error C202: 'IIC_SCL6': undefined identifier
+EEPROM\IICPROCESS.C(516): error C202: 'IIC_SCL6': undefined identifier
+EEPROM\IICPROCESS.C(517): error C202: 'IIC_SDA6': undefined identifier
+EEPROM\IICPROCESS.C(519): error C202: 'IIC_SCL6': undefined identifier
+EEPROM\IICPROCESS.C(519): error C202: 'IIC_SCL6': undefined identifier
+EEPROM\IICPROCESS.C(524): error C202: 'IIC_SCL6': undefined identifier
+EEPROM\IICPROCESS.C(524): error C202: 'IIC_SCL6': undefined identifier
+EEPROM\IICPROCESS.C(531): error C202: 'IIC_SDA7': undefined identifier
+EEPROM\IICPROCESS.C(534): error C202: 'IIC_SCL7': undefined identifier
+EEPROM\IICPROCESS.C(534): error C202: 'IIC_SCL7': undefined identifier
+EEPROM\IICPROCESS.C(535): error C202: 'IIC_SDA7': undefined identifier
+EEPROM\IICPROCESS.C(537): error C202: 'IIC_SCL7': undefined identifier
+EEPROM\IICPROCESS.C(537): error C202: 'IIC_SCL7': undefined identifier
+EEPROM\IICPROCESS.C(542): error C202: 'IIC_SCL7': undefined identifier
+EEPROM\IICPROCESS.C(542): error C202: 'IIC_SCL7': undefined identifier
+EEPROM\IICPROCESS.C(549): error C202: 'IIC_SDA8': undefined identifier
+EEPROM\IICPROCESS.C(553): error C202: 'IIC_SCL8': undefined identifier
+EEPROM\IICPROCESS.C(553): error C202: 'IIC_SCL8': undefined identifier
+EEPROM\IICPROCESS.C(554): error C202: 'IIC_SDA8': undefined identifier
+EEPROM\IICPROCESS.C(556): error C202: 'IIC_SCL8': undefined identifier
+EEPROM\IICPROCESS.C(556): error C202: 'IIC_SCL8': undefined identifier
+EEPROM\IICPROCESS.C(561): error C202: 'IIC_SCL8': undefined identifier
+EEPROM\IICPROCESS.C(561): error C202: 'IIC_SCL8': undefined identifier
+EEPROM\IICPROCESS.C(568): error C202: 'IIC_SDA9': undefined identifier
+EEPROM\IICPROCESS.C(571): error C202: 'IIC_SCL9': undefined identifier
+EEPROM\IICPROCESS.C(571): error C202: 'IIC_SCL9': undefined identifier
+EEPROM\IICPROCESS.C(572): error C202: 'IIC_SDA9': undefined identifier
+EEPROM\IICPROCESS.C(574): error C202: 'IIC_SCL9': undefined identifier
+EEPROM\IICPROCESS.C(574): error C202: 'IIC_SCL9': undefined identifier
+EEPROM\IICPROCESS.C(579): error C202: 'IIC_SCL9': undefined identifier
+EEPROM\IICPROCESS.C(579): error C202: 'IIC_SCL9': undefined identifier
+EEPROM\IICPROCESS.C(586): error C202: 'IIC_SDA10': undefined identifier
+EEPROM\IICPROCESS.C(589): error C202: 'IIC_SCL10': undefined identifier
+EEPROM\IICPROCESS.C(589): error C202: 'IIC_SCL10': undefined identifier
+EEPROM\IICPROCESS.C(590): error C202: 'IIC_SDA10': undefined identifier
+EEPROM\IICPROCESS.C(592): error C202: 'IIC_SCL10': undefined identifier
+EEPROM\IICPROCESS.C(592): error C202: 'IIC_SCL10': undefined identifier
+EEPROM\IICPROCESS.C(597): error C202: 'IIC_SCL10': undefined identifier
+EEPROM\IICPROCESS.C(597): error C202: 'IIC_SCL10': undefined identifier
+EEPROM\IICPROCESS.C(604): error C202: 'IIC_SDA11': undefined identifier
+EEPROM\IICPROCESS.C(607): error C202: 'IIC_SCL11': undefined identifier
+EEPROM\IICPROCESS.C(607): error C202: 'IIC_SCL11': undefined identifier
+EEPROM\IICPROCESS.C(608): error C202: 'IIC_SDA11': undefined identifier
+EEPROM\IICPROCESS.C(610): error C202: 'IIC_SCL11': undefined identifier
+EEPROM\IICPROCESS.C(610): error C202: 'IIC_SCL11': undefined identifier
+EEPROM\IICPROCESS.C(615): error C202: 'IIC_SCL11': undefined identifier
+EEPROM\IICPROCESS.C(615): error C202: 'IIC_SCL11': undefined identifier
+EEPROM\IICPROCESS.C(622): error C202: 'IIC_SDA12': undefined identifier
+EEPROM\IICPROCESS.C(625): error C202: 'IIC_SCL12': undefined identifier
+EEPROM\IICPROCESS.C(625): error C202: 'IIC_SCL12': undefined identifier
+EEPROM\IICPROCESS.C(626): error C202: 'IIC_SDA12': undefined identifier
+EEPROM\IICPROCESS.C(628): error C202: 'IIC_SCL12': undefined identifier
+EEPROM\IICPROCESS.C(628): error C202: 'IIC_SCL12': undefined identifier
+EEPROM\IICPROCESS.C(633): error C202: 'IIC_SCL12': undefined identifier
+EEPROM\IICPROCESS.C(633): error C202: 'IIC_SCL12': undefined identifier
+EEPROM\IICPROCESS.C(648): error C202: 'IIC_SDA1': undefined identifier
+EEPROM\IICPROCESS.C(649): error C202: 'IIC_SCL1': undefined identifier
+EEPROM\IICPROCESS.C(649): error C202: 'IIC_SCL1': undefined identifier
+EEPROM\IICPROCESS.C(650): error C202: 'IIC_SDA1': undefined identifier
+EEPROM\IICPROCESS.C(655): error C202: 'IIC_SDA2': undefined identifier
+EEPROM\IICPROCESS.C(656): error C202: 'IIC_SCL2': undefined identifier
+EEPROM\IICPROCESS.C(656): error C202: 'IIC_SCL2': undefined identifier
+EEPROM\IICPROCESS.C(657): error C202: 'IIC_SDA2': undefined identifier
+EEPROM\IICPROCESS.C(662): error C202: 'IIC_SDA3': undefined identifier
+EEPROM\IICPROCESS.C(663): error C202: 'IIC_SCL3': undefined identifier
+EEPROM\IICPROCESS.C(663): error C202: 'IIC_SCL3': undefined identifier
+EEPROM\IICPROCESS.C(664): error C202: 'IIC_SDA3': undefined identifier
+EEPROM\IICPROCESS.C(669): error C202: 'IIC_SDA4': undefined identifier
+EEPROM\IICPROCESS.C(670): error C202: 'IIC_SCL4': undefined identifier
+EEPROM\IICPROCESS.C(670): error C202: 'IIC_SCL4': undefined identifier
+EEPROM\IICPROCESS.C(671): error C202: 'IIC_SDA4': undefined identifier
+EEPROM\IICPROCESS.C(676): error C202: 'IIC_SDA5': undefined identifier
+EEPROM\IICPROCESS.C(677): error C202: 'IIC_SCL5': undefined identifier
+EEPROM\IICPROCESS.C(677): error C202: 'IIC_SCL5': undefined identifier
+EEPROM\IICPROCESS.C(678): error C202: 'IIC_SDA5': undefined identifier
+EEPROM\IICPROCESS.C(683): error C202: 'IIC_SDA6': undefined identifier
+EEPROM\IICPROCESS.C(684): error C202: 'IIC_SCL6': undefined identifier
+EEPROM\IICPROCESS.C(684): error C202: 'IIC_SCL6': undefined identifier
+EEPROM\IICPROCESS.C(685): error C202: 'IIC_SDA6': undefined identifier
+EEPROM\IICPROCESS.C(690): error C202: 'IIC_SDA7': undefined identifier
+EEPROM\IICPROCESS.C(691): error C202: 'IIC_SCL7': undefined identifier
+EEPROM\IICPROCESS.C(691): error C202: 'IIC_SCL7': undefined identifier
+EEPROM\IICPROCESS.C(692): error C202: 'IIC_SDA7': undefined identifier
+EEPROM\IICPROCESS.C(697): error C202: 'IIC_SDA8': undefined identifier
+EEPROM\IICPROCESS.C(698): error C202: 'IIC_SCL8': undefined identifier
+EEPROM\IICPROCESS.C(698): error C202: 'IIC_SCL8': undefined identifier
+EEPROM\IICPROCESS.C(699): error C202: 'IIC_SDA8': undefined identifier
+EEPROM\IICPROCESS.C(704): error C202: 'IIC_SDA9': undefined identifier
+EEPROM\IICPROCESS.C(705): error C202: 'IIC_SCL9': undefined identifier
+EEPROM\IICPROCESS.C(705): error C202: 'IIC_SCL9': undefined identifier
+EEPROM\IICPROCESS.C(706): error C202: 'IIC_SDA9': undefined identifier
+EEPROM\IICPROCESS.C(711): error C202: 'IIC_SDA10': undefined identifier
+EEPROM\IICPROCESS.C(712): error C202: 'IIC_SCL10': undefined identifier
+EEPROM\IICPROCESS.C(712): error C202: 'IIC_SCL10': undefined identifier
+EEPROM\IICPROCESS.C(713): error C202: 'IIC_SDA10': undefined identifier
+EEPROM\IICPROCESS.C(718): error C202: 'IIC_SDA11': undefined identifier
+EEPROM\IICPROCESS.C(719): error C202: 'IIC_SCL11': undefined identifier
+EEPROM\IICPROCESS.C(719): error C202: 'IIC_SCL11': undefined identifier
+EEPROM\IICPROCESS.C(720): error C202: 'IIC_SDA11': undefined identifier
+EEPROM\IICPROCESS.C(725): error C202: 'IIC_SDA12': undefined identifier
+EEPROM\IICPROCESS.C(726): error C202: 'IIC_SCL12': undefined identifier
+EEPROM\IICPROCESS.C(726): error C202: 'IIC_SCL12': undefined identifier
+EEPROM\IICPROCESS.C(727): error C202: 'IIC_SDA12': undefined identifier
+EEPROM\IICPROCESS.C(761): error C202: 'IIC_SDA1': undefined identifier
+EEPROM\IICPROCESS.C(763): error C202: 'IIC_SDA1': undefined identifier
+EEPROM\IICPROCESS.C(766): error C202: 'IIC_SCL1': undefined identifier
+EEPROM\IICPROCESS.C(766): error C202: 'IIC_SCL1': undefined identifier
+EEPROM\IICPROCESS.C(775): error C202: 'IIC_SDA2': undefined identifier
+EEPROM\IICPROCESS.C(777): error C202: 'IIC_SDA2': undefined identifier
+EEPROM\IICPROCESS.C(780): error C202: 'IIC_SCL2': undefined identifier
+EEPROM\IICPROCESS.C(780): error C202: 'IIC_SCL2': undefined identifier
+EEPROM\IICPROCESS.C(789): error C202: 'IIC_SDA3': undefined identifier
+EEPROM\IICPROCESS.C(791): error C202: 'IIC_SDA3': undefined identifier
+EEPROM\IICPROCESS.C(794): error C202: 'IIC_SCL3': undefined identifier
+EEPROM\IICPROCESS.C(794): error C202: 'IIC_SCL3': undefined identifier
+EEPROM\IICPROCESS.C(803): error C202: 'IIC_SDA4': undefined identifier
+EEPROM\IICPROCESS.C(805): error C202: 'IIC_SDA4': undefined identifier
+EEPROM\IICPROCESS.C(808): error C202: 'IIC_SCL4': undefined identifier
+EEPROM\IICPROCESS.C(808): error C202: 'IIC_SCL4': undefined identifier
+EEPROM\IICPROCESS.C(817): error C202: 'IIC_SDA5': undefined identifier
+EEPROM\IICPROCESS.C(819): error C202: 'IIC_SDA5': undefined identifier
+EEPROM\IICPROCESS.C(822): error C202: 'IIC_SCL5': undefined identifier
+EEPROM\IICPROCESS.C(822): error C202: 'IIC_SCL5': undefined identifier
+EEPROM\IICPROCESS.C(831): error C202: 'IIC_SDA6': undefined identifier
+EEPROM\IICPROCESS.C(833): error C202: 'IIC_SDA6': undefined identifier
+EEPROM\IICPROCESS.C(836): error C202: 'IIC_SCL6': undefined identifier
+EEPROM\IICPROCESS.C(836): error C202: 'IIC_SCL6': undefined identifier
+EEPROM\IICPROCESS.C(845): error C202: 'IIC_SDA7': undefined identifier
+EEPROM\IICPROCESS.C(847): error C202: 'IIC_SDA7': undefined identifier
+EEPROM\IICPROCESS.C(850): error C202: 'IIC_SCL7': undefined identifier
+EEPROM\IICPROCESS.C(850): error C202: 'IIC_SCL7': undefined identifier
+EEPROM\IICPROCESS.C(859): error C202: 'IIC_SDA8': undefined identifier
+EEPROM\IICPROCESS.C(861): error C202: 'IIC_SDA8': undefined identifier
+EEPROM\IICPROCESS.C(864): error C202: 'IIC_SCL8': undefined identifier
+EEPROM\IICPROCESS.C(864): error C202: 'IIC_SCL8': undefined identifier
+EEPROM\IICPROCESS.C(873): error C202: 'IIC_SDA9': undefined identifier
+EEPROM\IICPROCESS.C(875): error C202: 'IIC_SDA9': undefined identifier
+EEPROM\IICPROCESS.C(878): error C202: 'IIC_SCL9': undefined identifier
+EEPROM\IICPROCESS.C(878): error C202: 'IIC_SCL9': undefined identifier
+EEPROM\IICPROCESS.C(887): error C202: 'IIC_SDA10': undefined identifier
+EEPROM\IICPROCESS.C(889): error C202: 'IIC_SDA10': undefined identifier
+EEPROM\IICPROCESS.C(892): error C202: 'IIC_SCL10': undefined identifier
+EEPROM\IICPROCESS.C(892): error C202: 'IIC_SCL10': undefined identifier
+EEPROM\IICPROCESS.C(901): error C202: 'IIC_SDA11': undefined identifier
+EEPROM\IICPROCESS.C(903): error C202: 'IIC_SDA11': undefined identifier
+EEPROM\IICPROCESS.C(906): error C202: 'IIC_SCL11': undefined identifier
+EEPROM\IICPROCESS.C(906): error C202: 'IIC_SCL11': undefined identifier
+EEPROM\IICPROCESS.C(915): error C202: 'IIC_SDA12': undefined identifier
+EEPROM\IICPROCESS.C(917): error C202: 'IIC_SDA12': undefined identifier
+EEPROM\IICPROCESS.C(920): error C202: 'IIC_SCL12': undefined identifier
+EEPROM\IICPROCESS.C(920): error C202: 'IIC_SCL12': undefined identifier
+EEPROM\IICPROCESS.C(939): error C202: 'IIC_SCL1': undefined identifier
+EEPROM\IICPROCESS.C(939): error C202: 'IIC_SCL1': undefined identifier
+EEPROM\IICPROCESS.C(940): error C202: 'IIC_SDA1': undefined identifier
+EEPROM\IICPROCESS.C(943): error C202: 'IIC_SCL1': undefined identifier
+EEPROM\IICPROCESS.C(943): error C202: 'IIC_SCL1': undefined identifier
+EEPROM\IICPROCESS.C(952): error C202: 'IIC_SCL2': undefined identifier
+EEPROM\IICPROCESS.C(952): error C202: 'IIC_SCL2': undefined identifier
+EEPROM\IICPROCESS.C(953): error C202: 'IIC_SDA2': undefined identifier
+EEPROM\IICPROCESS.C(956): error C202: 'IIC_SCL2': undefined identifier
+EEPROM\IICPROCESS.C(956): error C202: 'IIC_SCL2': undefined identifier
+EEPROM\IICPROCESS.C(965): error C202: 'IIC_SCL3': undefined identifier
+EEPROM\IICPROCESS.C(965): error C202: 'IIC_SCL3': undefined identifier
+EEPROM\IICPROCESS.C(966): error C202: 'IIC_SDA3': undefined identifier
+EEPROM\IICPROCESS.C(969): error C202: 'IIC_SCL3': undefined identifier
+EEPROM\IICPROCESS.C(969): error C202: 'IIC_SCL3': undefined identifier
+EEPROM\IICPROCESS.C(978): error C202: 'IIC_SCL4': undefined identifier
+EEPROM\IICPROCESS.C(978): error C202: 'IIC_SCL4': undefined identifier
+EEPROM\IICPROCESS.C(979): error C202: 'IIC_SDA4': undefined identifier
+EEPROM\IICPROCESS.C(982): error C202: 'IIC_SCL4': undefined identifier
+EEPROM\IICPROCESS.C(982): error C202: 'IIC_SCL4': undefined identifier
+EEPROM\IICPROCESS.C(991): error C202: 'IIC_SCL5': undefined identifier
+EEPROM\IICPROCESS.C(991): error C202: 'IIC_SCL5': undefined identifier
+EEPROM\IICPROCESS.C(992): error C202: 'IIC_SDA5': undefined identifier
+EEPROM\IICPROCESS.C(995): error C202: 'IIC_SCL5': undefined identifier
+EEPROM\IICPROCESS.C(995): error C202: 'IIC_SCL5': undefined identifier
+EEPROM\IICPROCESS.C(1004): error C202: 'IIC_SCL6': undefined identifier
+EEPROM\IICPROCESS.C(1004): error C202: 'IIC_SCL6': undefined identifier
+EEPROM\IICPROCESS.C(1005): error C202: 'IIC_SDA6': undefined identifier
+EEPROM\IICPROCESS.C(1008): error C202: 'IIC_SCL6': undefined identifier
+EEPROM\IICPROCESS.C(1008): error C202: 'IIC_SCL6': undefined identifier
+EEPROM\IICPROCESS.C(1017): error C202: 'IIC_SCL7': undefined identifier
+EEPROM\IICPROCESS.C(1017): error C202: 'IIC_SCL7': undefined identifier
+EEPROM\IICPROCESS.C(1018): error C202: 'IIC_SDA7': undefined identifier
+EEPROM\IICPROCESS.C(1021): error C202: 'IIC_SCL7': undefined identifier
+EEPROM\IICPROCESS.C(1021): error C202: 'IIC_SCL7': undefined identifier
+EEPROM\IICPROCESS.C(1030): error C202: 'IIC_SCL8': undefined identifier
+EEPROM\IICPROCESS.C(1030): error C202: 'IIC_SCL8': undefined identifier
+EEPROM\IICPROCESS.C(1031): error C202: 'IIC_SDA8': undefined identifier
+EEPROM\IICPROCESS.C(1034): error C202: 'IIC_SCL8': undefined identifier
+EEPROM\IICPROCESS.C(1034): error C202: 'IIC_SCL8': undefined identifier
+EEPROM\IICPROCESS.C(1043): error C202: 'IIC_SCL9': undefined identifier
+EEPROM\IICPROCESS.C(1043): error C202: 'IIC_SCL9': undefined identifier
+EEPROM\IICPROCESS.C(1044): error C202: 'IIC_SDA9': undefined identifier
+EEPROM\IICPROCESS.C(1047): error C202: 'IIC_SCL9': undefined identifier
+EEPROM\IICPROCESS.C(1047): error C202: 'IIC_SCL9': undefined identifier
+EEPROM\IICPROCESS.C(1056): error C202: 'IIC_SCL10': undefined identifier
+EEPROM\IICPROCESS.C(1056): error C202: 'IIC_SCL10': undefined identifier
+EEPROM\IICPROCESS.C(1057): error C202: 'IIC_SDA10': undefined identifier
+EEPROM\IICPROCESS.C(1060): error C202: 'IIC_SCL10': undefined identifier
+EEPROM\IICPROCESS.C(1060): error C202: 'IIC_SCL10': undefined identifier
+EEPROM\IICPROCESS.C(1069): error C202: 'IIC_SCL11': undefined identifier
+EEPROM\IICPROCESS.C(1069): error C202: 'IIC_SCL11': undefined identifier
+EEPROM\IICPROCESS.C(1070): error C202: 'IIC_SDA11': undefined identifier
+EEPROM\IICPROCESS.C(1073): error C202: 'IIC_SCL11': undefined identifier
+EEPROM\IICPROCESS.C(1073): error C202: 'IIC_SCL11': undefined identifier
+EEPROM\IICPROCESS.C(1082): error C202: 'IIC_SCL12': undefined identifier
+EEPROM\IICPROCESS.C(1082): error C202: 'IIC_SCL12': undefined identifier
+EEPROM\IICPROCESS.C(1083): error C202: 'IIC_SDA12': undefined identifier
+EEPROM\IICPROCESS.C(1086): error C202: 'IIC_SCL12': undefined identifier
+EEPROM\IICPROCESS.C(1086): error C202: 'IIC_SCL12': undefined identifier
+Target not created
+Build target 'Target 1'
+compiling at24C01.c...
+compiling idProcess.c...
+compiling iicProcess.c...
+linking...
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?_INTERRUPT_PRIORITY?MCUINIT
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?_ID_STATE_CONVERT?NETCOMMAND
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?TEST_SEND_UART?NETCOMMAND
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?_PAGE_WRITE_24C01?AT24C01
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?TEST_READ_WRITE?AT24C01
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?_I2C_INIT?IICPROCESS
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?TMU_INIT?TMUPROCESS
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?TMU_NUM_JUDGE?TMUPROCESS
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?_MEMORY_FILL?SHARE
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?GET_DEVICE_CODE?HARDINFO
+Program Size: data=20.4 xdata=1009 code=10846
+creating hex file from ".\OUT\eIDTMU"...
+".\OUT\eIDTMU" - 0 Error(s), 10 Warning(s).
+Build target 'Target 1'
+assembling STARTUP.A51...
+compiling main.c...
+compiling mcuInit.c...
+compiling uart1.c...
+compiling netCommand.c...
+compiling at24C01.c...
+compiling idProcess.c...
+compiling iicProcess.c...
+compiling tmuProcess.c...
+compiling ledStatus.c...
+compiling variable.c...
+compiling share.c...
+compiling hardInfo.c...
+linking...
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?_INTERRUPT_PRIORITY?MCUINIT
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?_ID_STATE_CONVERT?NETCOMMAND
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?TEST_SEND_UART?NETCOMMAND
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?_PAGE_WRITE_24C01?AT24C01
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?TEST_READ_WRITE?AT24C01
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?_I2C_INIT?IICPROCESS
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?TMU_INIT?TMUPROCESS
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?TMU_NUM_JUDGE?TMUPROCESS
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?_MEMORY_FILL?SHARE
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?GET_DEVICE_CODE?HARDINFO
+Program Size: data=20.4 xdata=1009 code=10846
+creating hex file from ".\OUT\eIDTMU"...
+".\OUT\eIDTMU" - 0 Error(s), 10 Warning(s).
+Build target 'Target 1'
+assembling STARTUP.A51...
+compiling main.c...
+compiling mcuInit.c...
+compiling uart1.c...
+compiling netCommand.c...
+compiling at24C01.c...
+compiling idProcess.c...
+compiling iicProcess.c...
+compiling tmuProcess.c...
+compiling ledStatus.c...
+compiling variable.c...
+compiling share.c...
+compiling hardInfo.c...
+linking...
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?_INTERRUPT_PRIORITY?MCUINIT
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?_ID_STATE_CONVERT?NETCOMMAND
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?TEST_SEND_UART?NETCOMMAND
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?_PAGE_WRITE_24C01?AT24C01
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?TEST_READ_WRITE?AT24C01
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?_I2C_INIT?IICPROCESS
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?TMU_INIT?TMUPROCESS
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?TMU_NUM_JUDGE?TMUPROCESS
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?_MEMORY_FILL?SHARE
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?GET_DEVICE_CODE?HARDINFO
+Program Size: data=20.4 xdata=1009 code=10846
+creating hex file from ".\OUT\eIDTMU"...
+".\OUT\eIDTMU" - 0 Error(s), 10 Warning(s).

@@ -1,0 +1,285 @@
+C51 COMPILER V9.52.0.0   UPDATE                                                            11/05/2015 15:24:04 PAGE 1   
+
+
+C51 COMPILER V9.52.0.0, COMPILATION OF MODULE UPDATE
+OBJECT MODULE PLACED IN .\OUT\update.obj
+COMPILER INVOKED BY: d:\Keil\C51\BIN\C51.EXE update\update.c LARGE BROWSE INCDIR(main;include;mcu;uart;command;eeprom;le
+                    -dProcess;update;crc;delay;timer;tmu_number) DEBUG OBJECTEXTEND PRINT(.\OUT\update.lst) TABS(2) OBJECT(.\OUT\update.obj)
+
+line level    source
+
+   1          #include "c8051f340.h"
+   2          #include "update.h"
+   3          #include "typedef.h"
+   4          #include "uart1.h"
+   5          #include "share.h"
+   6          #include "mcuInit.h"
+   7          
+   8          #define UPDATE_INFO_ADDR        0xF000                
+   9          
+  10          #define APP_START_ADDR          0x0000                
+  11          #define APP_START_ADDR1         0x7000                 
+  12          #define APP_END_ADDR1           0xE000              
+  13          #define APP_END_ADDR            0x7000               
+  14          
+  15          #define CODE_FLASH_PAGE_SIZE    0x200     
+  16          #define PMU_FRAME_DEVICE_FIX_BYTES  0x08       /*pmuÉè±¸Ö¡¹Ì¶¨×Ö½Ú(²»º¬Êý¾ÝÌå)*/ 
+  17          
+  18          #define UPDATA_APP_FLAG   0x5A5A
+  19          
+  20          
+  21          typedef struct{
+  22            unsigned int   flag;           //0x5A5A
+  23            unsigned int   appStartAddr;  
+  24            unsigned int   bootStartAddr;  
+  25          }UpdateInfo_t;
+  26          UpdateInfo_t data updateInfo;
+  27          
+  28          #define TEMP_READ_APP_LEN  64
+  29          
+  30          uint8 tempReadApp[TEMP_READ_APP_LEN];
+  31          static uint16 updatePacketNum = 1 ;     //ÆÚ´ýµÄÏÂÒ»¸ö°üÐòºÅ
+  32          static uint16 updateTotalDataLen ;
+  33          static uint8 updateTimerCount;  /*½ÓÊÕÉý¼¶ÎÄ¼þÊ±£¬°üµÄÊ±¼ä¼ä¸ô*/
+  34          static uint8 updateTimerStatus; /*ÊÇ·ñÒª¼ÆÊ±£¬µ±ÊÕµ½ÕýÈ·µÄ°üÊ±£¬ÖÃ1¿ªÊ¼¼ÆÊ±¡£ÒÔÈ·±£ÏÂÒ»¸ö°üÊÇ·ñÔÚ¹æ¶¨µÄÊ±¼
+             -äÄÚµ½´ï*/
+  35          
+  36          UART_INFO *netUartPtr;
+  37          extern UART_INFO uart1;
+  38          
+  39          void fmu_cmd_init()
+  40          {
+  41   1          updatePacketNum = 1;
+  42   1          updateTimerCount= 0;
+  43   1          updateTimerStatus = 0;
+  44   1        updatePacketNum = 0;
+  45   1        updateTotalDataLen = 0;
+  46   1      
+  47   1      }
+  48          
+  49          void earseCodeFlash(unsigned int address)
+  50          {
+  51   1          char xdata* data ptr;         // a pointer to xdata located in data space, points to the first FLASH p
+             -age that will be erased
+  52   1      
+C51 COMPILER V9.52.0.0   UPDATE                                                            11/05/2015 15:24:04 PAGE 2   
+
+  53   1          if( address > 0xFBFF )
+  54   1              return;
+  55   1      
+  56   1          ptr = (char*) address;
+  57   1      
+  58   1        EA = 0;
+  59   1         FLKEY = 0xA5;
+  60   1          FLKEY = 0xF1;
+  61   1          //FLSCL |= 1;
+  62   1      //  PSCTL |= 1;
+  63   1          PSCTL |= 2;
+  64   1          PSCTL |= 1;
+  65   1          *ptr = 0xFF;
+  66   1               
+  67   1          //FLSCL &= ~1;
+  68   1          PSCTL &= ~1;
+  69   1          PSCTL &= ~2;
+  70   1       // EA = 1;
+  71   1       //   delay_ms(1);
+  72   1      
+  73   1      } 
+  74          
+  75          
+  76          
+  77          void writeCodeFlash(unsigned int address, unsigned char value)
+  78          {
+  79   1          unsigned char xdata* data ptr;         // a pointer to xdata located in data space
+  80   1          if( address > 0xFBFF )
+  81   1              return;
+  82   1          ptr = (unsigned char*) address;
+  83   1      
+  84   1          EA = 0;
+  85   1          PFE0CN &= ~1;
+  86   1          //FLSCL |= 1;
+  87   1      
+  88   1          PSCTL &= ~2;
+  89   1          PSCTL |= 1;
+  90   1      
+  91   1          FLKEY = 0xA5;
+  92   1          FLKEY = 0xF1;
+  93   1          *ptr = value;
+  94   1      
+  95   1          //FLSCL &= ~1;
+  96   1          PSCTL &= ~3;
+  97   1          EA = 1;//???
+  98   1      }
+  99          
+ 100          
+ 101          void writeInnerFlash(unsigned int addr, unsigned char length, unsigned char* buf)
+ 102          {
+ 103   1        unsigned char data j;
+ 104   1          unsigned int tmpAddr;
+ 105   1          unsigned char *tmpPtr;
+ 106   1      
+ 107   1        tmpAddr = addr;
+ 108   1          tmpPtr = buf;
+ 109   1        for( j=0; j< length; j++ )
+ 110   1        {
+ 111   2              writeCodeFlash(tmpAddr, *tmpPtr);
+ 112   2              tmpAddr ++;
+ 113   2              tmpPtr ++;
+ 114   2          }
+C51 COMPILER V9.52.0.0   UPDATE                                                            11/05/2015 15:24:04 PAGE 3   
+
+ 115   1      }
+ 116          
+ 117          
+ 118          
+ 119          void updateApp(void)
+ 120          {
+ 121   1          unsigned int addr;
+ 122   1          char *ptr;
+ 123   1          unsigned char i;
+ 124   1          
+ 125   1        
+ 126   1          updateInfo.flag = UPDATA_APP_FLAG;
+ 127   1          updateInfo.appStartAddr = 0;
+ 128   1       //   updateInfo.bootStartAddr = 0;
+ 129   1       //   updateInfo.appPackLen = 0;
+ 130   1      
+ 131   1      
+ 132   1          EA = 0;
+ 133   1        //²Á³ýÉÈÇø
+ 134   1          earseCodeFlash(UPDATE_INFO_ADDR);
+ 135   1      
+ 136   1          addr = UPDATE_INFO_ADDR;
+ 137   1          ptr = (char*)&updateInfo;
+ 138   1          for (i = 0; i < sizeof(UpdateInfo_t); i++,addr++,ptr++)
+ 139   1              writeCodeFlash(addr, *ptr);
+ 140   1        //ÈíÆô¶¯
+ 141   1        (*(void (*)( ) )0xffff)( );
+ 142   1      //  softRst();
+ 143   1      }
+ 144          /*Éý¼¶°üÊÕ°üÊ±¼ä¼ÆÊ±*/
+ 145          void fmu_cmd_update_file_timer_count(void)
+ 146          {
+ 147   1          if(updateTimerStatus)
+ 148   1          {
+ 149   2              if(updateTimerCount++ > 10)
+ 150   2              {
+ 151   3                  updatePacketNum = 1;
+ 152   3                  updateTimerStatus = 0;
+ 153   3              }
+ 154   2      
+ 155   2          /*ÊÕµ½×îºóÒ»¸ö°ü£¬µÈ´ý3Ãë½øÐÐÈí¼þÉý¼¶*/
+ 156   2              if(updateTotalDataLen != 0 && updateTimerCount > 3)
+ 157   2              {
+ 158   3                  updateApp();
+ 159   3                  updateTotalDataLen = 0;
+ 160   3                  updateTimerStatus = 0;
+ 161   3              }
+ 162   2          }
+ 163   1          else
+ 164   1          {
+ 165   2              updateTimerCount = 0;
+ 166   2          }
+ 167   1      }
+ 168          
+ 169          /*´¦ÀíÉý¼¶ÎÄ¼þ*/
+ 170          /****************************************************
+ 171          *¡¾º¯ÊýÃû¡¿update_file
+ 172          *¡¾¹¦     ÄÜ¡¿´¦ÀítmuÉý¼¶ÎÄ¼þ
+ 173          *¡¾Êä     Èë¡¿ÎÞ
+ 174                                      
+ 175          *¡¾Êä     ³ö¡¿ÎÞ
+ 176          *¡¾×÷     Õß¡¿³Â½Ü
+C51 COMPILER V9.52.0.0   UPDATE                                                            11/05/2015 15:24:04 PAGE 4   
+
+ 177          *¡¾ÈÕ     ÆÚ¡¿2014-1-11
+ 178          *****************************************************/
+ 179          void update_file(void)
+ 180          {
+ 181   1        unsigned int data appStartAddr = 0;
+ 182   1        unsigned int  addr;
+ 183   1        unsigned char *DataPart;
+ 184   1          unsigned char *buf_ptr;
+ 185   1        uint16 packetNumTmp;
+ 186   1        updateTimerStatus = 1;
+ 187   1        DataPart   = uart1.rxData + 1;  //ÏûÏ¢ÀàÐÍºÍÃüÁîÂë
+ 188   1        buf_ptr = uart1.ackBuffer + 4;    //Ö¡Í·Êý¾ÝÆ«ÒÆÁ¿Îª4
+ 189   1        packetNumTmp = DataPart[0]+(DataPart[1]<<8);
+ 190   1        memory_copy(tempReadApp,DataPart + 2,TEMP_READ_APP_LEN);
+ 191   1        *buf_ptr = RET_TYPE;
+ 192   1        buf_ptr++;
+ 193   1        *buf_ptr = 0x45;
+ 194   1        buf_ptr++;
+ 195   1        uart1.txLen = 9;
+ 196   1        if(updatePacketNum == packetNumTmp && packetNumTmp != 0xFFFF)
+ 197   1        {
+ 198   2          if((updatePacketNum %8) == 1)
+ 199   2          { 
+ 200   3            addr = (updatePacketNum-1)*64+APP_START_ADDR1;
+ 201   3            earseCodeFlash(addr);
+ 202   3            WatchDog();     //Î¹¹·
+ 203   3            
+ 204   3          }
+ 205   2            writeInnerFlash((64*(packetNumTmp-1)+APP_START_ADDR1),TEMP_READ_APP_LEN,tempReadApp);
+ 206   2          updatePacketNum ++;
+ 207   2              *buf_ptr++ = (uint8)updatePacketNum;
+ 208   2              *buf_ptr++ = (uint8)(updatePacketNum >> 8);
+ 209   2        }else if(0xFFFF == packetNumTmp && updatePacketNum != 1)  //×îºóÒ»Ö¡Êý¾Ý
+ 210   1        {
+ 211   2          if((updatePacketNum %8) == 1)
+ 212   2          { 
+ 213   3            addr = (updatePacketNum-1)*64+APP_START_ADDR1;
+ 214   3            earseCodeFlash(addr);
+ 215   3            WatchDog();     //Î¹¹·  
+ 216   3          }
+ 217   2          writeInnerFlash((TEMP_READ_APP_LEN*(updatePacketNum-1)+APP_START_ADDR1),TEMP_READ_APP_LEN,tempReadApp);
+ 218   2          *buf_ptr = 0xFF;
+ 219   2          buf_ptr++;
+ 220   2          *buf_ptr = 0xFF;
+ 221   2          buf_ptr++;  
+ 222   2          updateTotalDataLen = TEMP_READ_APP_LEN * updatePacketNum;
+ 223   2          updatePacketNum = 1;
+ 224   2          updateTimerStatus = 1;
+ 225   2        }else
+ 226   1        {
+ 227   2          updateTimerStatus = 0;
+ 228   2              *buf_ptr = (uint8)updatePacketNum;
+ 229   2          buf_ptr++;
+ 230   2              *buf_ptr = (uint8)(updatePacketNum >> 8);
+ 231   2          buf_ptr++;
+ 232   2        }
+ 233   1        updateTimerCount= 0;
+ 234   1      }
+ 235           
+ 236          
+ 237          
+ 238          
+C51 COMPILER V9.52.0.0   UPDATE                                                            11/05/2015 15:24:04 PAGE 5   
+
+ 239          
+ 240          
+ 241          
+ 242           
+ 243          
+ 244           
+ 245          
+ 246           
+ 247          
+ 248          
+ 249          
+ 250          
+ 251          
+
+
+MODULE INFORMATION:   STATIC OVERLAYABLE
+   CODE SIZE        =    909    ----
+   CONSTANT SIZE    =   ----    ----
+   XDATA SIZE       =     73      14
+   PDATA SIZE       =   ----    ----
+   DATA SIZE        =      6       7
+   IDATA SIZE       =   ----    ----
+   BIT SIZE         =   ----    ----
+END OF MODULE INFORMATION.
+
+
+C51 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)

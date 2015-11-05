@@ -1,0 +1,70 @@
+C51 COMPILER V9.52.0.0   SHARE                                                             11/05/2015 15:24:03 PAGE 1   
+
+
+C51 COMPILER V9.52.0.0, COMPILATION OF MODULE SHARE
+OBJECT MODULE PLACED IN .\OUT\share.obj
+COMPILER INVOKED BY: d:\Keil\C51\BIN\C51.EXE main\share.c LARGE BROWSE INCDIR(main;include;mcu;uart;command;eeprom;ledPr
+                    -ocess;update;crc;delay;timer;tmu_number) DEBUG OBJECTEXTEND PRINT(.\OUT\share.lst) TABS(2) OBJECT(.\OUT\share.obj)
+
+line level    source
+
+   1          #include "share.h"
+   2          
+   3          unsigned char memory_compare(unsigned char *ptr1, unsigned char *ptr2, unsigned char len)
+   4          {
+   5   1          unsigned char i;
+   6   1      
+   7   1          for(i=0; i<len; i++)
+   8   1          {
+   9   2              if( *ptr1 == *ptr2 )
+  10   2              {
+  11   3                  ptr1 ++;
+  12   3                  ptr2 ++;
+  13   3              }
+  14   2              else
+  15   2              {
+  16   3                  return ERROR;
+  17   3              }
+  18   2          }
+  19   1          return OK;
+  20   1      }
+  21          
+  22          void memory_clear(char *ptr, unsigned int number)
+  23          {
+  24   1          unsigned int count;    
+  25   1          char *ramPtr;   
+  26   1      
+  27   1          count = number;
+  28   1      
+  29   1          ramPtr = ptr;
+  30   1      
+  31   1          do
+  32   1          {
+  33   2              *ramPtr++ = 0;
+  34   2              count --;
+  35   2          }while( count!=0 );
+  36   1      }
+  37          
+  38          void memory_copy(unsigned char  *dest, unsigned char *src, int len)
+  39          {
+  40   1          while(len--)
+  41   1          {
+  42   2            *dest++ = *src++;
+  43   2          }
+  44   1      }
+
+
+MODULE INFORMATION:   STATIC OVERLAYABLE
+   CODE SIZE        =    199    ----
+   CONSTANT SIZE    =   ----    ----
+   XDATA SIZE       =   ----      18
+   PDATA SIZE       =   ----    ----
+   DATA SIZE        =   ----    ----
+   IDATA SIZE       =   ----    ----
+   BIT SIZE         =   ----    ----
+C51 COMPILER V9.52.0.0   SHARE                                                             11/05/2015 15:24:03 PAGE 2   
+
+END OF MODULE INFORMATION.
+
+
+C51 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)

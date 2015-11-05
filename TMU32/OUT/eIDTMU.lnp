@@ -1,0 +1,15 @@
+".\OUT\STARTUP.obj",
+".\OUT\main.obj",
+".\OUT\mcuInit.obj",
+".\OUT\uart1.obj",
+".\OUT\netCommand.obj",
+".\OUT\at24C01.obj",
+".\OUT\idProcess.obj",
+".\OUT\iicProcess.obj",
+".\OUT\tmuProcess.obj",
+".\OUT\ledStatus.obj",
+".\OUT\variable.obj",
+".\OUT\share.obj",
+".\OUT\hardInfo.obj" 
+TO ".\OUT\eIDTMU" 
+PRINT(".\OUT\eIDTMU.m51") RAMSIZE(256) 

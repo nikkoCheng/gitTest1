@@ -1,0 +1,142 @@
+C51 COMPILER V7.09   KEYPROCESS                                                            02/13/2012 10:59:10 PAGE 1   
+
+
+C51 COMPILER V7.09, COMPILATION OF MODULE KEYPROCESS
+OBJECT MODULE PLACED IN .\OUT\keyProcess.obj
+COMPILER INVOKED BY: C:\Keil\C51\BIN\C51.EXE key\keyProcess.C LARGE BROWSE INCDIR(main,header_files,dataProcess,watchDog
+                    -,ledProcess,mcu,adConvert,IDB,protect_j,alarm,key,timer,command) DEBUG OBJECTEXTEND PRINT(.\OUT\keyProcess.lst) OBJECT(.
+                    -\OUT\keyProcess.obj)
+
+line level    source
+
+   1          #include "keyget.h"
+   2          #include "share.h"
+   3          #include "1.h"
+   4          
+   5          
+   6          #define KEY_ENABLE_DELAY         60*1
+   7          /*键处理程序，250MS处理一次*/
+   8          void key_process(void)
+   9          {
+  10   1              char cKeyTmp;
+  11   1              
+  12   1              cKeyTmp = get_key();
+  13   1              switch(cKeyTmp)
+  14   1              {
+  15   2                      case KEY_CODE_SWITCH_MAIN: 
+  16   2                              if(get_keyEn_flag())
+  17   2                                      {
+  18   3                                      opSwitch_key(SERVICE_AT_MAIN);
+  19   3                                      }                               
+  20   2                              break;
+  21   2      
+  22   2                      case KEY_CODE_SWITCH_STANDBY:
+  23   2                              if(get_keyEn_flag())
+  24   2                                      {
+  25   3                                      opSwitch_key(SERVICE_AT_STANDBY);
+  26   3                                      }
+  27   2                                      break;
+  28   2      
+  29   2                      case KEY_CODE_ACO:
+  30   2                              if(get_mute_status())
+  31   2                                      set_mute_status(0);
+  32   2                              else
+  33   2                                      set_mute_status(1);
+  34   2                              break;
+  35   2      
+  36   2                      case KEY_CODE_ENABLE:
+  37   2                              if(get_keyEn_flag())
+  38   2                                      set_keyEn_flag(0);
+  39   2                              else
+  40   2                                      set_keyEn_flag(1);
+  41   2      
+  42   2                              timer.keyEnTimer = KEY_ENABLE_DELAY;
+  43   2                              break;
+  44   2      
+  45   2                      default:
+  46   2                              break;
+  47   2              }
+  48   1      
+  49   1              if(timer.keyEnTimer ==0)
+  50   1                      set_keyEn_flag(0);
+  51   1                      
+  52   1      }
+  53          
+C51 COMPILER V7.09   KEYPROCESS                                                            02/13/2012 10:59:10 PAGE 2   
+
+  54          /*10ms调用1次*/
+  55          #define ALA_HIGH_COUNTS 50                    /*告警500ms叫，1500ms停*/
+  56          #define ALA_COUNTS                200
+  57          #define KEY_HIGH_COUNTS         12               /*按键120ms叫，120ms停*/
+  58          #define KEY_COUNTS                24
+  59          
+  60          #define BEEP_0                          0                /*蜂鸣器不叫*/
+  61          #define BEEP_1                          1                /*蜂鸣器叫*/
+  62          void beep_sound_process(void)
+  63          {
+  64   1              static unsigned int cAlaCount =0;
+  65   1              static unsigned int cKeyCount = 0;
+  66   1              static unsigned char alarm_plus_status;
+  67   1              static unsigned char key_plus_status;
+  68   1              char cTmp;
+  69   1      
+  70   1      
+  71   1              
+  72   1              cAlaCount++;
+  73   1              if(cAlaCount>ALA_COUNTS)
+  74   1                      cAlaCount =0;
+  75   1              
+  76   1              if(cAlaCount<ALA_HIGH_COUNTS)
+  77   1                      alarm_plus_status = BEEP_1;
+  78   1              else
+  79   1                      alarm_plus_status = BEEP_0;
+  80   1      
+  81   1              if(get_key_flag())
+  82   1                      {
+  83   2                      cKeyCount =1;           
+  84   2                      }
+  85   1              
+  86   1              if(cKeyCount)
+  87   1                      cKeyCount++;
+  88   1              
+  89   1              if(cKeyCount>KEY_COUNTS)
+  90   1                      {
+  91   2                      cKeyCount =0;           
+  92   2                      }
+  93   1              
+  94   1              
+  95   1              if((cKeyCount<KEY_HIGH_COUNTS)&&(cKeyCount>0))
+  96   1                      key_plus_status = BEEP_1;
+  97   1              else
+  98   1                      key_plus_status = BEEP_0;
+  99   1              
+ 100   1      
+ 101   1              cTmp = 0;
+ 102   1              if(get_sys_alarm_status() &&((get_mute_status()==0)))
+ 103   1                      cTmp = alarm_plus_status;       
+ 104   1              
+ 105   1          cTmp |= key_plus_status;
+ 106   1                 
+ 107   1              beep_driver(cTmp);
+ 108   1              
+ 109   1      }
+ 110          
+ 111          
+ 112          
+ 113          
+
+
+C51 COMPILER V7.09   KEYPROCESS                                                            02/13/2012 10:59:10 PAGE 3   
+
+MODULE INFORMATION:   STATIC OVERLAYABLE
+   CODE SIZE        =    297    ----
+   CONSTANT SIZE    =   ----    ----
+   XDATA SIZE       =      6       1
+   PDATA SIZE       =   ----    ----
+   DATA SIZE        =   ----    ----
+   IDATA SIZE       =   ----    ----
+   BIT SIZE         =   ----    ----
+END OF MODULE INFORMATION.
+
+
+C51 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)

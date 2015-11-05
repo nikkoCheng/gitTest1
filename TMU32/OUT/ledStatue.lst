@@ -1,0 +1,305 @@
+C51 COMPILER V7.09   LEDSTATUE                                                             12/05/2012 20:11:16 PAGE 1   
+
+
+C51 COMPILER V7.09, COMPILATION OF MODULE LEDSTATUE
+OBJECT MODULE PLACED IN .\OUT\ledStatue.obj
+COMPILER INVOKED BY: C:\Keil\C51\BIN\C51.EXE ledStatue.c LARGE BROWSE INCDIR(include;mcu) DEBUG OBJECTEXTEND PRINT(.\OUT
+                    -\ledStatue.lst) OBJECT(.\OUT\ledStatue.obj)
+
+line level    source
+
+   1          #include "at24c01.h"
+   2          #include "iicprocess.h"
+   3          #include "c8051f310.h"
+   4          #include "mcuInit.h"
+   5          #include "typeDef.h"
+   6          #include "ledStatue.h"
+   7          #include "idProcess.h"
+   8          
+   9          unsigned char gPortStatus[PORT_ALL_NUM];
+  10          unsigned char recieve_port_status[PORT_ALL_NUM];
+  11          long recieve_assignID[PORT_ALL_NUM];
+  12          
+  13          bit quickFlash;
+  14          bit slowFlash; 
+  15          
+  16          extern bit flag50ms;    
+  17          unsigned char tmu_num;               // 盘号
+  18          unsigned char recieve_tmu_num;
+  19          
+  20          long assignID[PORT_ALL_NUM];             // 指定ID
+  21          long currentID[PORT_ALL_NUM];        // 当前ID
+  22            
+  23          bit led1 ;
+  24          bit led2 ;
+  25          bit led3 ;
+  26          bit led4 ;
+  27          bit led5 ;
+  28          bit led6 ;
+  29          bit led7 ;
+  30          bit led8 ;
+  31          bit led9 ;
+  32          bit led10;
+  33          bit led11;
+  34          bit led12;
+  35          
+  36          /* 获取led状态   
+  37             每50ms调用一次该函数 */
+  38          void get_flashStatus(void)
+  39          {
+  40   1              static unsigned char time10count;
+  41   1              unsigned char i = 0;
+  42   1      
+  43   1              time10count++;
+  44   1              if(time10count >= 10)
+  45   1              {
+  46   2                      slowFlash   = 1;
+  47   2                      time10count = 0;
+  48   2              }
+  49   1              else 
+  50   1                      slowFlash   = 0;
+  51   1      
+  52   1              if(time10count % 2)
+  53   1                      quickFlash  = 0;
+  54   1              else 
+C51 COMPILER V7.09   LEDSTATUE                                                             12/05/2012 20:11:16 PAGE 2   
+
+  55   1                      quickFlash  = 1;
+  56   1      
+  57   1              for(i=0; i<PORT_ALL_NUM; i++)
+  58   1              {       
+  59   2                      get_port_status(i);
+  60   2      #if 1   
+  61   2                      assignID[i]  = 1;
+  62   2                      currentID[i] = 0;               
+  63   2      #endif                                  
+  64   2                      if( LED_OFF_ALWAYS == gPortStatus[i] )          // LED灯常灭
+  65   2                              led_show(i, LED_OFF);
+  66   2      
+  67   2                      else if( LED_SLOW_FLASH == gPortStatus[i] )             // LED灯慢闪
+  68   2                      {
+  69   3                              if(slowFlash)   
+  70   3                                      led_flash(i);
+  71   3                      }
+  72   2      
+  73   2                      else if( LED_QUICK_FLASH == gPortStatus[i] )    // LED灯快闪
+  74   2                      {
+  75   3                              if(quickFlash)
+  76   3                                      led_flash(i);
+  77   3                      }
+  78   2      
+  79   2                      else if( LED_ON_ALWAYS == gPortStatus[i] )              // LED灯常亮
+  80   2                              led_show(i, LED_ON);
+  81   2      
+  82   2                      else if( LED_AUTO_CONTROL == gPortStatus[i] )   // LED灯自主控制
+  83   2                              led_auto_control(i);    
+  84   2              }
+  85   1      }
+  86          
+  87          /* 将led状态赋值给每个端口 */
+  88          void set_flashStatus_hard(void)
+  89          {       
+  90   1              PORT1_STATUS  = led1;
+  91   1              PORT2_STATUS  = led2;
+  92   1              PORT3_STATUS  = led3;
+  93   1              PORT4_STATUS  = led4;
+  94   1              PORT5_STATUS  = led5;
+  95   1              PORT6_STATUS  = led6;
+  96   1              PORT7_STATUS  = led7;
+  97   1              PORT8_STATUS  = led8;
+  98   1              PORT9_STATUS  = led9;
+  99   1              PORT10_STATUS = led10;
+ 100   1              PORT11_STATUS = led11;
+ 101   1              PORT12_STATUS = led12;
+ 102   1      }
+ 103          
+ 104          /* 对led进行赋值 */
+ 105          void led_show(unsigned char l_portNum, unsigned char led_status)
+ 106          {
+ 107   1              switch(l_portNum)
+ 108   1              {
+ 109   2                      case 0:
+ 110   2                              led1 = led_status;
+ 111   2                              break;
+ 112   2                      case 1:
+ 113   2                              led2 = led_status;
+ 114   2                              break;
+ 115   2                      case 2:
+ 116   2                              led3 = led_status;
+C51 COMPILER V7.09   LEDSTATUE                                                             12/05/2012 20:11:16 PAGE 3   
+
+ 117   2                              break;
+ 118   2                      case 3:
+ 119   2                              led4 = led_status;
+ 120   2                              break;
+ 121   2                      case 4:
+ 122   2                              led5 = led_status;
+ 123   2                              break;
+ 124   2                      case 5:
+ 125   2                              led6 = led_status;
+ 126   2                              break;
+ 127   2                      case 6:
+ 128   2                              led7 = led_status;
+ 129   2                              break;
+ 130   2                      case 7:
+ 131   2                              led8 = led_status;
+ 132   2                              break;
+ 133   2                      case 8:
+ 134   2                              led9 = led_status;
+ 135   2                              break;
+ 136   2                      case 9:
+ 137   2                              led10 = led_status;
+ 138   2                              break;
+ 139   2                      case 10:
+ 140   2                              led11 = led_status;
+ 141   2                              break;
+ 142   2                      case 11:
+ 143   2                              led12 = led_status;
+ 144   2                              break;
+ 145   2                      default: break;
+ 146   2              }
+ 147   1      }
+ 148          
+ 149          /* led闪烁 */
+ 150          void led_flash(unsigned char l_portNum)
+ 151          {
+ 152   1              switch (l_portNum)
+ 153   1              {
+ 154   2                      case 0:
+ 155   2                              led1 = ~led1;
+ 156   2                              break;
+ 157   2                      case 1:
+ 158   2                              led2 = ~led2;
+ 159   2                              break;
+ 160   2                      case 2:
+ 161   2                              led3 = ~led3;
+ 162   2                              break;
+ 163   2                      case 3:
+ 164   2                              led4 = ~led4;
+ 165   2                              break;
+ 166   2                      case 4:
+ 167   2                              led5 = ~led5;
+ 168   2                              break;
+ 169   2                      case 5:
+ 170   2                              led6 = ~led6;
+ 171   2                              break;
+ 172   2                      case 6:
+ 173   2                              led7 = ~led7;
+ 174   2                              break;
+ 175   2                      case 7:
+ 176   2                              led8 = ~led8;
+ 177   2                              break;
+ 178   2                      case 8:
+C51 COMPILER V7.09   LEDSTATUE                                                             12/05/2012 20:11:16 PAGE 4   
+
+ 179   2                              led9 = ~led9;
+ 180   2                              break;
+ 181   2                      case 9:
+ 182   2                              led10 = ~led10;
+ 183   2                              break;
+ 184   2                      case 10:
+ 185   2                              led11 = ~led11;
+ 186   2                              break;
+ 187   2                      case 11:
+ 188   2                              led12 = ~led12;
+ 189   2                              break;
+ 190   2                      default :break;
+ 191   2              }
+ 192   1      }
+ 193          
+ 194          /* 按顺序循环闪烁
+ 195             每250ms调用一次 */
+ 196          void led_loop_flash(void)
+ 197          {
+ 198   1              static unsigned char count = 0;
+ 199   1              unsigned char l_PortNum;
+ 200   1              
+ 201   1              if( tmu_num<1 || tmu_num>8 )
+ 202   1              {
+ 203   2                      led_all_off();
+ 204   2      
+ 205   2                      if( count >= DOUBLE_PORT_NUM )
+ 206   2                              count = 0;
+ 207   2      
+ 208   2                      l_PortNum = count / 2;
+ 209   2                      count++;
+ 210   2                      
+ 211   2                      led_flash( l_PortNum );
+ 212   2      
+ 213   2                      if( recieve_tmu_num>0 && recieve_tmu_num<9 )
+ 214   2                              tmu_num = recieve_tmu_num;
+ 215   2              }               
+ 216   1      }
+ 217          
+ 218          /* 将所有led设置为关闭状态 */
+ 219          void led_all_off(void)
+ 220          {
+ 221   1              led1  = LED_OFF;
+ 222   1          led2  = LED_OFF;
+ 223   1          led3  = LED_OFF;
+ 224   1          led4  = LED_OFF;
+ 225   1          led5  = LED_OFF;
+ 226   1          led6  = LED_OFF;
+ 227   1          led7  = LED_OFF;
+ 228   1          led8  = LED_OFF;
+ 229   1          led9  = LED_OFF;
+ 230   1          led10 = LED_OFF;
+ 231   1          led11 = LED_OFF;
+ 232   1          led12 = LED_OFF;
+ 233   1      }
+ 234          
+ 235          /* 获取每个端口的状态值 */
+ 236          void get_port_status(unsigned char l_portNum)
+ 237          {
+ 238   1      #if 1
+ 239   1              recieve_port_status[l_portNum] = 0x05;
+ 240   1      #endif  
+C51 COMPILER V7.09   LEDSTATUE                                                             12/05/2012 20:11:16 PAGE 5   
+
+ 241   1              gPortStatus[l_portNum] = recieve_port_status[l_portNum];
+ 242   1      }
+ 243          
+ 244          /* led灯自主控制 */
+ 245          void led_auto_control(unsigned char l_portNum)
+ 246          {
+ 247   1      #if 0
+                      get_assign_id(l_portNum);
+              #endif
+ 250   1              // 指定ID=当前ID，灭灯
+ 251   1              if( assignID[l_portNum] == currentID[l_portNum] )
+ 252   1                      led_show(l_portNum, LED_OFF);
+ 253   1      
+ 254   1              // 指定ID为0，当前ID不为0，常亮
+ 255   1              else if( assignID[l_portNum]==0 && currentID[l_portNum]!=0 )                                      
+ 256   1                      led_show(l_portNum, LED_ON);
+ 257   1      
+ 258   1              // 指定ID不为0，当前ID为0，慢闪
+ 259   1              else if( assignID[l_portNum]!=0 && currentID[l_portNum]==0 )                                
+ 260   1              {
+ 261   2                      if(slowFlash)
+ 262   2                              led_flash(l_portNum);
+ 263   2              }       
+ 264   1      
+ 265   1              // 指定ID、当前不为0，且不相同，快闪
+ 266   1              else if( assignID[l_portNum]!=0 && currentID[l_portNum]!=0 && assignID[l_portNum]!=currentID[l_portNum] )
+             -                                                                                                                                                                                                       
+ 267   1              {
+ 268   2                      if(quickFlash)
+ 269   2                              led_flash(l_portNum);
+ 270   2              }
+ 271   1      }
+ 272          
+
+
+MODULE INFORMATION:   STATIC OVERLAYABLE
+   CODE SIZE        =    972    ----
+   CONSTANT SIZE    =   ----    ----
+   XDATA SIZE       =    172       2
+   PDATA SIZE       =   ----    ----
+   DATA SIZE        =   ----    ----
+   IDATA SIZE       =   ----    ----
+   BIT SIZE         =     14    ----
+END OF MODULE INFORMATION.
+
+
+C51 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)
