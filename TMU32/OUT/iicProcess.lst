@@ -1,0 +1,1154 @@
+C51 COMPILER V9.52.0.0   IICPROCESS                                                        11/03/2014 09:25:25 PAGE 1   
+
+
+C51 COMPILER V9.52.0.0, COMPILATION OF MODULE IICPROCESS
+OBJECT MODULE PLACED IN .\OUT\iicProcess.obj
+COMPILER INVOKED BY: d:\Keil\C51\BIN\C51.EXE eeprom\iicProcess.c LARGE BROWSE INCDIR(main;include;mcu;uart;command;eepro
+                    -m;ledProcess;update;crc;delay) DEBUG OBJECTEXTEND PRINT(.\OUT\iicProcess.lst) TABS(2) OBJECT(.\OUT\iicProcess.obj)
+
+line level    source
+
+   1          #include <intrins.h>
+   2          #include "typeDef.h"
+   3          #include "c8051F340.h"
+   4          #include "mcuInit.h"
+   5          #include "iicProcess.h"
+   6          
+   7          #ifdef ID_USB
+              
+              
+              void i2c_init(unsigned char cPortNum)
+              {
+                switch(cPortNum)
+                {
+                  case 0:
+                  {
+                    IIC_SDA1 = 1;
+                    NOP7;
+                
+                    IIC_SCL1 = 1;
+                    NOP7;
+                    break;
+                  }
+                  case 1:
+                  {
+                    IIC_SDA2 = 1;
+                    NOP7;
+                
+                    IIC_SCL2 = 1;
+                    NOP7;
+                    break;
+                  }
+                  case 2:
+                  {
+                    IIC_SDA3 = 1;
+                    NOP7;
+                
+                    IIC_SCL3 = 1;
+                    NOP7;
+                    break;
+                  }
+                  case 3:
+                  {
+                    IIC_SDA4 = 1;
+                    NOP7;
+                
+                    IIC_SCL4 = 1;
+                    NOP7;
+                    break;
+                  }
+                  case 4:
+                  {
+                    IIC_SDA5 = 1;
+                    NOP7;
+                
+C51 COMPILER V9.52.0.0   IICPROCESS                                                        11/03/2014 09:25:25 PAGE 2   
+
+                    IIC_SCL5 = 1;
+                    NOP7;
+                    break;
+                  }
+                  case 5:
+                  {
+                    IIC_SDA6 = 1;
+                    NOP7;
+                
+                    IIC_SCL6 = 1;
+                    NOP7;
+                    break;
+                  }
+                  case 6:
+                  {
+                    IIC_SDA7 = 1;
+                    NOP7;
+                
+                    IIC_SCL7 = 1;
+                    NOP7;
+                    break;
+                  } 
+                  case 7:
+                  {
+                    IIC_SDA8 = 1;
+                    NOP7;
+                
+                    IIC_SCL8= 1;
+                    NOP7;
+                    break;
+                  } 
+                  case 8:
+                  {
+                    IIC_SDA9 = 1;
+                    NOP7;
+                
+                    IIC_SCL9 = 1;
+                    NOP7;
+                    break;
+                  }   
+                  case 9:
+                  {
+                    IIC_SDA10 = 1;
+                    NOP7;
+                
+                    IIC_SCL10  = 1;
+                    NOP7;
+                    break;
+                  }   
+                  case 10:
+                  {
+                    IIC_SDA11 = 1;
+                    NOP7;
+                
+                    IIC_SCL11  = 1;
+                    NOP7;
+                    break;
+                  }   
+                  case 11:
+                  {
+                    IIC_SDA12 = 1;
+                    NOP7;
+C51 COMPILER V9.52.0.0   IICPROCESS                                                        11/03/2014 09:25:25 PAGE 3   
+
+                
+                    IIC_SCL12  = 1;
+                    NOP7;
+                    break;
+                  }
+                  default: break; 
+                } 
+              }
+              
+              void i2c_start(unsigned char cPortNum)
+              {
+                switch(cPortNum)
+                {
+                  case 0:
+                  {
+                    IIC_SDA1 = 1;
+                    NOP7;
+                    IIC_SCL1 = 0; NOP7; IIC_SCL1 = 1; NOP7;
+                  
+                    IIC_SDA1 = 0;
+                    NOP7;
+                    IIC_SCL1 = 1; NOP7; IIC_SCL1 = 0; NOP7;
+                    break;
+                  }
+                  case 1:
+                  {
+                    IIC_SDA2 = 1;
+                    NOP7;
+                    IIC_SCL2 = 0; NOP7; IIC_SCL2 = 1; NOP7;
+                  
+                    IIC_SDA2 = 0;
+                    NOP7;
+                    IIC_SCL2 = 1; NOP7; IIC_SCL2 = 0; NOP7;
+                    break;
+                  }
+                  case 2:
+                  {
+                        IIC_SDA3 = 1;
+                    NOP7;
+                    IIC_SCL3 = 0; NOP7; IIC_SCL3 = 1; NOP7;
+                  
+                    IIC_SDA3 = 0;
+                    NOP7;
+                    IIC_SCL3 = 1; NOP7; IIC_SCL3 = 0; NOP7;
+                    break;
+                  }
+                  case 3:
+                  {
+                    IIC_SDA4 = 1;
+                    NOP7;
+                    IIC_SCL4 = 0; NOP7; IIC_SCL4 = 1; NOP7;
+                  
+                    IIC_SDA4 = 0;
+                    NOP7;
+                    IIC_SCL4 = 1; NOP7; IIC_SCL4 = 0; NOP7;
+                    break;
+                  }
+                  case 4:
+                  {
+                    IIC_SDA5 = 1;
+                    NOP7;
+                    IIC_SCL5 = 0; NOP7; IIC_SCL5 = 1; NOP7;
+C51 COMPILER V9.52.0.0   IICPROCESS                                                        11/03/2014 09:25:25 PAGE 4   
+
+                  
+                    IIC_SDA5 = 0;
+                    NOP7;
+                    IIC_SCL5 = 1; NOP7; IIC_SCL5 = 0; NOP7;
+                    break;
+                  }
+                  case 5:
+                  {
+                    IIC_SDA6 = 1;
+                    NOP7;
+                    IIC_SCL6 = 0; NOP7; IIC_SCL6 = 1; NOP7;
+                  
+                    IIC_SDA6 = 0;
+                    NOP7;
+                    IIC_SCL6 = 1; NOP7; IIC_SCL6 = 0; NOP7;
+                    break;
+                  }
+                  case 6:
+                  {
+                    IIC_SDA7 = 1;
+                    NOP7;
+                    IIC_SCL7 = 0; NOP7; IIC_SCL7 = 1; NOP7;
+                  
+                    IIC_SDA7 = 0;
+                    NOP7;
+                    IIC_SCL7 = 1;NOP7; IIC_SCL7 = 0; NOP7;
+                    break;
+                  }
+                  case 7:
+                  {
+                    IIC_SDA8 = 1;
+                    NOP7;
+                    IIC_SCL8 = 0; NOP7; IIC_SCL8 = 1; NOP7;
+                  
+                    IIC_SDA8 = 0;
+                    NOP7;
+                    IIC_SCL8 = 1; NOP7; IIC_SCL8 = 0; NOP7;
+                    break;
+                  }
+                  case 8:
+                  {
+                    IIC_SDA9 = 1;
+                    NOP7;
+                    IIC_SCL9 = 0; NOP7; IIC_SCL9 = 1; NOP7;
+                  
+                    IIC_SDA9 = 0;
+                    NOP7;
+                    IIC_SCL9 = 1; NOP7; IIC_SCL9 = 0; NOP7;
+                    break;
+                  }
+                  case 9:
+                  {
+                    IIC_SDA10 = 1;
+                    NOP7;
+                    IIC_SCL10  = 0; NOP7; IIC_SCL10 = 1; NOP7;
+                  
+                    IIC_SDA10 = 0;
+                    NOP7;
+                    IIC_SCL10  = 1; NOP7; IIC_SCL10 = 0;NOP7;
+                    break;
+                  }
+                  case 10:
+C51 COMPILER V9.52.0.0   IICPROCESS                                                        11/03/2014 09:25:25 PAGE 5   
+
+                  {
+                    IIC_SDA11 = 1;
+                    NOP7;
+                    IIC_SCL11  = 0; NOP7; IIC_SCL11 = 1; NOP7;
+              
+                    IIC_SDA11 = 0;
+                    NOP7;
+                    IIC_SCL11  = 1; NOP7; IIC_SCL11 = 0;NOP7;
+                    break;
+                  }
+                  case 11:
+                  {
+                    IIC_SDA12 = 1;
+                    NOP7;
+                    IIC_SCL12  = 0; NOP7; IIC_SCL12 = 1; NOP7;
+                  
+                    IIC_SDA12 = 0;
+                    NOP7;
+                    IIC_SCL12  = 1; NOP7; IIC_SCL12 = 0; NOP7;
+                    break;
+                  }
+                  default: break;
+                }
+              }
+              
+              void i2c_stop(unsigned char cPortNum)
+              {
+                switch(cPortNum)
+                {
+                  case 0:
+                  {
+                    IIC_SDA1 = 0;
+                    NOP7;
+                
+                    IIC_SCL1 = 1;
+                    NOP7;
+              
+                    IIC_SDA1 = 1;
+                    NOP7;
+                    break;
+                  }
+                  case 1:
+                  {
+                    IIC_SDA2 = 0;
+                    NOP7;
+                
+                    IIC_SCL2 = 1;
+                    NOP7;
+              
+                    IIC_SDA2 = 1;
+                    NOP7;
+                    break;
+                  }
+                  case 2:
+                  {
+                    IIC_SDA3 = 0;
+                    NOP7;
+                
+                    IIC_SCL2 = 1;
+                    NOP7;
+              
+                    IIC_SDA3 = 1;
+C51 COMPILER V9.52.0.0   IICPROCESS                                                        11/03/2014 09:25:25 PAGE 6   
+
+                    NOP7;
+                    break;
+                  }
+                  case 3:
+                  {
+                    IIC_SDA4 = 0;
+                    NOP7;
+                
+                    IIC_SCL3 = 1;
+                    NOP7;
+              
+                    IIC_SDA4 = 1;
+                    NOP7;
+                    break;
+                  }
+                  case 4:
+                  {
+                    IIC_SDA5 = 0;
+                    NOP7;
+                
+                    IIC_SCL5 = 1;
+                    NOP7;
+              
+                    IIC_SDA5 = 1;
+                    NOP7;
+                    break;
+                  }
+                  case 5:
+                  {
+                    IIC_SDA6 = 0;
+                    NOP7;
+                
+                    IIC_SCL6 = 1;
+                    NOP7;
+              
+                    IIC_SDA6 = 1;
+                    NOP7;
+                    break;
+                  }
+                  case 6:
+                  {
+                    IIC_SDA7 = 0;
+                    NOP7;
+                
+                    IIC_SCL7 = 1;
+                    NOP7;
+              
+                    IIC_SDA7 = 1;
+                    NOP7;
+                    break;
+                  }
+                  case 7:
+                  {
+                    IIC_SDA8 = 0;
+                    NOP7;
+                
+                    IIC_SCL8 = 1;
+                    NOP7;
+              
+                    IIC_SDA8 = 1;
+                    NOP7;
+                    break;
+C51 COMPILER V9.52.0.0   IICPROCESS                                                        11/03/2014 09:25:25 PAGE 7   
+
+                  }
+                  case 8:
+                  {
+                    IIC_SDA9 = 0;
+                    NOP7;
+                
+                    IIC_SCL9 = 1;
+                    NOP7;
+              
+                    IIC_SDA9 = 1;
+                    NOP7;
+                    break;
+                  }
+                  case 9:
+                  {
+                    IIC_SDA10 = 0;
+                    NOP7;
+                
+                    IIC_SCL10  = 1;
+                    NOP7;
+              
+                    IIC_SDA10 = 1;
+                    NOP7;
+                    break;
+                  }
+                  case 10:
+                  {
+                    IIC_SDA11 = 0;
+                    NOP7;
+                
+                    IIC_SCL11  = 1;
+                    NOP7;
+              
+                    IIC_SDA11 = 1;
+                    NOP7;
+                    break;
+                  }
+                  case 11:
+                  {
+                    IIC_SDA12 = 0;
+                    NOP7;
+                
+                    IIC_SCL12  = 1;
+                    NOP7;
+              
+                    IIC_SDA12 = 1;
+                    NOP7;
+                    break;
+                  }
+                  default :break;
+                }
+              }
+              
+              char i2c_get_ack(unsigned char cPortNum)
+              {
+                switch(cPortNum)
+                { 
+                  case 0:
+                  {
+                    IIC_SDA1 = 1;
+                    NOP7;
+              
+C51 COMPILER V9.52.0.0   IICPROCESS                                                        11/03/2014 09:25:25 PAGE 8   
+
+                    IIC_SCL1 = 0; NOP7; IIC_SCL1 = 1; NOP7;
+                      if( IIC_SDA1 == 0 )
+                      {
+                          IIC_SCL1 = 1; NOP7; IIC_SCL1 = 0;NOP7;
+                          return OK;
+                      }
+                      else
+                      {
+                          IIC_SCL1 = 1; NOP7; IIC_SCL1 = 0; NOP7;
+                          return ERROR;
+                    }
+                    break;
+                  }
+                  case 1:
+                  {
+                    IIC_SDA2 = 1;
+                    NOP7;
+              
+                    IIC_SCL2 = 0; NOP7; IIC_SCL2 = 1; NOP7;
+                      if( IIC_SDA2 == 0 )
+                      {
+                          IIC_SCL2 = 1; NOP7; IIC_SCL2 = 0;NOP7;
+                          return OK;
+                      }
+                      else
+                      { 
+                          IIC_SCL2 = 1; NOP7; IIC_SCL2 = 0; NOP7;
+                          return ERROR;
+                    }
+                    break;
+                  }
+                  case 2:
+                  {
+                    IIC_SDA3 = 1;
+                    NOP7;
+                
+                    IIC_SCL3 = 0; NOP7; IIC_SCL3 = 1; NOP7;
+                      if( IIC_SDA3 == 0 )
+                      {
+                          IIC_SCL3 = 1; NOP7; IIC_SCL3 = 0;NOP7;
+                          return OK;
+                      }
+                      else
+                      {
+                          IIC_SCL3 = 1; NOP7; IIC_SCL3 = 0; NOP7;
+                          return ERROR;
+                    }
+                    break;
+                  }
+                  case 3:
+                  {
+                    IIC_SDA4 = 1;
+                    NOP7;
+              
+                    IIC_SCL4 = 0; NOP7; IIC_SCL4 = 1; NOP7;
+                      if( IIC_SDA4 == 0 )
+                      {
+                          IIC_SCL4 = 1; NOP7; IIC_SCL4 = 0;NOP7;
+                          return OK;
+                      }
+                      else
+                      {
+C51 COMPILER V9.52.0.0   IICPROCESS                                                        11/03/2014 09:25:25 PAGE 9   
+
+                          IIC_SCL4 = 1; NOP7; IIC_SCL4 = 0; NOP7;
+                          return ERROR;
+                    }
+                    break;
+                  }
+                  case 4:
+                  {
+                    IIC_SDA5 = 1;
+                    NOP7;
+              
+                    IIC_SCL5 = 0; NOP7; IIC_SCL5 = 1; NOP7;
+                      if( IIC_SDA5 == 0 )
+                      {
+                          IIC_SCL5 = 1; NOP7; IIC_SCL5 = 0;NOP7;
+                          return OK;
+                      }
+                      else
+                      {
+                          IIC_SCL5 = 1; NOP7; IIC_SCL5 = 0; NOP7;
+                          return ERROR;
+                    }
+                    break;
+                  }
+                  case 5:
+                  {
+                    IIC_SDA6 = 1;
+                    NOP7;
+              
+                    IIC_SCL6 = 0; NOP7; IIC_SCL6 = 1; NOP7;
+                      if( IIC_SDA6 == 0 )
+                      {
+                          IIC_SCL6 = 1; NOP7; IIC_SCL6 = 0;NOP7;
+                          return OK;
+                      }
+                      else
+                      {
+                          IIC_SCL6 = 1; NOP7; IIC_SCL6= 0; NOP7;
+                          return ERROR;
+                    }
+                    break;
+                  }
+                  case 6:
+                  {
+                    IIC_SDA7 = 1;
+                    NOP7;
+              
+                    IIC_SCL7 = 0; NOP7; IIC_SCL7 = 1; NOP7;
+                      if( IIC_SDA7 == 0 )
+                      {
+                          IIC_SCL7 = 1; NOP7; IIC_SCL7 = 0;NOP7;
+                          return OK;
+                      }
+                      else
+                      {
+                          IIC_SCL7 = 1; NOP7; IIC_SCL7 = 0; NOP7;
+                          return ERROR;
+                    }
+                    break;
+                  }
+                  case 7:
+                  {
+                    IIC_SDA8 = 1;
+C51 COMPILER V9.52.0.0   IICPROCESS                                                        11/03/2014 09:25:25 PAGE 10  
+
+                    NOP7;
+              
+              
+                    IIC_SCL8 = 0; NOP7; IIC_SCL8 = 1; NOP7;
+                      if( IIC_SDA8 == 0 )
+                      {
+                          IIC_SCL8 = 1; NOP7; IIC_SCL8 = 0;NOP7;
+                          return OK;
+                      }
+                      else
+                      {
+                          IIC_SCL8 = 1; NOP7; IIC_SCL8 = 0; NOP7;
+                          return ERROR;
+                    }
+                    break;
+                  }
+                  case 8:
+                  {
+                    IIC_SDA9 = 1;
+                    NOP7;
+              
+                    IIC_SCL9 = 0; NOP7; IIC_SCL9 = 1; NOP7;
+                      if( IIC_SDA9 == 0 )
+                      {
+                          IIC_SCL9 = 1; NOP7; IIC_SCL9 = 0;NOP7;
+                          return OK;
+                      }
+                      else
+                      {
+                          IIC_SCL9 = 1; NOP7; IIC_SCL9 = 0; NOP7;
+                          return ERROR;
+                    }
+                    break;
+                  }
+                  case 9:
+                  {
+                    IIC_SDA10 = 1;
+                    NOP7;
+              
+                    IIC_SCL10 = 0; NOP7; IIC_SCL10 = 1; NOP7;
+                      if( IIC_SDA10 == 0 )
+                      {
+                          IIC_SCL10 = 1; NOP7; IIC_SCL10 = 0;NOP7;
+                          return OK;
+                      }
+                      else
+                      {
+                          IIC_SCL10 = 1; NOP7; IIC_SCL10 = 0; NOP7;
+                          return ERROR;
+                    }
+                    break;
+                  }
+                  case 10:
+                  {
+                    IIC_SDA11 = 1;
+                    NOP7;
+              
+                    IIC_SCL11 = 0; NOP7; IIC_SCL11 = 1; NOP7;
+                      if( IIC_SDA11 == 0 )
+                      {
+                          IIC_SCL11 = 1; NOP7; IIC_SCL11 = 0;NOP7;
+                          return OK;
+C51 COMPILER V9.52.0.0   IICPROCESS                                                        11/03/2014 09:25:25 PAGE 11  
+
+                      }
+                      else
+                      {
+                          IIC_SCL11 = 1; NOP7; IIC_SCL11 = 0; NOP7;
+                          return ERROR;
+                    }
+                    break;
+                  }
+                  case 11:
+                  {
+                    IIC_SDA12 = 1;
+                    NOP7;
+              
+                    IIC_SCL12 = 0; NOP7; IIC_SCL12 = 1; NOP7;
+                      if( IIC_SDA12 == 0 )
+                      {
+                          IIC_SCL12 = 1; NOP7; IIC_SCL12 = 0;NOP7;
+                          return OK;
+                      }
+                      else
+                      {
+                          IIC_SCL12 = 1; NOP7; IIC_SCL12 = 0; NOP7;
+                          return ERROR;
+                    }
+                    break;
+                  }
+                  default: break;
+                  } 
+              }
+              
+              void i2c_send_ack(unsigned char cPortNum)
+              {
+                switch(cPortNum)
+                {
+                  case 0:
+                  {
+                    IIC_SDA1 = 0; NOP14;
+                    IIC_SCL1 = 1; NOP14; IIC_SCL1 = 0; NOP14;
+                    IIC_SDA1 = 1;
+                    break; 
+                  }
+                  case 1:
+                  {
+                    IIC_SDA2 = 0; NOP14;
+                    IIC_SCL2 = 1; NOP14; IIC_SCL2 = 0; NOP14;
+                    IIC_SDA2 = 1;
+                    break; 
+                  }
+                  case 2:
+                  {
+                    IIC_SDA3 = 0; NOP14;
+                    IIC_SCL3 = 1; NOP14; IIC_SCL3 = 0; NOP14;
+                    IIC_SDA3 = 1;
+                    break; 
+                  }
+                  case 3:
+                  {
+                    IIC_SDA4 = 0; NOP14;
+                    IIC_SCL4 = 1; NOP14; IIC_SCL4 = 0; NOP14;
+                    IIC_SDA4 = 1;
+                    break; 
+                  }
+C51 COMPILER V9.52.0.0   IICPROCESS                                                        11/03/2014 09:25:25 PAGE 12  
+
+                  case 4  :
+                  {
+                    IIC_SDA5 = 0; NOP14;
+                    IIC_SCL5 = 1; NOP14; IIC_SCL5 = 0; NOP14;
+                    IIC_SDA5 = 1;
+                    break; 
+                  }
+                  case 5:
+                  {
+                    IIC_SDA6 = 0; NOP14;
+                    IIC_SCL6 = 1; NOP14; IIC_SCL6 = 0; NOP14;
+                    IIC_SDA6 = 1;
+                    break; 
+                  }
+                  case 6:
+                  {
+                    IIC_SDA7 = 0; NOP14;
+                    IIC_SCL7 = 1; NOP14; IIC_SCL7 = 0; NOP14;
+                    IIC_SDA7 = 1;
+                    break; 
+                  }
+                  case 7:
+                  {
+                    IIC_SDA8 = 0; NOP14;
+                    IIC_SCL8 = 1; NOP14; IIC_SCL8 = 0; NOP14;
+                    IIC_SDA8 = 1;
+                    break; 
+                  }
+                  case 8:
+                  {
+                    IIC_SDA9 = 0; NOP14;
+                    IIC_SCL9 = 1; NOP14; IIC_SCL9 = 0; NOP14;
+                    IIC_SDA9 = 1;
+                    break; 
+                  }
+                  case 9:
+                  {
+                    IIC_SDA10 = 0; NOP14;
+                    IIC_SCL10  = 1; NOP14; IIC_SCL10 = 0; NOP14;
+                    IIC_SDA10 = 1;
+                    break; 
+                  }
+                  case 10:
+                  {
+                    IIC_SDA11 = 0; NOP14;
+                    IIC_SCL11  = 1; NOP14; IIC_SCL11 = 0; NOP14;
+                    IIC_SDA11 = 1;
+                    break; 
+                  }
+                  case 11:
+                  {
+                    IIC_SDA12 = 0; NOP14;
+                    IIC_SCL12  = 1; NOP14; IIC_SCL12 = 0; NOP14;
+                    IIC_SDA12 = 1;
+                    break; 
+                  }
+                  default: break;
+                }
+              }
+              
+              /*
+              void i2c_send_no_ack(unsigned char cPortNum)
+C51 COMPILER V9.52.0.0   IICPROCESS                                                        11/03/2014 09:25:25 PAGE 13  
+
+              {
+                IIC_SDA = 1;
+                IIC_SCL^cPortNum = 0;
+                delay();
+              
+                IIC_SCL^cPortNum = 1;
+                delay();  ///SCL为高电平期间送出高电平的SDA
+                
+                IIC_SCL^cPortNum = 0;
+              
+                IIC_SDA = 1;
+              }   */
+              
+              void i2c_writeByte(unsigned char cPortNum, unsigned char dat)
+              {
+                unsigned char i    = 0;
+                unsigned char temp = dat;
+              
+                switch(cPortNum)
+                {
+                  case 0:
+                  {
+                    for(i=0; i<8; i++)
+                    {
+                        if(temp & 0x80)
+                              IIC_SDA1 = 1;
+                          else
+                              IIC_SDA1 = 0;
+                
+                          temp <<= 1;
+                          IIC_SCL1 = 1; NOP14; IIC_SCL1 = 0; NOP14; 
+                    }
+                    break;  
+                  } 
+                  case 1:
+                  {
+                    for(i=0; i<8; i++)
+                    {
+                        if(temp & 0x80)
+                              IIC_SDA2 = 1;
+                          else
+                              IIC_SDA2 = 0;
+                        
+                          temp <<= 1;
+                          IIC_SCL2 = 1; NOP14; IIC_SCL2 = 0; NOP14; 
+                    } 
+                    break;
+                  }
+                  case 2:
+                  { 
+                    for(i=0; i<8; i++)
+                    {
+                        if(temp & 0x80)
+                              IIC_SDA3 = 1;
+                          else
+                              IIC_SDA3 = 0;
+                
+                          temp <<= 1;
+                          IIC_SCL3 = 1; NOP14; IIC_SCL3 = 0; NOP14; 
+                    }
+                    break;  
+                  }
+C51 COMPILER V9.52.0.0   IICPROCESS                                                        11/03/2014 09:25:25 PAGE 14  
+
+                  case 3:
+                  {
+                    for(i=0; i<8; i++)
+                    {
+                        if(temp & 0x80)
+                              IIC_SDA4 = 1;
+                          else
+                              IIC_SDA4 = 0;
+                
+                          temp <<= 1;
+                          IIC_SCL4 = 1; NOP14; IIC_SCL4 = 0; NOP14; 
+                    }
+                    break;  
+                  }
+                  case 4:
+                  {
+                    for(i=0; i<8; i++)
+                    {
+                        if(temp & 0x80)
+                              IIC_SDA5 = 1;
+                          else
+                              IIC_SDA5 = 0;
+                
+                          temp <<= 1;
+                          IIC_SCL5 = 1; NOP14; IIC_SCL5 = 0; NOP14; 
+                    }
+                    break;  
+                  }
+                  case 5:
+                  { 
+                    for(i=0; i<8; i++)
+                    {
+                        if(temp & 0x80)
+                              IIC_SDA6 = 1;
+                          else
+                              IIC_SDA6 = 0;
+                
+                          temp <<= 1;
+                          IIC_SCL6 = 1; NOP14; IIC_SCL6 = 0; NOP14; 
+                    }
+                    break;  
+                  }
+                  case 6:
+                  { 
+                    for(i=0; i<8; i++)
+                    {
+                        if(temp & 0x80)
+                              IIC_SDA7 = 1;
+                          else
+                              IIC_SDA7 = 0;
+                
+                          temp <<= 1;
+                          IIC_SCL7 = 1; NOP14; IIC_SCL7 = 0; NOP14; 
+                    }
+                    break;  
+                  }
+                  case 7:
+                  { 
+                    for(i=0; i<8; i++)
+                    {
+                        if(temp & 0x80)
+                              IIC_SDA8 = 1;
+C51 COMPILER V9.52.0.0   IICPROCESS                                                        11/03/2014 09:25:25 PAGE 15  
+
+                          else
+                              IIC_SDA8 = 0;
+                
+                          temp <<= 1;
+                          IIC_SCL8 = 1; NOP14; IIC_SCL8 = 0; NOP14; 
+                    }
+                    break;  
+                  }
+                  case 8:
+                  {
+                      for(i=0; i<8; i++)
+                    {
+                        if(temp & 0x80)
+                              IIC_SDA9 = 1;
+                          else
+                              IIC_SDA9 = 0;
+                
+                          temp <<= 1;
+                          IIC_SCL9 = 1; NOP14; IIC_SCL9 = 0; NOP14; 
+                    } 
+                    break;
+                  }
+                  case 9:
+                  {
+                    for(i=0; i<8; i++)
+                    {
+                        if(temp & 0x80)
+                              IIC_SDA10 = 1;
+                          else
+                              IIC_SDA10 = 0;
+                
+                          temp <<= 1;
+                          IIC_SCL10 = 1; NOP14; IIC_SCL10 = 0; NOP14; 
+                    }
+                    break;  
+                  }
+                  case 10:
+                  {
+                    for(i=0; i<8; i++)
+                    {
+                        if(temp & 0x80)
+                              IIC_SDA11 = 1;
+                          else
+                              IIC_SDA11 = 0;
+                
+                          temp <<= 1;
+                          IIC_SCL11 = 1; NOP14; IIC_SCL11 = 0; NOP14; 
+                    }
+                    break;  
+                  }
+                  case 11:
+                  { 
+                    for(i=0; i<8; i++)
+                    {
+                        if(temp & 0x80)
+                              IIC_SDA12 = 1;
+                          else
+                              IIC_SDA12 = 0;
+                
+                          temp <<= 1;
+                          IIC_SCL12 = 1; NOP14; IIC_SCL12 = 0; NOP14; 
+                    }
+C51 COMPILER V9.52.0.0   IICPROCESS                                                        11/03/2014 09:25:25 PAGE 16  
+
+                    break;  
+                  }
+                  default : break;
+                }
+              }
+              
+              unsigned char i2c_readByte(unsigned char cPortNum)
+              {
+                unsigned char dat = 0x00;
+                  unsigned char i   = 8;
+                switch(cPortNum)
+                {
+                  case 0:
+                  {
+                      while(i--)
+                      {
+                          dat <<= 1;
+                          IIC_SCL1 = 0; NOP28; IIC_SCL1 = 1; NOP28;
+                          if( IIC_SDA1 )
+                              dat |= 0x01;
+                      }  
+                      IIC_SCL1 = 1; NOP28; IIC_SCL1 = 0; NOP28;  
+              
+                      return dat;
+                  }
+                  case 1:
+                  {  
+                      while(i--)
+                      {
+                          dat <<= 1;
+                          IIC_SCL2 = 0; NOP28; IIC_SCL2 = 1; NOP28;
+                          if( IIC_SDA2 )
+                              dat |= 0x01;
+                      }  
+                      IIC_SCL2 = 1; NOP28; IIC_SCL2 = 0; NOP28;  
+              
+                      return dat;
+                  }
+                  case 2:
+                  {
+                      while(i--)
+                      {
+                          dat <<= 1;
+                          IIC_SCL3 = 0; NOP28; IIC_SCL3 = 1; NOP28;
+                          if( IIC_SDA3 )
+                              dat |= 0x01;
+                      }  
+                      IIC_SCL3 = 1; NOP28; IIC_SCL3 = 0; NOP28;  
+              
+                      return dat;
+                  }
+                  case 3:
+                  {
+                      while(i--)
+                      {
+                          dat <<= 1;
+                          IIC_SCL4 = 0; NOP28; IIC_SCL4 = 1; NOP28;
+                          if( IIC_SDA4 )
+                              dat |= 0x01;
+                      }  
+                      IIC_SCL4 = 1; NOP28; IIC_SCL4 = 0; NOP28;  
+              
+C51 COMPILER V9.52.0.0   IICPROCESS                                                        11/03/2014 09:25:25 PAGE 17  
+
+                      return dat;
+                  }
+                  case 4:
+                  {
+                      while(i--)
+                      {
+                          dat <<= 1;
+                          IIC_SCL5 = 0; NOP28; IIC_SCL5 = 1; NOP28;
+                          if( IIC_SDA5 )
+                              dat |= 0x01;
+                      }  
+                      IIC_SCL5 = 1; NOP28; IIC_SCL5 = 0; NOP28;  
+              
+                      return dat;
+                  }
+                  case 5:
+                  {
+                      while(i--)
+                      {
+                          dat <<= 1;
+                          IIC_SCL6 = 0; NOP28; IIC_SCL6 = 1; NOP28;
+                          if( IIC_SDA6 )
+                              dat |= 0x01;
+                      }  
+                      IIC_SCL6 = 1; NOP28; IIC_SCL6 = 0; NOP28;  
+              
+                      return dat;
+                  }
+                  case 6:
+                  {
+                      while(i--)
+                      {
+                          dat <<= 1;
+                          IIC_SCL7 = 0; NOP28; IIC_SCL7 = 1; NOP28;
+                          if( IIC_SDA7 )
+                              dat |= 0x01;
+                      }  
+                      IIC_SCL7 = 1; NOP28; IIC_SCL7 = 0; NOP28;  
+              
+                      return dat;
+                  }
+                  case 7:
+                  {
+                      while(i--)
+                      {
+                          dat <<= 1;
+                          IIC_SCL8 = 0; NOP28; IIC_SCL8= 1; NOP28;
+                          if( IIC_SDA8 )
+                              dat |= 0x01;
+                      }  
+                      IIC_SCL8 = 1; NOP28; IIC_SCL8 = 0; NOP28;  
+              
+                      return dat;
+                  }
+                  case 8:
+                  {
+                      while(i--)
+                      {
+                          dat <<= 1;
+                          IIC_SCL9 = 0; NOP28; IIC_SCL9 = 1; NOP28;
+                          if( IIC_SDA9 )
+                              dat |= 0x01;
+C51 COMPILER V9.52.0.0   IICPROCESS                                                        11/03/2014 09:25:25 PAGE 18  
+
+                      }  
+                      IIC_SCL9 = 1; NOP28; IIC_SCL9 = 0; NOP28;  
+              
+                      return dat;
+                  }
+                  case 9:
+                  {
+                      while(i--)
+                      {
+                          dat <<= 1;
+                          IIC_SCL10 = 0; NOP28; IIC_SCL10 = 1; NOP28;
+                          if( IIC_SDA10 )
+                              dat |= 0x01;
+                      }  
+                      IIC_SCL10 = 1; NOP28; IIC_SCL10 = 0; NOP28;  
+              
+                      return dat;
+                  }
+                  case 10:
+                  {
+                      while(i--)
+                      {
+                          dat <<= 1;
+                          IIC_SCL11 = 0; NOP28; IIC_SCL11 = 1; NOP28;
+                          if( IIC_SDA11 )
+                              dat |= 0x01;
+                      }  
+                      IIC_SCL11 = 1; NOP28; IIC_SCL11 = 0; NOP28;  
+              
+                      return dat;
+                  }
+                  case 11:
+                  {
+                      while(i--)
+                      {
+                          dat <<= 1;
+                          IIC_SCL12 = 0; NOP28; IIC_SCL12 = 1; NOP28;
+                          if( IIC_SDA12 )
+                              dat |= 0x01;
+                      }  
+                      IIC_SCL12 = 1; NOP28; IIC_SCL12 = 0; NOP28;  
+              
+                      return dat;
+                  }
+                  default : break;
+                } 
+                return 0;
+              }
+              
+              #endif  /*endif ID_USB*/
+
+
+MODULE INFORMATION:   STATIC OVERLAYABLE
+   CODE SIZE        =   ----    ----
+   CONSTANT SIZE    =   ----    ----
+   XDATA SIZE       =   ----    ----
+   PDATA SIZE       =   ----    ----
+   DATA SIZE        =   ----    ----
+   IDATA SIZE       =   ----    ----
+   BIT SIZE         =   ----    ----
+END OF MODULE INFORMATION.
+
+
+C51 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)

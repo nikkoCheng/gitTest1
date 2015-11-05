@@ -1,0 +1,382 @@
+C51 COMPILER V9.52.0.0   ONEWIREPROCESS                                                    11/05/2015 08:57:07 PAGE 1   
+
+
+C51 COMPILER V9.52.0.0, COMPILATION OF MODULE ONEWIREPROCESS
+OBJECT MODULE PLACED IN .\OUT\oneWireProcess.obj
+COMPILER INVOKED BY: d:\Keil\C51\BIN\C51.EXE eeprom\oneWireProcess.c LARGE BROWSE INCDIR(main;include;mcu;uart;command;e
+                    -eprom;ledProcess;update;crc;delay;timer;tmu_number) DEBUG OBJECTEXTEND PRINT(.\OUT\oneWireProcess.lst) TABS(2) OBJECT(.\
+                    -OUT\oneWireProcess.obj)
+
+line level    source
+
+   1          #include "typeDef.h"
+   2          #include "oneWireProcess.h"
+   3          #include "share.h"
+   4          #include "mcuInit.h"
+   5          #include "ds2431Process.h"
+   6          
+   7          #ifdef ID_ONE_WIRE
+   8          
+   9          /*one_wire_standard  为1时表示标准速度，为0时表示高速模式*/
+  10          static unsigned char one_wire_standard;    
+  11          
+  12          /*one_wire_is_overdrive ，用于高速模式时是否需要强制使DS8431为标准模式再设置为高速模式。
+  13          该值为1时表示已经进入高速模式，无需重新设定；为0则需重新设定*/
+  14          static unsigned char one_wire_is_overdrive[12];
+  15          
+  16          /****************************************************
+  17          *【函数名】one_wire_init
+  18          *【功     能】设置DS2431通信模式
+  19          *【输     入】standard    为1时表示标准模式，为0时表示高速模式
+  20                                      
+  21          *【输     出】无
+  22          *【作     者】wuyanan
+  23          *【日     期】2013-06-15
+  24          *****************************************************/
+  25          
+  26          void one_wire_init(enum ONE_WIRE_STANDARD speed)
+  27          {
+  28   1          one_wire_standard = speed;
+  29   1          memory_clear(one_wire_is_overdrive, sizeof(one_wire_is_overdrive));
+  30   1          one_wire_set_speed(speed);
+  31   1      }
+  32          
+  33          /****************************************************
+  34          *【函数名】one_wire_write_eight_byte
+  35          *【功     能】将8字节数据写入DS2431,目标地址最末3 bit 必须为0
+  36          *【输     入】addr    目标地址
+  37                                      dat     将要写入的数据
+  38                                      cPortNum    端口
+  39                                      
+  40          *【输     出】无
+  41          *【作     者】wuyanan
+  42          *【日     期】2013-06-15
+  43          *****************************************************/
+  44          unsigned char one_wire_write_eight_byte( unsigned char cPortNum, unsigned int addr, unsigned char *dat)
+  45          {
+  46   1          unsigned char *temp_data;
+  47   1          unsigned char temp_num;   
+  48   1          unsigned char i;   
+  49   1          union myunion union1;
+  50   1          unsigned char temp_reg[3];
+  51   1      
+  52   1          temp_num = 8;
+  53   1          union1.whole = addr;
+C51 COMPILER V9.52.0.0   ONEWIREPROCESS                                                    11/05/2015 08:57:07 PAGE 2   
+
+  54   1          temp_data = dat;
+  55   1        
+  56   1          memory_clear(temp_reg,3);
+  57   1        
+  58   1          if(union1.half.lowByte & 0x07)//目标地址最后三位为0
+  59   1          {
+  60   2              return ERROR;
+  61   2          }
+  62   1      
+  63   1          if( ONE_WIRE_STANDARD_SPEED == one_wire_standard || ONE_WIRE_OVERDRIVE_SPEED == one_wire_is_overdrive[
+             -cPortNum])
+  64   1          {
+  65   2              if( one_wire_start_get_ack(cPortNum))
+  66   2              {
+  67   3                  one_wire_is_overdrive[cPortNum] = ONE_WIRE_STANDARD_SPEED;
+  68   3                  return ERROR; 
+  69   3              }
+  70   2          
+  71   2              one_wire_write_byte(OW_SKIP_ROM, cPortNum, one_wire_is_overdrive[cPortNum]);
+  72   2          }
+  73   1          else
+  74   1          {
+  75   2              /*由于不知道DS2431目前处于什么模式，所以先强制使其为标准模式，
+  76   2                    在标准模式下，将其设置为高速模式*/
+  77   2              one_wire_set_speed(ONE_WIRE_STANDARD_SPEED);
+  78   2        
+  79   2              if(one_wire_start_get_ack(cPortNum))
+  80   2              {
+  81   3                  one_wire_is_overdrive[cPortNum] = ONE_WIRE_STANDARD_SPEED;
+  82   3            one_wire_set_speed(ONE_WIRE_OVERDRIVE_SPEED);
+  83   3                  return ERROR; 
+  84   3              }
+  85   2          
+  86   2              one_wire_write_byte(OW_OVERDRIVE_SKIP_ROM, cPortNum, ONE_WIRE_STANDARD_SPEED);
+  87   2          
+  88   2              one_wire_set_speed(ONE_WIRE_OVERDRIVE_SPEED);
+  89   2          one_wire_is_overdrive[cPortNum] = ONE_WIRE_OVERDRIVE_SPEED;
+  90   2          }
+  91   1        
+  92   1        /*将数据写入暂存器*/
+  93   1          one_wire_write_byte(OW_WRITE_SCRATCHPAD, cPortNum, one_wire_is_overdrive[cPortNum]);
+  94   1          one_wire_write_byte(union1.half.lowByte, cPortNum, one_wire_is_overdrive[cPortNum]);
+  95   1          one_wire_write_byte(union1.half.highByte, cPortNum, one_wire_is_overdrive[cPortNum]);
+  96   1        
+  97   1          while(temp_num--)
+  98   1          {   
+  99   2              one_wire_write_byte(*temp_data++, cPortNum, one_wire_is_overdrive[cPortNum]);
+ 100   2              WatchDog();
+ 101   2          }
+ 102   1        
+ 103   1        /*获取OW_COPY_SCRATCHPAD命令所需的三字节模板:目标地址和结束偏移量/数据状态字*/
+ 104   1          if( one_wire_start_get_ack(cPortNum))
+ 105   1          {
+ 106   2              one_wire_is_overdrive[cPortNum] = ONE_WIRE_STANDARD_SPEED;
+ 107   2              return ERROR;
+ 108   2          }
+ 109   1        
+ 110   1          one_wire_write_byte(OW_SKIP_ROM, cPortNum, one_wire_is_overdrive[cPortNum]);
+ 111   1          one_wire_write_byte(OW_READ_SCRATCHPAD, cPortNum, one_wire_is_overdrive[cPortNum]);
+ 112   1          for ( i = 0; i < 3; i++)
+ 113   1          {
+ 114   2              temp_reg[i] = one_wire_read_byte(cPortNum, one_wire_is_overdrive[cPortNum]);
+C51 COMPILER V9.52.0.0   ONEWIREPROCESS                                                    11/05/2015 08:57:07 PAGE 3   
+
+ 115   2              WatchDog();
+ 116   2          }
+ 117   1        
+ 118   1          /*将暂存器中数据复制到目标地址*/
+ 119   1          if( one_wire_start_get_ack(cPortNum))
+ 120   1          {
+ 121   2              one_wire_is_overdrive[cPortNum] = ONE_WIRE_STANDARD_SPEED;
+ 122   2              return ERROR; 
+ 123   2          }
+ 124   1        
+ 125   1          one_wire_write_byte(OW_SKIP_ROM, cPortNum, one_wire_is_overdrive[cPortNum]);
+ 126   1        
+ 127   1          one_wire_write_byte(OW_COPY_SCRATCHPAD, cPortNum, one_wire_is_overdrive[cPortNum]);
+ 128   1          one_wire_write_byte(temp_reg[0], cPortNum, one_wire_is_overdrive[cPortNum]);
+ 129   1          one_wire_write_byte(temp_reg[1], cPortNum, one_wire_is_overdrive[cPortNum]);
+ 130   1          one_wire_write_byte(temp_reg[2], cPortNum, one_wire_is_overdrive[cPortNum]);
+ 131   1        
+ 132   1          return OK;
+ 133   1      }
+ 134          
+ 135          
+ 136          /****************************************************
+ 137          *【函数名】one_wire_read_memory_block
+ 138          *【功     能】从DS2431中读取数据(从目标地址最多可连续读至0X008F 处)
+ 139          *【输     入】 cPortNum    端口
+ 140                                      addr    目标地址
+ 141                                      recvPtr        接受读取数据的指针
+ 142                                      len      读取长度(字节)
+ 143                                     
+ 144                                      
+ 145          *【输     出】无
+ 146          *【作     者】wuyanan
+ 147          *【日     期】2013-06-15
+ 148          *****************************************************/
+ 149          unsigned char one_wire_read_memory_block( unsigned char cPortNum, int desAddr, unsigned char*recvPtr, unsi
+             -gned char len)
+ 150          {
+ 151   1          int i ;
+ 152   1          union myunion union1;
+ 153   1      
+ 154   1          union1.whole = desAddr;
+ 155   1        
+ 156   1          if(!recvPtr)
+ 157   1          {
+ 158   2              return ERROR;
+ 159   2          }
+ 160   1        
+ 161   1          if( ONE_WIRE_STANDARD_SPEED == one_wire_standard || ONE_WIRE_OVERDRIVE_SPEED == one_wire_is_overdrive[
+             -cPortNum])
+ 162   1          {
+ 163   2              if( one_wire_start_get_ack(cPortNum))
+ 164   2              {
+ 165   3                  one_wire_is_overdrive[cPortNum] = ONE_WIRE_STANDARD_SPEED;
+ 166   3                  return ERROR; 
+ 167   3              }
+ 168   2          
+ 169   2              one_wire_write_byte(OW_SKIP_ROM, cPortNum, one_wire_is_overdrive[cPortNum]);
+ 170   2          }
+ 171   1          else
+ 172   1          {
+ 173   2              //由于不知道DS2431目前处于什么模式，所以先强制使其为标准模式，在标准模式下，将其设置为高速模式//
+ 174   2              one_wire_set_speed(ONE_WIRE_STANDARD_SPEED);
+C51 COMPILER V9.52.0.0   ONEWIREPROCESS                                                    11/05/2015 08:57:07 PAGE 4   
+
+ 175   2        
+ 176   2              if( one_wire_start_get_ack(cPortNum))
+ 177   2              {
+ 178   3                  one_wire_is_overdrive[cPortNum] = ONE_WIRE_STANDARD_SPEED;
+ 179   3            one_wire_set_speed(ONE_WIRE_OVERDRIVE_SPEED);
+ 180   3                  return ERROR; 
+ 181   3              }
+ 182   2          
+ 183   2              one_wire_write_byte(OW_OVERDRIVE_SKIP_ROM, cPortNum, ONE_WIRE_STANDARD_SPEED);
+ 184   2          
+ 185   2              one_wire_set_speed(ONE_WIRE_OVERDRIVE_SPEED);
+ 186   2          one_wire_is_overdrive[cPortNum] = ONE_WIRE_OVERDRIVE_SPEED;
+ 187   2          }
+ 188   1      /*    
+ 189   1      if(one_wire_is_overdrive[cPortNum] == ONE_WIRE_STANDARD_SPEED)
+ 190   1        {
+ 191   1                one_wire_set_speed(ONE_WIRE_STANDARD_SPEED);
+ 192   1                if( one_wire_start_get_ack(cPortNum) == 0 )
+ 193   1                {       
+ 194   1                      one_wire_write_byte(OW_OVERDRIVE_SKIP_ROM, cPortNum, ONE_WIRE_STANDARD_SPEED);
+ 195   1                  
+ 196   1                      one_wire_set_speed(ONE_WIRE_OVERDRIVE_SPEED);
+ 197   1                      one_wire_is_overdrive[cPortNum] = ONE_WIRE_OVERDRIVE_SPEED;
+ 198   1               }
+ 199   1               else
+ 200   1               {              
+ 201   1                      one_wire_is_overdrive[cPortNum] = ONE_WIRE_OVERDRIVE_SPEED;
+ 202   1                      return ERROR;
+ 203   1                }
+ 204   1          } 
+ 205   1          else
+ 206   1          {
+ 207   1                  one_wire_set_speed(ONE_WIRE_OVERDRIVE_SPEED);
+ 208   1                  if( one_wire_start_get_ack(cPortNum) == 0 )
+ 209   1                  {   
+ 210   1                        
+ 211   1                        one_wire_write_byte(OW_OVERDRIVE_SKIP_ROM, cPortNum, ONE_WIRE_OVERDRIVE_SPEED);
+ 212   1                 }
+ 213   1                 else
+ 214   1                 {
+ 215   1                    one_wire_is_overdrive[cPortNum] = ONE_WIRE_STANDARD_SPEED;
+ 216   1                    return ERROR;
+ 217   1                  }       
+ 218   1          }
+ 219   1        */
+ 220   1          one_wire_write_byte(OW_READ_MEMORY, cPortNum, one_wire_is_overdrive[cPortNum]);   
+ 221   1          one_wire_write_byte(union1.half.lowByte, cPortNum, one_wire_is_overdrive[cPortNum]);
+ 222   1          one_wire_write_byte(union1.half.highByte, cPortNum, one_wire_is_overdrive[cPortNum]);
+ 223   1      
+ 224   1          for(i = 0; i < len;i++)
+ 225   1          {
+ 226   2              *recvPtr++ = one_wire_read_byte(cPortNum, one_wire_is_overdrive[cPortNum]);
+ 227   2              WatchDog();
+ 228   2          }
+ 229   1      
+ 230   1          return OK;
+ 231   1      
+ 232   1      }
+ 233          
+ 234          /****************************************************
+ 235          *【函数名】one_wire_read12_memory_block
+ 236          *【功     能】从12个DS2431中读取数据(从目标地址最多可连续读至0X008F 处)
+C51 COMPILER V9.52.0.0   ONEWIREPROCESS                                                    11/05/2015 08:57:07 PAGE 5   
+
+ 237          *【输     入】 ecvPtr        接受读取数据的指针
+ 238          
+ 239                                                               
+ 240          *【输     出】无
+ 241          *【作     者】陈杰
+ 242          *【日     期】2013-12-10
+ 243          *****************************************************/
+ 244          //unsigned char xx = 0;
+ 245          unsigned char one_wire_read12_memory_block( int desAddr,unsigned char*recvPtr,unsigned char len)
+ 246          {
+ 247   1          int i , j, n = 0;
+ 248   1          unsigned char* ret;
+ 249   1          union myunion union1;
+ 250   1      
+ 251   1          union1.whole = desAddr;
+ 252   1        
+ 253   1          if(!recvPtr)
+ 254   1          {
+ 255   2              return ERROR;
+ 256   2          }
+ 257   1          if( n = one_wire_start_get12_ack())
+ 258   1          {
+ 259   2          //    xx++;
+ 260   2          }
+ 261   1      
+ 262   1        one_wire_write12_byte(OW_SKIP_ROM, 0);
+ 263   1        one_wire_write12_byte(OW_READ_MEMORY, 0);   
+ 264   1          one_wire_write12_byte(union1.half.lowByte,0);
+ 265   1          one_wire_write12_byte(union1.half.highByte,0);
+ 266   1      
+ 267   1        for(i = 0; i < len;i++)
+ 268   1        { 
+ 269   2          ret = one_wire_read12_byte(0);
+ 270   2          for(j = 0;j<12;j++)
+ 271   2          {
+ 272   3            if(n&(1<<j))
+ 273   3            {
+ 274   4              recvPtr[j*len+i] = 0;
+ 275   4            }else
+ 276   3            {
+ 277   4              recvPtr[j*len+i] = ret[j];
+ 278   4            }
+ 279   3          }
+ 280   2            WatchDog();
+ 281   2        }
+ 282   1      
+ 283   1          return OK;
+ 284   1      }
+ 285          /****************************************************
+ 286          *【函数名】one_wire_get_rom
+ 287          *【功     能】获取DS2431的64 bit 光刻ROM码
+ 288          *【输     入】 cPortNum    端口
+ 289                                      recvPtr        接受读取数据的指针
+ 290                                     
+ 291                                      
+ 292          *【输     出】无
+ 293          *【作     者】wuyanan
+ 294          *【日     期】2013-06-15
+ 295          *****************************************************/
+ 296          
+ 297          unsigned char one_wire_get_rom( unsigned char cPortNum, unsigned char *recvPtr)
+ 298          {
+C51 COMPILER V9.52.0.0   ONEWIREPROCESS                                                    11/05/2015 08:57:07 PAGE 6   
+
+ 299   1          unsigned char *temp_data;
+ 300   1          unsigned char temp_num;   
+ 301   1          unsigned char i;   
+ 302   1      
+ 303   1          temp_num = 8;
+ 304   1          temp_data = recvPtr;
+ 305   1      
+ 306   1          if( ONE_WIRE_STANDARD_SPEED == one_wire_standard || ONE_WIRE_OVERDRIVE_SPEED == one_wire_is_overdrive[
+             -cPortNum])
+ 307   1          {
+ 308   2              /*由于不知道DS2431目前处于什么模式，所以先强制使其为标准模式，
+ 309   2                    在标准模式下，将其设置为高速模式*/
+ 310   2              one_wire_set_speed(ONE_WIRE_STANDARD_SPEED);
+ 311   2        
+ 312   2              if( one_wire_start_get_ack(cPortNum))
+ 313   2              {
+ 314   3                  one_wire_is_overdrive[cPortNum] = ONE_WIRE_STANDARD_SPEED;
+ 315   3            one_wire_set_speed(ONE_WIRE_OVERDRIVE_SPEED);
+ 316   3                  return ERROR; 
+ 317   3              }
+ 318   2      
+ 319   2              one_wire_write_byte(OW_OVERDRIVE_SKIP_ROM, cPortNum, ONE_WIRE_STANDARD_SPEED);
+ 320   2          
+ 321   2              one_wire_set_speed(ONE_WIRE_OVERDRIVE_SPEED);
+ 322   2          one_wire_is_overdrive[cPortNum] = ONE_WIRE_OVERDRIVE_SPEED;
+ 323   2          }
+ 324   1        
+ 325   1          if( one_wire_start_get_ack(cPortNum))
+ 326   1          {
+ 327   2              one_wire_is_overdrive[cPortNum] = ONE_WIRE_STANDARD_SPEED;
+ 328   2              return ERROR; 
+ 329   2          }
+ 330   1        
+ 331   1          one_wire_write_byte(OW_READ_ROM, cPortNum, one_wire_is_overdrive[cPortNum]);
+ 332   1        
+ 333   1          for ( i = 0; i < 8; i++)
+ 334   1          {
+ 335   2              *temp_data++ = one_wire_read_byte(cPortNum, one_wire_is_overdrive[cPortNum]);
+ 336   2              WatchDog();
+ 337   2          }
+ 338   1          
+ 339   1          return OK;
+ 340   1      }
+ 341          
+ 342          #endif
+ 343          
+
+
+MODULE INFORMATION:   STATIC OVERLAYABLE
+   CODE SIZE        =   1535    ----
+   CONSTANT SIZE    =   ----    ----
+   XDATA SIZE       =     13      46
+   PDATA SIZE       =   ----    ----
+   DATA SIZE        =   ----    ----
+   IDATA SIZE       =   ----    ----
+   BIT SIZE         =   ----    ----
+END OF MODULE INFORMATION.
+
+
+C51 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)

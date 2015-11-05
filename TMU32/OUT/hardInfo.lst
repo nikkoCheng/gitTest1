@@ -1,0 +1,65 @@
+C51 COMPILER V9.52.0.0   HARDINFO                                                          11/05/2015 08:57:07 PAGE 1   
+
+
+C51 COMPILER V9.52.0.0, COMPILATION OF MODULE HARDINFO
+OBJECT MODULE PLACED IN .\OUT\hardInfo.obj
+COMPILER INVOKED BY: d:\Keil\C51\BIN\C51.EXE main\hardInfo.c LARGE BROWSE INCDIR(main;include;mcu;uart;command;eeprom;le
+                    -dProcess;update;crc;delay;timer;tmu_number) DEBUG OBJECTEXTEND PRINT(.\OUT\hardInfo.lst) TABS(2) OBJECT(.\OUT\hardInfo.o
+                    -bj)
+
+line level    source
+
+   1          #include "hardInfo.h"
+   2          #include "tmuProcess.h"
+   3          
+   4          
+   5          
+   6          #define DEVICE_TRAP_STATIC        0x11      /*智能ODN盘管理器0x11固定地址0x10动态地址*/
+   7          #define DEVICE_TRAP_DYNEMIC       0x10      /*智能ODN盘管理器0x11固定地址0x10动态地址*/
+   8          #define HARD_VERSION              0x80
+   9          #define SOFT_VERSION              0x13      //add by lee on 2014-07-31
+  10          
+  11          static char deviceTable[] 
+  12                                  = {
+  13                                      DEVICE_TRAP_STATIC,
+  14                                      HARD_VERSION,       /*硬件版本*///注:10:310,40:340,80:380
+  15                                      SOFT_VERSION, /*软件版本*/
+  16                                      0x14,       /*年*/
+  17                                      0x04,       /*月*/
+  18                                      0x15,       /*日*/
+  19                                      "HM-TRAP"   /*设备型号,最多15字节*/
+  20                                    };
+  21          
+  22          
+  23          void get_device_info(void *ptr)
+  24          {
+  25   1          static char *des, *src;
+  26   1          unsigned char temp;
+  27   1          temp = get_tmu_addr_mode();
+  28   1          des  = ptr;
+  29   1          src  = &deviceTable;
+  30   1          if(DYNEMIC_TMU_FLAG == temp)//本来是静态的，如果盘的地址模式是动态的，
+  31   1          {                         //就把动态的型号赋值给device Table的第一个字节，其他的不变
+  32   2              *src = DEVICE_TRAP_DYNEMIC;
+  33   2          }
+  34   1          while(*src)
+  35   1          {
+  36   2              *des ++ = *src ++;
+  37   2          }
+  38   1      }
+  39          
+  40          
+
+
+MODULE INFORMATION:   STATIC OVERLAYABLE
+   CODE SIZE        =    123    ----
+   CONSTANT SIZE    =   ----    ----
+   XDATA SIZE       =     20       3
+   PDATA SIZE       =   ----    ----
+   DATA SIZE        =   ----    ----
+   IDATA SIZE       =   ----    ----
+   BIT SIZE         =   ----    ----
+END OF MODULE INFORMATION.
+
+
+C51 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)

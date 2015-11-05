@@ -1,0 +1,115 @@
+C51 COMPILER V7.09   AT24C16                                                               11/28/2012 19:36:45 PAGE 1   
+
+
+C51 COMPILER V7.09, COMPILATION OF MODULE AT24C16
+OBJECT MODULE PLACED IN .\OUT\at24C16.obj
+COMPILER INVOKED BY: C:\Keil\C51\BIN\C51.EXE at24C16.c LARGE BROWSE INCDIR(include;mcu) DEBUG OBJECTEXTEND PRINT(.\OUT\a
+                    -t24C16.lst) OBJECT(.\OUT\at24C16.obj)
+
+line level    source
+
+   1          #include "typeDef.h"
+   2          #include "c8051F310.h"
+   3          #include "iicProcess.h"
+   4          #include "at24C16.h"
+   5          
+   6          #define READ24C08       0xA1
+   7          #define WRITE24C08      0xA0
+   8          
+   9          char page_write_24c08(unsigned char cPortNum, unsigned int addr, char *dat, unsigned char num)
+  10          {
+  11   1          unsigned char contByte,temp_num;   
+  12   1          union myunion union1;
+  13   1          char *ptr_dat;
+  14   1      
+  15   1          temp_num     = num;
+  16   1          ptr_dat      = dat;                      
+  17   1          union1.whole = addr;
+  18   1          contByte     = (union1.half.highByte<<1)|WRITE24C08;
+  19   1           
+  20   1          i2c_start(cPortNum);
+  21   1          i2c_writeByte(cPortNum, contByte);                
+  22   1      
+  23   1          if( i2c_get_ack(cPortNum) == ERROR )
+  24   1              return ERROR;
+  25   1      
+  26   1          i2c_writeByte(cPortNum, union1.half.lowByte);
+  27   1      
+  28   1          if( i2c_get_ack(cPortNum) == ERROR )
+  29   1              return ERROR;
+  30   1      
+  31   1          while(temp_num--)
+  32   1          {
+  33   2              i2c_writeByte(cPortNum, *ptr_dat++);          
+  34   2              if(ERROR == i2c_get_ack(cPortNum))
+  35   2                              return ERROR;
+  36   2          }
+  37   1      
+  38   1          i2c_stop(cPortNum);
+  39   1          
+  40   1          return OK;
+  41   1      }
+  42          
+  43          char page_read_24c08(unsigned char cPortNum, unsigned int addr, char *dat, unsigned char num)
+  44          {
+  45   1          unsigned char contByte,temp_num;   
+  46   1          union myunion union1;
+  47   1          char *ptr_dat;
+  48   1      
+  49   1          temp_num     = num - 1;
+  50   1          ptr_dat      = dat;                      
+  51   1          union1.whole = addr;
+  52   1          contByte     = (union1.half.highByte<<1)|WRITE24C08;
+  53   1          
+  54   1      
+C51 COMPILER V7.09   AT24C16                                                               11/28/2012 19:36:45 PAGE 2   
+
+  55   1              i2c_init(cPortNum);
+  56   1          i2c_start(cPortNum);
+  57   1          i2c_writeByte(cPortNum, contByte);  
+  58   1      
+  59   1          if( i2c_get_ack(cPortNum) == ERROR )
+  60   1              return ERROR;  
+  61   1      
+  62   1          i2c_writeByte(cPortNum, union1.half.lowByte);
+  63   1      
+  64   1          if( i2c_get_ack(cPortNum) == ERROR )
+  65   1              return ERROR;
+  66   1      
+  67   1          i2c_stop(cPortNum);
+  68   1          contByte = (union1.half.highByte << 1) | READ24C08;
+  69   1      
+  70   1          i2c_start(cPortNum);
+  71   1          i2c_writeByte(cPortNum, contByte);
+  72   1      
+  73   1          if( i2c_get_ack(cPortNum) == ERROR )
+  74   1              return ERROR;
+  75   1       
+  76   1          if(num > 1)      
+  77   1          {   
+  78   2              while(temp_num--)
+  79   2              {
+  80   3                  *ptr_dat++ = i2c_readByte(cPortNum);
+  81   3                  i2c_send_ack(cPortNum);
+  82   3              }
+  83   2          }
+  84   1      
+  85   1          *ptr_dat = i2c_readByte(cPortNum);   
+  86   1          i2c_stop(cPortNum);
+  87   1      
+  88   1          return OK;
+  89   1      }
+
+
+MODULE INFORMATION:   STATIC OVERLAYABLE
+   CODE SIZE        =    434    ----
+   CONSTANT SIZE    =   ----    ----
+   XDATA SIZE       =   ----      28
+   PDATA SIZE       =   ----    ----
+   DATA SIZE        =   ----    ----
+   IDATA SIZE       =   ----    ----
+   BIT SIZE         =   ----    ----
+END OF MODULE INFORMATION.
+
+
+C51 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)

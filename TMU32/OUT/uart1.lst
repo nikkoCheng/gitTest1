@@ -1,0 +1,188 @@
+C51 COMPILER V9.52.0.0   UART1                                                             11/05/2015 08:57:06 PAGE 1   
+
+
+C51 COMPILER V9.52.0.0, COMPILATION OF MODULE UART1
+OBJECT MODULE PLACED IN .\OUT\uart1.obj
+COMPILER INVOKED BY: d:\Keil\C51\BIN\C51.EXE uart\uart1.c LARGE BROWSE INCDIR(main;include;mcu;uart;command;eeprom;ledPr
+                    -ocess;update;crc;delay;timer;tmu_number) DEBUG OBJECTEXTEND PRINT(.\OUT\uart1.lst) TABS(2) OBJECT(.\OUT\uart1.obj)
+
+line level    source
+
+   1          #include "c8051f340.h"
+   2          #include "typeDef.h"
+   3          #include "timer.h"
+   4          #include "uart1.h"
+   5          
+   6          UART_INFO uart1;
+   7          
+   8          void uart1_init(void)
+   9          {
+  10   1          /*initialize serial port*/
+  11   1      #ifdef UART_PCON
+                  PCON |= 0x80;
+              #endif
+  14   1      
+  15   1          uart1.uartState = 0;
+  16   1          uart1.rxLen = 0;
+  17   1          uart1.txLen = 0;
+  18   1          uart1.txPtr = uart1.ackBuffer;
+  19   1      
+  20   1          SCON0  = SCON_INIT;
+  21   1          TMOD = (TMOD & 0x0F) | TIME1_INIT;
+  22   1          TH1   = 0xE6; //24M频率E6,12M要改为F3 
+  23   1          ES0 = 1;        /*允许串口中断*/
+  24   1          TR1 = 1;        /*波特率发生器工作*/   
+  25   1          REN0 = 1;        /*允许接收数据*/
+  26   1      }
+  27          
+  28          
+  29          /*********************************
+  30          *
+  31          *每10ms在定时器中断中调用一次。
+  32          *********************************/
+  33          void uart1_timeout(void) using 1
+  34          {
+  35   1        if( uart1.rxTimer )
+  36   1              uart1.rxTimer --;
+  37   1      
+  38   1        if( (uart1.rxTimer==0) && (uart1.uartState != UART_RX_FRAME_OK) )
+  39   1          {
+  40   2              uart1.uartState = 0;
+  41   2              uart1.rxLen = 0;
+  42   2              REN0 = 1;
+  43   2          }
+  44   1      
+  45   1          if( uart1.txTimer )
+  46   1              uart1.txTimer --;
+  47   1      
+  48   1      }
+  49          
+  50          void uart1_rcv_enable(void)
+  51          {
+  52   1          REN0 = 1;
+  53   1      }
+  54          
+C51 COMPILER V9.52.0.0   UART1                                                             11/05/2015 08:57:06 PAGE 2   
+
+  55          /*串口发送数据*/
+  56          void uart1_trans_enable(void)
+  57          {
+  58   1          uart1.txTimer = UART_TX_FRAME_DELAY;
+  59   1          TI0 = 1;//发送中断标志
+  60   1      }
+  61          
+  62          
+  63          /*串口接收中断函数*/
+  64          void ISRuart(void) interrupt 4 using 3
+  65          /*设备与设备通信串口中断服务程序*/
+  66          {    
+  67   1          unsigned char uart1Tmp;
+  68   1      
+  69   1          if(RI0)//RI为接收中断位，1接收，0不接收
+  70   1          {
+  71   2              RI0 = 0;
+  72   2          uart1.rxTimer = uart1.rxBuffer;
+  73   2          uart1Tmp = SBUF0;
+  74   2      
+  75   2              switch ( uart1.uartState )
+  76   2              {
+  77   3                  case 0:                       /*SYN1*/
+  78   3                      if( uart1Tmp == UART_DEVICE_SYN1 )
+  79   3                      {
+  80   4                          uart1.uartState = 1;
+  81   4                          uart1.rxPtr = uart1.rxBuffer;
+  82   4                          *uart1.rxPtr ++ = uart1Tmp;
+  83   4      
+  84   4                          uart1.txData = uart1.ackBuffer + 5;//+5是到数据体？
+  85   4                          uart1.rxData = uart1.rxBuffer  + 5;
+  86   4      
+  87   4                      }
+  88   3                      break;
+  89   3          
+  90   3                  case 1:                     /*SYN2*/
+  91   3                      if( uart1Tmp == UART_DEVICE_SYN2 )
+  92   3                      {
+  93   4                          uart1.uartState ++;
+  94   4                          *uart1.rxPtr ++ = uart1Tmp;
+  95   4                      }
+  96   3                      else if( uart1Tmp == UART_DEVICE_SYN1 )
+  97   3                      {
+  98   4                          uart1.uartState = 1;
+  99   4                          uart1.rxPtr = uart1.rxBuffer;
+ 100   4                          *uart1.rxPtr ++ = uart1Tmp;
+ 101   4                      }
+ 102   3                      else
+ 103   3                         uart1.uartState = 0;
+ 104   3                      break;
+ 105   3          
+ 106   3                  case 2:                                       /*同步字3:0xFF*/
+ 107   3                      
+ 108   3      
+ 109   3                      *uart1.rxPtr ++ = uart1Tmp;
+ 110   3                      uart1.uartState ++;
+ 111   3      
+ 112   3                      break;
+ 113   3          
+ 114   3                  case 3:                                       /*LENGTH*/
+ 115   3                      uart1.uartState ++;
+ 116   3                      *uart1.rxPtr ++ = uart1Tmp;
+C51 COMPILER V9.52.0.0   UART1                                                             11/05/2015 08:57:06 PAGE 3   
+
+ 117   3                      uart1.rxLen = ( uart1Tmp ) - 4;   /*uart1.rxLen = (SBUF - 4) & 0x1F;*/
+ 118   3                      break;
+ 119   3          
+ 120   3                  case 4:                              /*type,date and FCS*/
+ 121   3                      *uart1.rxPtr ++ = uart1Tmp;
+ 122   3                      uart1.rxLen --;
+ 123   3                      if( uart1.rxLen == 0 )
+ 124   3                      {                              /*the last byte "FCS"*/
+ 125   4                          REN0 = 0;                     /*收到一帧数据，禁止再接收*/
+ 126   4                          uart1.uartState = UART_RX_FRAME_OK;
+ 127   4                      } 
+ 128   3                      break; 
+ 129   3      
+ 130   3                  default:
+ 131   3                      if( uart1.uartState != UART_RX_FRAME_OK)
+ 132   3                          uart1.uartState = 0;
+ 133   3                      break;            
+ 134   3              }
+ 135   2          }
+ 136   1      
+ 137   1          if(TI0)
+ 138   1          {
+ 139   2              TI0 = 0;
+ 140   2      
+ 141   2              if( uart1.txLen != 0 )
+ 142   2              {
+ 143   3                  SBUF0 = *uart1.txPtr;
+ 144   3                  uart1.txPtr ++;
+ 145   3                  uart1.txLen --;
+ 146   3              }
+ 147   2              else
+ 148   2                  uart1.txTimer = UART_TX_FRAME_DELAY;
+ 149   2          }
+ 150   1      }
+ 151          
+ 152          void down_tx_enable(void)
+ 153          {
+ 154   1        CPT0CN = 0x80;  //比较器使能
+ 155   1      }
+ 156          
+ 157          void down_tx_disable(void)
+ 158          {
+ 159   1        CPT0CN = 0x00;  //比较器禁止
+ 160   1      }
+
+
+MODULE INFORMATION:   STATIC OVERLAYABLE
+   CODE SIZE        =    473    ----
+   CONSTANT SIZE    =   ----    ----
+   XDATA SIZE       =    498    ----
+   PDATA SIZE       =   ----    ----
+   DATA SIZE        =   ----    ----
+   IDATA SIZE       =   ----    ----
+   BIT SIZE         =   ----    ----
+END OF MODULE INFORMATION.
+
+
+C51 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)

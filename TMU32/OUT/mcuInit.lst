@@ -1,0 +1,143 @@
+C51 COMPILER V9.52.0.0   MCUINIT                                                           11/05/2015 08:57:06 PAGE 1   
+
+
+C51 COMPILER V9.52.0.0, COMPILATION OF MODULE MCUINIT
+OBJECT MODULE PLACED IN .\OUT\mcuInit.obj
+COMPILER INVOKED BY: d:\Keil\C51\BIN\C51.EXE MCU\mcuInit.c LARGE BROWSE INCDIR(main;include;mcu;uart;command;eeprom;ledP
+                    -rocess;update;crc;delay;timer;tmu_number) DEBUG OBJECTEXTEND PRINT(.\OUT\mcuInit.lst) TABS(2) OBJECT(.\OUT\mcuInit.obj)
+
+line level    source
+
+   1          #include "c8051F340.h"
+   2          #include "typedef.h"
+   3          #include "mcuInit.h"
+   4          #include "timer.h"
+   5          
+   6          
+   7          /************************/
+   8          void Soft_WDT_Enable(void)
+   9          {
+  10   1          PCA0MD |= 0x60;
+  11   1      }
+  12          
+  13          void Soft_WDT_Disnable(void)
+  14          {
+  15   1          PCA0MD &= (~0x40);
+  16   1      }
+  17          
+  18          void WatchDog(void)
+  19          {
+  20   1          PCA0CPH4 = 0x00;
+  21   1          Soft_WDT_Enable();
+  22   1      }
+  23          
+  24          void WatchDog_Init(void)
+  25          {
+  26   1          PCA0MD &= 0xE0;
+  27   1          PCA0MD |= 0x80;
+  28   1      
+  29   1          CR = 1;
+  30   1      
+  31   1          PCA0CPL4 |= 0xFF;
+  32   1      
+  33   1          WatchDog();
+  34   1      }
+  35          
+  36          
+  37          /************************/
+  38          
+  39          
+  40          void Port_IO_Init(void)
+  41          {
+  42   1      #ifdef DEFINE_LEFT_TAPE
+  43   1        P0MDIN  |= 0xF0;
+  44   1        P0MDOUT &= ~0x10; //P0.4都设置为漏极开路
+  45   1        P0MDOUT |= 0x40;  //P0.6 设置为推挽
+  46   1      
+  47   1        P1MDIN  |= 0xFF;
+  48   1        P1MDOUT &= ~0x3F;
+  49   1        
+  50   1        P2MDIN  |= 0x20;
+  51   1        P2MDIN &= ~0x03;  //P2.0 P2.1
+  52   1        P2MDOUT &= ~0x58;
+  53   1      
+  54   1        P3MDIN  |= 0x3F;
+C51 COMPILER V9.52.0.0   MCUINIT                                                           11/05/2015 08:57:06 PAGE 2   
+
+  55   1        P3MDOUT &= ~0x3F;
+  56   1        P4MDIN  = ~0x00;
+  57   1      
+  58   1        P0SKIP = 0x8F;
+  59   1        P1SKIP = 0x7F;
+  60   1        P2SKIP = 0x03;  
+  61   1      
+  62   1        CPT0CN = 0x00;  //比较器禁止
+  63   1        CPT0MX = 0x00;  //比较器P2.1 P2.0
+  64   1        CPT0MD = 0x00;  //最快响应
+  65   1      #else
+                P0MDOUT = 0x00;     //P0.1,P0.3,P0.7 is OC 
+                P1MDOUT = 0;        //P1.1,P1.3,P1.5,P1.7 is OC
+                P2MDOUT = 0;        //P2.1,P2.3,P2.5,P2.7 is OC
+                P3MDOUT = 0x6;      //P3.1,P3.2是SCL，需定义为输出
+              #endif
+  71   1      
+  72   1          XBR0 = 0;
+  73   1          XBR1 = 0;
+  74   1          XBR0 |= 0x20; //比较器0连到端口引脚
+  75   1          UART0EN_1;    //串口0:tx,rx连到端口引脚
+  76   1          XBARE_1;           
+  77   1          
+  78   1      }
+  79          
+  80          /*sysClock initialization 16M*/
+  81          void  SysClk_Init(void)
+  82          {
+  83   1        
+  84   1      
+  85   1        OSCLCN |= 0x83;  //内部高速振荡器使能
+  86   1        OSCICN = 0xC3;    //12M
+  87   1        CLKMUL |= 0x80;
+  88   1        CLKMUL &= 0xFC;
+  89   1        CLKMUL |= 0xc0;
+  90   1        while(~CLKMUL&0x20);
+  91   1        CLKSEL |=  0x02;
+  92   1        
+  93   1      }
+  94          
+  95          void Voltage_Regulator_Init(void)
+  96          {
+  97   1          REG01CN |= 0x80;//稳压器禁止
+  98   1      }
+  99          
+ 100          void mcu_f340_init(void)
+ 101          {
+ 102   1        Soft_WDT_Disnable();
+ 103   1        SysClk_Init();
+ 104   1        Port_IO_Init();
+ 105   1        Timer_Init();  
+ 106   1        Soft_WDT_Disnable();
+ 107   1      //    Voltage_Regulator_Init();//稳压器禁止
+ 108   1          
+ 109   1      }
+ 110          
+ 111          
+ 112          
+ 113          
+ 114          
+ 115          
+
+C51 COMPILER V9.52.0.0   MCUINIT                                                           11/05/2015 08:57:06 PAGE 3   
+
+
+MODULE INFORMATION:   STATIC OVERLAYABLE
+   CODE SIZE        =    135    ----
+   CONSTANT SIZE    =   ----    ----
+   XDATA SIZE       =   ----    ----
+   PDATA SIZE       =   ----    ----
+   DATA SIZE        =   ----    ----
+   IDATA SIZE       =   ----    ----
+   BIT SIZE         =   ----    ----
+END OF MODULE INFORMATION.
+
+
+C51 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)

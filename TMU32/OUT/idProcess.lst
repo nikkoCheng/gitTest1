@@ -1,0 +1,151 @@
+C51 COMPILER V9.52.0.0   IDPROCESS                                                         11/05/2015 08:57:06 PAGE 1   
+
+
+C51 COMPILER V9.52.0.0, COMPILATION OF MODULE IDPROCESS
+OBJECT MODULE PLACED IN .\OUT\idProcess.obj
+COMPILER INVOKED BY: d:\Keil\C51\BIN\C51.EXE eeprom\idProcess.c LARGE BROWSE INCDIR(main;include;mcu;uart;command;eeprom
+                    -;ledProcess;update;crc;delay;timer;tmu_number) DEBUG OBJECTEXTEND PRINT(.\OUT\idProcess.lst) TABS(2) OBJECT(.\OUT\idProc
+                    -ess.obj)
+
+line level    source
+
+   1          #include "typeDef.h"
+   2          #include "c8051f340.h"
+   3          #include "mcuInit.h"
+   4          #include "ledStatus.h"
+   5          #include "idProcess.h"
+   6          #include "netCommand.h"
+   7          #include "share.h"
+   8          #include "oneWireProcess.h"
+   9          #include "crc.h"
+  10          
+  11          unsigned char localid_buf[12][32];
+  12          unsigned char error_id_temp[12][32];
+  13          unsigned char id_check_null(unsigned char *ptr)
+  14          {
+  15   1          unsigned char i;
+  16   1          
+  17   1          for(i=0; i<32; i++)
+  18   1          {
+  19   2              if( *ptr ++ )
+  20   2                  return ERROR;
+  21   2          }
+  22   1      
+  23   1          return OK;
+  24   1      }
+  25          
+  26          
+  27          void refresh_current_id(void)
+  28          {
+  29   1          unsigned char lport=0;
+  30   1          WatchDog();
+  31   1      for(lport=0;lport<12;lport++)
+  32   1      {
+  33   2          if( id_check_null(localid_buf[lport]) )
+  34   2          {//端口插入了标签//
+  35   3            ///////////////////////////////////// 
+  36   3            mainInfo.id[lport].null_num = 0;
+  37   3            /////////////////////////////////////////
+  38   3             if( localid_buf[lport][31] == CRC8_Table(localid_buf[lport],31)) 
+  39   3              {
+  40   4                  mainInfo.id[lport].err_num = 0;
+  41   4                  mainInfo.id[lport].state = PORT_OK;
+  42   4              }
+  43   3              else 
+  44   3              {
+  45   4                if(mainInfo.id[lport].err_num == 0)
+  46   4                {
+  47   5                      mainInfo.id[lport].err_num ++;  
+  48   5                      memory_copy(error_id_temp[lport],localid_buf[lport],32);
+  49   5                      mainInfo.id[lport].state = PORT_TEMP;
+  50   5                }
+  51   4                else
+  52   4                {
+  53   5                      if(memory_compare(error_id_temp[lport], localid_buf[lport], 32))
+C51 COMPILER V9.52.0.0   IDPROCESS                                                         11/05/2015 08:57:06 PAGE 2   
+
+  54   5                      {
+  55   6                          memory_copy(error_id_temp[lport],localid_buf[lport],32);
+  56   6                      }
+  57   5                      else
+  58   5                      {   
+  59   6                          mainInfo.id[lport].err_num ++;
+  60   6                          if(mainInfo.id[lport].err_num >= 10)
+  61   6                          {                       
+  62   7                                  mainInfo.id[lport].err_num = 0;
+  63   7                                  mainInfo.id[lport].state = PORT_ERROR;                      
+  64   7                          }
+  65   6                      }
+  66   5                }
+  67   4              }
+  68   3          }
+  69   2          else
+  70   2          {//端口没有插入标签//
+  71   3                  
+  72   3                  mainInfo.id[lport].null_num++;
+  73   3                  if(mainInfo.id[lport].null_num >=3)
+  74   3                  {
+  75   4                      mainInfo.id[lport].null_num = 0;
+  76   4                      mainInfo.id[lport].state = PORT_NULL;
+  77   4                  }
+  78   3                  else
+  79   3                  {
+  80   4                    mainInfo.id[lport].state = PORT_TEMP;
+  81   4                  }
+  82   3          }
+  83   2          
+  84   2          if(mainInfo.id[lport].state != PORT_TEMP)
+  85   2          {
+  86   3                if(memory_compare(mainInfo.id[lport].local_id, localid_buf[lport], 32))
+  87   3                {
+  88   4                        mainInfo.id[lport].eid_32_flag = 1;
+  89   4                        memory_copy(mainInfo.id[lport].local_id,localid_buf[lport],32);
+  90   4                        if(mainInfo.id[lport].state != PORT_NULL)//如果端口有标签
+  91   4                        {
+  92   5                            mainInfo.id[lport].eid_96_flag = 1; 
+  93   5                            mainInfo.id[lport].eid_96_send_flag = 0; 
+  94   5                        }
+  95   4                        else
+  96   4                        {
+  97   5                            mainInfo.id[lport].eid_96_send_flag = 1; 
+  98   5                            memory_clear(&mainInfo.id[lport].local_id[32],96);
+  99   5                        }
+ 100   4                }
+ 101   3          }
+ 102   2        }
+ 103   1      }
+ 104          void read_id(unsigned char type,unsigned char len,unsigned char* buf)
+ 105          {
+ 106   1        unsigned char i,j;
+ 107   1        static unsigned char buff[12][16];
+ 108   1        memory_clear((unsigned char*)buff,sizeof(buff));
+ 109   1        if(type == 0) //读前32字节数据
+ 110   1        {
+ 111   2          one_wire_read12_memory_block(len*16,(unsigned char *)buff,16);
+ 112   2          for(i=0;i<12;i++)
+ 113   2          {
+ 114   3            for(j=0;j<16;j++)
+ 115   3            {
+C51 COMPILER V9.52.0.0   IDPROCESS                                                         11/05/2015 08:57:06 PAGE 3   
+
+ 116   4                buf[i*32+len*16+j] = buff[i][j];
+ 117   4            } 
+ 118   3          }
+ 119   2        }
+ 120   1      }
+ 121          
+ 122          
+
+
+MODULE INFORMATION:   STATIC OVERLAYABLE
+   CODE SIZE        =   1090    ----
+   CONSTANT SIZE    =   ----    ----
+   XDATA SIZE       =    960      11
+   PDATA SIZE       =   ----    ----
+   DATA SIZE        =   ----    ----
+   IDATA SIZE       =   ----    ----
+   BIT SIZE         =   ----    ----
+END OF MODULE INFORMATION.
+
+
+C51 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)

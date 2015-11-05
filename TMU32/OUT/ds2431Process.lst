@@ -1,0 +1,1442 @@
+C51 COMPILER V9.52.0.0   DS2431PROCESS                                                     11/05/2015 08:57:07 PAGE 1   
+
+
+C51 COMPILER V9.52.0.0, COMPILATION OF MODULE DS2431PROCESS
+OBJECT MODULE PLACED IN .\OUT\ds2431Process.obj
+COMPILER INVOKED BY: d:\Keil\C51\BIN\C51.EXE eeprom\ds2431Process.c LARGE BROWSE INCDIR(main;include;mcu;uart;command;ee
+                    -prom;ledProcess;update;crc;delay;timer;tmu_number) DEBUG OBJECTEXTEND PRINT(.\OUT\ds2431Process.lst) TABS(2) OBJECT(.\OU
+                    -T\ds2431Process.obj)
+
+line level    source
+
+   1          #include "typeDef.h"
+   2          #include "oneWireProcess.h"
+   3          #include "ds2431Process.h"
+   4          #include "share.h"
+   5          #include "mcuInit.h"
+   6          
+   7          
+   8          #ifdef ID_ONE_WIRE
+   9          
+  10          unsigned int OW_A,OW_B,OW_C,OW_D,OW_E,OW_F,OW_G,OW_H,OW_I,OW_J;
+  11          
+  12          static void tick_delay(unsigned int unum)
+  13          {
+  14   1          while(unum--)
+  15   1          {
+  16   2              _nop_();
+  17   2          }
+  18   1      }
+  19          
+  20          static void tick_delay_one(void)
+  21          {
+  22   1        NOP2();
+  23   1        NOP();
+  24   1      }
+  25          static void clear_0(void)
+  26          {
+  27   1        P1 &= ~0x3F;
+  28   1      //  P2 &= 0xff;
+  29   1        P3 &= ~0x3F;
+  30   1        //P2 &= 0xff;
+  31   1      }
+  32          static void set_1(void)
+  33          {
+  34   1        P1 |= 0x3F;
+  35   1      //  P2 &= 0xff;
+  36   1        P3 |= 0x3F;
+  37   1      //  P2 &= 0xff;
+  38   1      }
+  39          
+  40          void one_wire_set_speed(unsigned char standard)
+  41          {
+  42   1      #if 1  /*CPU = 340*/
+  43   1          if (ONE_WIRE_STANDARD_SPEED == standard)
+  44   1          {
+  45   2              // Standard Speed  标准速度
+  46   2        #if 1 //24M晶振
+  47   2              OW_A = 8;    //6    
+  48   2              OW_B = 107;   //64
+  49   2              OW_C = 100;   //60
+  50   2              OW_D = 13;    //10
+  51   2              OW_E = 12;    //9
+  52   2              OW_F = 59;    //55
+  53   2              OW_G = 0;     //0
+C51 COMPILER V9.52.0.0   DS2431PROCESS                                                     11/05/2015 08:57:07 PAGE 2   
+
+  54   2              OW_H = 900;   //510
+  55   2              OW_I = 120;   //70
+  56   2      //        OW_J = 400;   //410
+  57   2          OW_J = 640;   //410
+  58   2      
+  59   2        #else //12M晶振
+                    OW_A = 2;    //6
+                      OW_B = 55;   //64
+                      OW_C = 65;   //90
+                      OW_D = 10;    //10
+                      OW_E = 6;    //9
+                      OW_F = 40;    //55
+                      OW_G = 0;     //0
+                      OW_H = 400;   //510
+                      OW_I = 80;   //70
+                      OW_J = 310;   //410
+                #endif
+  71   2          }
+  72   1          else
+  73   1          {
+  74   2              // Overdrive Speed  高速模式
+  75   2        #if 1 //24M晶振
+  76   2              OW_A = 1;    // 1     
+  77   2              OW_B = 9;   //7.5
+  78   2              OW_C = 10;   //7.5
+  79   2              OW_D = 3;    //2.5
+  80   2              OW_E = 0;    // 1
+  81   2              OW_F = 8;    //7
+  82   2              OW_G = 3;     //2.5
+  83   2              OW_H = 110;   //70
+  84   2              OW_I = 8;   //8.5
+  85   2              OW_J = 62;   //40
+  86   2        #else     //12M晶振
+                      OW_A = 0;    // 1
+                      OW_B = 4;   //7.5
+                      OW_C = 4;   //7.5
+                      OW_D = 0;    //2.5
+                      OW_E = 0;    // 1
+                      OW_F = 2;    //7
+                      OW_G = 1;     //2.5
+                      OW_H = 56;   //70
+                      OW_I = 5;   //8.5
+                      OW_J = 31;   //40
+                #endif
+  98   2          }
+  99   1      #else /*CPU =  020*/
+              if (ONE_WIRE_STANDARD_SPEED == standard)
+                  {
+                      // Standard Speed  标准速度
+                      OW_A = 6;    //6
+                      OW_B = 100;   //64
+                      OW_C = 90;   //60
+                      OW_D = 10;    //10
+                      OW_E = 9;    //9
+                      OW_F = 55;    //55
+                      OW_G = 0;     //0
+                      OW_H = 800;   //510
+                      OW_I = 70;   //70
+                      OW_J = 400;   //410
+                  }
+                  else
+                  {
+C51 COMPILER V9.52.0.0   DS2431PROCESS                                                     11/05/2015 08:57:07 PAGE 3   
+
+                      // Overdrive Speed  高速模式
+                      OW_A = 0;    // 1
+                      OW_B = 8;   //7.5
+                      OW_C = 8;   //7.5
+                      OW_D = 0;    //2.5
+                      OW_E = 0;    // 1
+                      OW_F = 8;    //7
+                      OW_G = 0;     //2.5
+                      OW_H = 110;   //70
+                      OW_I = 10;   //8.5
+                      OW_J = 35;   //40
+                  }
+              #endif
+ 129   1      }
+ 130          /**************************************************************************************
+ 131          获取12个端口的应答
+ 132          ***************************************************************************************/
+ 133          unsigned int one_wire_start_get12_ack(void)
+ 134          {
+ 135   1          unsigned int result = 0;
+ 136   1        set_1();
+ 137   1        tick_delay(OW_G);
+ 138   1        clear_0();
+ 139   1        tick_delay(OW_H);
+ 140   1        set_1();
+ 141   1        tick_delay(OW_I); 
+ 142   1        ////////////////////////
+ 143   1        //////////////////////////////
+ 144   1      /*  result |= ONE_WIRE_WP12;
+ 145   1        result <<= 1;
+ 146   1        result |= ONE_WIRE_WP11;
+ 147   1        result <<= 1;
+ 148   1        result |= ONE_WIRE_WP10;
+ 149   1        result <<= 1;
+ 150   1        result |= ONE_WIRE_WP9;
+ 151   1        result <<= 1;
+ 152   1        result |= ONE_WIRE_WP8;
+ 153   1        result <<= 1;
+ 154   1        result |= ONE_WIRE_WP7;
+ 155   1        result <<= 1;
+ 156   1        result |= ONE_WIRE_WP6;
+ 157   1        result <<= 1;
+ 158   1        result |= ONE_WIRE_WP5;
+ 159   1        result <<= 1;
+ 160   1        result |= ONE_WIRE_WP4;
+ 161   1        result <<= 1;
+ 162   1        result |= ONE_WIRE_WP3;
+ 163   1        result <<= 1;
+ 164   1        result |= ONE_WIRE_WP2;
+ 165   1        result <<= 1;
+ 166   1        result |= ONE_WIRE_WP1;
+ 167   1        //set_1();*/
+ 168   1        result = ( P1 & (~0xC0) ) + ( (P3&(~0xC0)) * 64 );
+ 169   1        tick_delay(OW_J);
+ 170   1        WatchDog();
+ 171   1          return result;
+ 172   1      }
+ 173          
+ 174          
+ 175          /*获取DS2431应答信号，若返回0则获取DS2431应答信号成功*/
+ 176          unsigned char one_wire_start_get_ack(unsigned char cPortNum)
+ 177          {
+C51 COMPILER V9.52.0.0   DS2431PROCESS                                                     11/05/2015 08:57:07 PAGE 4   
+
+ 178   1          unsigned char result = 1;
+ 179   1        
+ 180   1          switch(cPortNum)
+ 181   1          {
+ 182   2              case 0:
+ 183   2              {
+ 184   3                  ONE_WIRE_WP1 = 1;
+ 185   3                  tick_delay(OW_G);
+ 186   3        
+ 187   3                  ONE_WIRE_WP1 = 0;
+ 188   3                  tick_delay(OW_H);
+ 189   3        
+ 190   3                  ONE_WIRE_WP1 = 1;
+ 191   3                  tick_delay(OW_I);
+ 192   3        
+ 193   3                  result= ONE_WIRE_WP1;
+ 194   3                  tick_delay(OW_J);
+ 195   3                  break;
+ 196   3              }
+ 197   2              case 1:
+ 198   2              {
+ 199   3                  ONE_WIRE_WP2 = 1;
+ 200   3                  tick_delay(OW_G);
+ 201   3        
+ 202   3                  ONE_WIRE_WP2 = 0;
+ 203   3                  tick_delay(OW_H);
+ 204   3        
+ 205   3                  ONE_WIRE_WP2 = 1;
+ 206   3                  tick_delay(OW_I);
+ 207   3        
+ 208   3                  result= ONE_WIRE_WP2;
+ 209   3                  tick_delay(OW_J);
+ 210   3                  break;
+ 211   3              }
+ 212   2              case 2:
+ 213   2              {
+ 214   3                  ONE_WIRE_WP3 = 1;
+ 215   3                  tick_delay(OW_G);
+ 216   3        
+ 217   3                  ONE_WIRE_WP3 = 0;
+ 218   3                  tick_delay(OW_H);
+ 219   3        
+ 220   3                  ONE_WIRE_WP3 = 1;
+ 221   3                  tick_delay(OW_I);
+ 222   3        
+ 223   3                  result= ONE_WIRE_WP3;
+ 224   3                  tick_delay(OW_J);
+ 225   3                  break;
+ 226   3          }
+ 227   2              case 3:
+ 228   2              {
+ 229   3                  ONE_WIRE_WP4 = 1;
+ 230   3                  tick_delay(OW_G);
+ 231   3        
+ 232   3                  ONE_WIRE_WP4 = 0;
+ 233   3                  tick_delay(OW_H);
+ 234   3        
+ 235   3                  ONE_WIRE_WP4 = 1;
+ 236   3                  tick_delay(OW_I);
+ 237   3        
+ 238   3                  result= ONE_WIRE_WP4;
+ 239   3                  tick_delay(OW_J);
+C51 COMPILER V9.52.0.0   DS2431PROCESS                                                     11/05/2015 08:57:07 PAGE 5   
+
+ 240   3                  break;
+ 241   3              }
+ 242   2              case 4:
+ 243   2              {
+ 244   3                  ONE_WIRE_WP5 = 1;
+ 245   3                  tick_delay(OW_G);
+ 246   3        
+ 247   3                  ONE_WIRE_WP5 = 0;
+ 248   3                  tick_delay(OW_H);
+ 249   3        
+ 250   3                  ONE_WIRE_WP5 = 1;
+ 251   3                  tick_delay(OW_I);
+ 252   3        
+ 253   3                  result= ONE_WIRE_WP5;
+ 254   3                  tick_delay(OW_J);
+ 255   3                  break;
+ 256   3              }
+ 257   2              case 5:
+ 258   2              {
+ 259   3                  ONE_WIRE_WP6 = 1;
+ 260   3                  tick_delay(OW_G);
+ 261   3        
+ 262   3                  ONE_WIRE_WP6 = 0;
+ 263   3                  tick_delay(OW_H);
+ 264   3        
+ 265   3                  ONE_WIRE_WP6 = 1;
+ 266   3                  tick_delay(OW_I);
+ 267   3        
+ 268   3                  result= ONE_WIRE_WP6;
+ 269   3                  tick_delay(OW_J);
+ 270   3                  break;
+ 271   3              }
+ 272   2              case 6:
+ 273   2              {
+ 274   3                  ONE_WIRE_WP7 = 1;
+ 275   3                  tick_delay(OW_G);
+ 276   3        
+ 277   3                  ONE_WIRE_WP7 = 0;
+ 278   3                  tick_delay(OW_H);
+ 279   3        
+ 280   3                  ONE_WIRE_WP7 = 1;
+ 281   3                  tick_delay(OW_I);
+ 282   3        
+ 283   3                  result= ONE_WIRE_WP7;
+ 284   3                  tick_delay(OW_J);
+ 285   3                  break;
+ 286   3          }
+ 287   2              case 7:
+ 288   2              {
+ 289   3                  ONE_WIRE_WP8 = 1;
+ 290   3                  tick_delay(OW_G);
+ 291   3        
+ 292   3                  ONE_WIRE_WP8 = 0;
+ 293   3                  tick_delay(OW_H);
+ 294   3        
+ 295   3                  ONE_WIRE_WP8 = 1;
+ 296   3                  tick_delay(OW_I);
+ 297   3        
+ 298   3                  result= ONE_WIRE_WP8;
+ 299   3                  tick_delay(OW_J);
+ 300   3                  break;
+ 301   3              }
+C51 COMPILER V9.52.0.0   DS2431PROCESS                                                     11/05/2015 08:57:07 PAGE 6   
+
+ 302   2              case 8:
+ 303   2              {
+ 304   3                  ONE_WIRE_WP9 = 1;
+ 305   3                  tick_delay(OW_G);
+ 306   3        
+ 307   3                  ONE_WIRE_WP9 = 0;
+ 308   3                  tick_delay(OW_H);
+ 309   3        
+ 310   3                  ONE_WIRE_WP9 = 1;
+ 311   3                  tick_delay(OW_I);
+ 312   3        
+ 313   3                  result= ONE_WIRE_WP9;
+ 314   3                  tick_delay(OW_J);
+ 315   3                  break;
+ 316   3              }
+ 317   2              case 9:
+ 318   2              {
+ 319   3                  ONE_WIRE_WP10 = 1;
+ 320   3                  tick_delay(OW_G);
+ 321   3        
+ 322   3                  ONE_WIRE_WP10 = 0;
+ 323   3                  tick_delay(OW_H);
+ 324   3        
+ 325   3                  ONE_WIRE_WP10 = 1;
+ 326   3                  tick_delay(OW_I);
+ 327   3        
+ 328   3                  result= ONE_WIRE_WP10;
+ 329   3                  tick_delay(OW_J);
+ 330   3                  break;
+ 331   3              }
+ 332   2              case 10:
+ 333   2              {
+ 334   3                  ONE_WIRE_WP11 = 1;
+ 335   3                  tick_delay(OW_G);
+ 336   3        
+ 337   3                  ONE_WIRE_WP11 = 0;
+ 338   3                  tick_delay(OW_H);
+ 339   3        
+ 340   3                  ONE_WIRE_WP11 = 1;
+ 341   3                  tick_delay(OW_I);
+ 342   3        
+ 343   3                  result= ONE_WIRE_WP11;
+ 344   3                  tick_delay(OW_J);
+ 345   3                  break;
+ 346   3              }
+ 347   2              case 11:
+ 348   2              {
+ 349   3                  ONE_WIRE_WP12 = 1;
+ 350   3                  tick_delay(OW_G);
+ 351   3        
+ 352   3                  ONE_WIRE_WP12 = 0;
+ 353   3                  tick_delay(OW_H);
+ 354   3            
+ 355   3                  ONE_WIRE_WP12 = 1;
+ 356   3                  tick_delay(OW_I);
+ 357   3        
+ 358   3                  result= ONE_WIRE_WP12;
+ 359   3                  tick_delay(OW_J);
+ 360   3                  break;
+ 361   3              }
+ 362   2              default:break;
+ 363   2          }
+C51 COMPILER V9.52.0.0   DS2431PROCESS                                                     11/05/2015 08:57:07 PAGE 7   
+
+ 364   1        WatchDog();
+ 365   1          return result;
+ 366   1      }
+ 367          
+ 368          
+ 369          /****************************************************************************
+ 370          读12端口1位数据
+ 371          *****************************************************************************/
+ 372          unsigned int one_wire_read12_bit(unsigned char speed)
+ 373          {
+ 374   1          unsigned result = 0;
+ 375   1        EA = 0;
+ 376   1      
+ 377   1        if(ONE_WIRE_OVERDRIVE_SPEED == speed)
+ 378   1        {
+ 379   2          clear_0();
+ 380   2          tick_delay_one();
+ 381   2          set_1();
+ 382   2          tick_delay_one();
+ 383   2          result |= ONE_WIRE_WP12;
+ 384   2          result <<= 1;
+ 385   2          result |= ONE_WIRE_WP11;
+ 386   2          result <<=1;
+ 387   2          result |= ONE_WIRE_WP10;
+ 388   2          result <<=1;
+ 389   2          result |= ONE_WIRE_WP9;
+ 390   2          result <<=1;
+ 391   2          result |= ONE_WIRE_WP8;
+ 392   2          result <<=1;
+ 393   2          result |= ONE_WIRE_WP7;
+ 394   2          result <<=1;
+ 395   2          result |= ONE_WIRE_WP6;
+ 396   2          result <<=1;
+ 397   2          result |= ONE_WIRE_WP5;
+ 398   2          result <<=1;
+ 399   2          result |= ONE_WIRE_WP4;
+ 400   2          result <<=1;
+ 401   2          result |= ONE_WIRE_WP3;
+ 402   2          result <<=1;
+ 403   2          result |= ONE_WIRE_WP2;
+ 404   2          result <<=1;
+ 405   2          result |= ONE_WIRE_WP1;
+ 406   2          EA = 1;
+ 407   2          tick_delay(OW_F);
+ 408   2          set_1();
+ 409   2        }
+ 410   1        else
+ 411   1        {
+ 412   2          clear_0();
+ 413   2          tick_delay(OW_A);
+ 414   2      //    nop();
+ 415   2          set_1();
+ 416   2          tick_delay(OW_E);
+ 417   2          result |= ONE_WIRE_WP12;
+ 418   2          result <<= 1;
+ 419   2          result |= ONE_WIRE_WP11;
+ 420   2          result <<=1;
+ 421   2          result |= ONE_WIRE_WP10;
+ 422   2          result <<=1;
+ 423   2          result |= ONE_WIRE_WP9;
+ 424   2          result <<=1;
+ 425   2          result |= ONE_WIRE_WP8;
+C51 COMPILER V9.52.0.0   DS2431PROCESS                                                     11/05/2015 08:57:07 PAGE 8   
+
+ 426   2          result <<=1;
+ 427   2          result |= ONE_WIRE_WP7;
+ 428   2          result <<=1;
+ 429   2          result |= ONE_WIRE_WP6;
+ 430   2          result <<=1;
+ 431   2          result |= ONE_WIRE_WP5;
+ 432   2          result <<=1;
+ 433   2          result |= ONE_WIRE_WP4;
+ 434   2          result <<=1;
+ 435   2          result |= ONE_WIRE_WP3;
+ 436   2          result <<=1;
+ 437   2          result |= ONE_WIRE_WP2;
+ 438   2          result <<=1;
+ 439   2          result |= ONE_WIRE_WP1;
+ 440   2          EA = 1;
+ 441   2          set_1();
+ 442   2        }
+ 443   1          tick_delay(OW_D); 
+ 444   1          return result;
+ 445   1      }
+ 446          
+ 447          
+ 448          unsigned char one_wire_read_bit(unsigned char cPortNum, unsigned char speed)
+ 449          {
+ 450   1          unsigned result;
+ 451   1        EA = 0;
+ 452   1      
+ 453   1        if(ONE_WIRE_OVERDRIVE_SPEED == speed)
+ 454   1        {
+ 455   2            switch(cPortNum)
+ 456   2            {
+ 457   3                case 0:
+ 458   3                {
+ 459   4                    ONE_WIRE_WP1 = 0;
+ 460   4                    tick_delay_one();
+ 461   4          
+ 462   4                    /*Releases the bus*/
+ 463   4                    ONE_WIRE_WP1 = 1;
+ 464   4                    tick_delay_one();
+ 465   4      
+ 466   4                    /*Sample the bit value from the slave*/
+ 467   4                    result = ONE_WIRE_WP1;
+ 468   4                    EA = 1;
+ 469   4                    tick_delay(OW_F);
+ 470   4          
+ 471   4                    ONE_WIRE_WP1 = 1;
+ 472   4                    break;
+ 473   4                }
+ 474   3                case 1:
+ 475   3                {
+ 476   4                    ONE_WIRE_WP2 = 0;
+ 477   4                    tick_delay_one();
+ 478   4          
+ 479   4                    ONE_WIRE_WP2 = 1;
+ 480   4                    tick_delay_one();
+ 481   4      
+ 482   4                    result = ONE_WIRE_WP2;
+ 483   4                    EA = 1;
+ 484   4                    tick_delay(OW_F);
+ 485   4          
+ 486   4                    ONE_WIRE_WP2 = 1;
+ 487   4                    break;
+C51 COMPILER V9.52.0.0   DS2431PROCESS                                                     11/05/2015 08:57:07 PAGE 9   
+
+ 488   4                }
+ 489   3                case 2:
+ 490   3                {
+ 491   4                    ONE_WIRE_WP3 = 0;
+ 492   4                    tick_delay_one();
+ 493   4          
+ 494   4                    ONE_WIRE_WP3 = 1;
+ 495   4                    tick_delay_one();
+ 496   4      
+ 497   4                    result = ONE_WIRE_WP3;
+ 498   4                    EA = 1;
+ 499   4                    tick_delay(OW_F);
+ 500   4          
+ 501   4                    ONE_WIRE_WP3 = 1;
+ 502   4                    break;
+ 503   4                }
+ 504   3                case 3:
+ 505   3                {
+ 506   4                    ONE_WIRE_WP4 = 0;
+ 507   4                    tick_delay_one();
+ 508   4          
+ 509   4                    ONE_WIRE_WP4 = 1;
+ 510   4                    tick_delay_one();
+ 511   4      
+ 512   4                    result = ONE_WIRE_WP4;
+ 513   4                    EA = 1;
+ 514   4                    tick_delay(OW_F);
+ 515   4          
+ 516   4                    ONE_WIRE_WP4 = 1;
+ 517   4                    break;
+ 518   4                }
+ 519   3                case 4:
+ 520   3                {
+ 521   4                    ONE_WIRE_WP5 = 0;
+ 522   4                    tick_delay_one();
+ 523   4          
+ 524   4                    ONE_WIRE_WP5 = 1;
+ 525   4                    tick_delay_one();
+ 526   4      
+ 527   4                    result = ONE_WIRE_WP5;
+ 528   4                    EA = 1;
+ 529   4                    tick_delay(OW_F);
+ 530   4          
+ 531   4                    ONE_WIRE_WP5 = 1;
+ 532   4                    break;
+ 533   4                }
+ 534   3                case 5:
+ 535   3                {
+ 536   4                    ONE_WIRE_WP6 = 0;
+ 537   4                    tick_delay_one();
+ 538   4          
+ 539   4                    ONE_WIRE_WP6 = 1;
+ 540   4                    tick_delay_one();
+ 541   4      
+ 542   4                    result = ONE_WIRE_WP6;
+ 543   4                    EA = 1;
+ 544   4                    tick_delay(OW_F);
+ 545   4          
+ 546   4                    ONE_WIRE_WP6 = 1;
+ 547   4                    break;
+ 548   4                }
+ 549   3                case 6:
+C51 COMPILER V9.52.0.0   DS2431PROCESS                                                     11/05/2015 08:57:07 PAGE 10  
+
+ 550   3                {
+ 551   4                    ONE_WIRE_WP7 = 0;
+ 552   4                    tick_delay_one();
+ 553   4          
+ 554   4                    ONE_WIRE_WP7 = 1;
+ 555   4                    tick_delay_one();
+ 556   4      
+ 557   4                    result = ONE_WIRE_WP7;
+ 558   4                    EA = 1;
+ 559   4                    tick_delay(OW_F);
+ 560   4          
+ 561   4                    ONE_WIRE_WP7 = 1;
+ 562   4                    break;
+ 563   4                }
+ 564   3                case 7:
+ 565   3                {
+ 566   4                    ONE_WIRE_WP8 = 0;
+ 567   4                    tick_delay_one();
+ 568   4          
+ 569   4                    ONE_WIRE_WP8 = 1;
+ 570   4                    tick_delay_one();
+ 571   4      
+ 572   4                    result = ONE_WIRE_WP8;
+ 573   4                    EA = 1;
+ 574   4                    tick_delay(OW_F);
+ 575   4          
+ 576   4                    ONE_WIRE_WP8 = 1;
+ 577   4                    break;
+ 578   4                }
+ 579   3                case 8:
+ 580   3                {
+ 581   4                    ONE_WIRE_WP9 = 0;
+ 582   4                    tick_delay_one();
+ 583   4          
+ 584   4                    ONE_WIRE_WP9 = 1;
+ 585   4                    tick_delay_one();
+ 586   4      
+ 587   4                    result = ONE_WIRE_WP9;
+ 588   4                    EA = 1;
+ 589   4                    tick_delay(OW_F);
+ 590   4          
+ 591   4                    ONE_WIRE_WP9 = 1;
+ 592   4                    break;
+ 593   4                }
+ 594   3                case 9:
+ 595   3                {
+ 596   4                    ONE_WIRE_WP10 = 0;
+ 597   4                    tick_delay_one();
+ 598   4          
+ 599   4                    ONE_WIRE_WP10 = 1;
+ 600   4                    tick_delay_one();
+ 601   4      
+ 602   4                    result = ONE_WIRE_WP10;
+ 603   4                    EA = 1;
+ 604   4                    tick_delay(OW_F);
+ 605   4          
+ 606   4                    ONE_WIRE_WP10 = 1;
+ 607   4                    break;
+ 608   4                }
+ 609   3                case 10:
+ 610   3                {
+ 611   4                    ONE_WIRE_WP11 = 0;
+C51 COMPILER V9.52.0.0   DS2431PROCESS                                                     11/05/2015 08:57:07 PAGE 11  
+
+ 612   4                    tick_delay_one();
+ 613   4          
+ 614   4                    ONE_WIRE_WP11 = 1;
+ 615   4                    tick_delay_one();
+ 616   4      
+ 617   4                    result = ONE_WIRE_WP11;
+ 618   4                    EA = 1;
+ 619   4                    tick_delay(OW_F);
+ 620   4          
+ 621   4                    ONE_WIRE_WP11 = 1;
+ 622   4                    break;
+ 623   4                }
+ 624   3                case 11:
+ 625   3                {
+ 626   4                    ONE_WIRE_WP12 = 0;
+ 627   4                    tick_delay_one();
+ 628   4          
+ 629   4                    ONE_WIRE_WP12 = 1;
+ 630   4                    tick_delay_one();
+ 631   4      
+ 632   4                    result = ONE_WIRE_WP12;
+ 633   4                    EA = 1;
+ 634   4                    tick_delay(OW_F);
+ 635   4          
+ 636   4                    ONE_WIRE_WP12 = 1;
+ 637   4                    break;
+ 638   4                }
+ 639   3                default:
+ 640   3                    EA = 1;
+ 641   3                    break;
+ 642   3            }
+ 643   2        }
+ 644   1        else
+ 645   1        {
+ 646   2          switch(cPortNum)
+ 647   2          {
+ 648   3            case 0:
+ 649   3            {
+ 650   4              ONE_WIRE_WP1 = 0;
+ 651   4              tick_delay(OW_A);
+ 652   4          
+ 653   4              /*Releases the bus*/
+ 654   4              ONE_WIRE_WP1 = 1;
+ 655   4              tick_delay(OW_E);
+ 656   4      
+ 657   4              /*Sample the bit value from the slave*/
+ 658   4              result = ONE_WIRE_WP1;
+ 659   4              EA = 1;
+ 660   4              tick_delay(OW_F);
+ 661   4          
+ 662   4              ONE_WIRE_WP1 = 1;
+ 663   4              break;
+ 664   4            }
+ 665   3            case 1:
+ 666   3            {
+ 667   4              ONE_WIRE_WP2 = 0;
+ 668   4              tick_delay(OW_A);
+ 669   4          
+ 670   4              ONE_WIRE_WP2 = 1;
+ 671   4              tick_delay(OW_E);
+ 672   4      
+ 673   4              result = ONE_WIRE_WP2;
+C51 COMPILER V9.52.0.0   DS2431PROCESS                                                     11/05/2015 08:57:07 PAGE 12  
+
+ 674   4              EA = 1;
+ 675   4              tick_delay(OW_F);
+ 676   4          
+ 677   4              ONE_WIRE_WP2 = 1;
+ 678   4              break;
+ 679   4            }
+ 680   3            case 2:
+ 681   3            {
+ 682   4              ONE_WIRE_WP3 = 0;
+ 683   4              tick_delay(OW_A);
+ 684   4          
+ 685   4              ONE_WIRE_WP3 = 1;
+ 686   4              tick_delay(OW_E);
+ 687   4      
+ 688   4              result = ONE_WIRE_WP3;
+ 689   4              EA = 1;
+ 690   4              tick_delay(OW_F);
+ 691   4          
+ 692   4              ONE_WIRE_WP3 = 1;
+ 693   4              break;
+ 694   4            }
+ 695   3            case 3:
+ 696   3            {
+ 697   4              ONE_WIRE_WP4 = 0;
+ 698   4              tick_delay(OW_A);
+ 699   4          
+ 700   4              ONE_WIRE_WP4 = 1;
+ 701   4              tick_delay(OW_E);
+ 702   4      
+ 703   4              result = ONE_WIRE_WP4;
+ 704   4              EA = 1;
+ 705   4              tick_delay(OW_F);
+ 706   4          
+ 707   4              ONE_WIRE_WP4 = 1;
+ 708   4              break;
+ 709   4            }
+ 710   3            case 4:
+ 711   3            {
+ 712   4              ONE_WIRE_WP5 = 0;
+ 713   4              tick_delay(OW_A);
+ 714   4          
+ 715   4              ONE_WIRE_WP5 = 1;
+ 716   4              tick_delay(OW_E);
+ 717   4      
+ 718   4              result = ONE_WIRE_WP5;
+ 719   4              EA = 1;
+ 720   4              tick_delay(OW_F);
+ 721   4          
+ 722   4              ONE_WIRE_WP5 = 1;
+ 723   4              break;
+ 724   4            }
+ 725   3            case 5:
+ 726   3            {
+ 727   4              ONE_WIRE_WP6 = 0;
+ 728   4              tick_delay(OW_A);
+ 729   4          
+ 730   4              ONE_WIRE_WP6 = 1;
+ 731   4              tick_delay(OW_E);
+ 732   4      
+ 733   4              result = ONE_WIRE_WP6;
+ 734   4              EA = 1;
+ 735   4              tick_delay(OW_F);
+C51 COMPILER V9.52.0.0   DS2431PROCESS                                                     11/05/2015 08:57:07 PAGE 13  
+
+ 736   4          
+ 737   4              ONE_WIRE_WP6 = 1;
+ 738   4              break;
+ 739   4            }
+ 740   3            case 6:
+ 741   3            {
+ 742   4              ONE_WIRE_WP7 = 0;
+ 743   4              tick_delay(OW_A);
+ 744   4          
+ 745   4              ONE_WIRE_WP7 = 1;
+ 746   4              tick_delay(OW_E);
+ 747   4      
+ 748   4              result = ONE_WIRE_WP7;
+ 749   4              EA = 1;
+ 750   4              tick_delay(OW_F);
+ 751   4          
+ 752   4              ONE_WIRE_WP7 = 1;
+ 753   4              break;
+ 754   4            }
+ 755   3            case 7:
+ 756   3            {
+ 757   4              ONE_WIRE_WP8 = 0;
+ 758   4              tick_delay(OW_A);
+ 759   4          
+ 760   4              ONE_WIRE_WP8 = 1;
+ 761   4              tick_delay(OW_E);
+ 762   4      
+ 763   4              result = ONE_WIRE_WP8;
+ 764   4              EA = 1;
+ 765   4              tick_delay(OW_F);
+ 766   4          
+ 767   4              ONE_WIRE_WP8 = 1;
+ 768   4              break;
+ 769   4            }
+ 770   3            case 8:
+ 771   3            {
+ 772   4              ONE_WIRE_WP9 = 0;
+ 773   4              tick_delay(OW_A);
+ 774   4          
+ 775   4              ONE_WIRE_WP9 = 1;
+ 776   4              tick_delay(OW_E);
+ 777   4      
+ 778   4              result = ONE_WIRE_WP9;
+ 779   4              EA = 1;
+ 780   4              tick_delay(OW_F);
+ 781   4          
+ 782   4              ONE_WIRE_WP9 = 1;
+ 783   4              break;
+ 784   4            }
+ 785   3            case 9:
+ 786   3            {
+ 787   4              ONE_WIRE_WP10 = 0;
+ 788   4              tick_delay(OW_A);
+ 789   4          
+ 790   4              ONE_WIRE_WP10 = 1;
+ 791   4              tick_delay(OW_E);
+ 792   4      
+ 793   4              result = ONE_WIRE_WP10;
+ 794   4              EA = 1;
+ 795   4              tick_delay(OW_F);
+ 796   4          
+ 797   4              ONE_WIRE_WP10 = 1;
+C51 COMPILER V9.52.0.0   DS2431PROCESS                                                     11/05/2015 08:57:07 PAGE 14  
+
+ 798   4              break;
+ 799   4            }
+ 800   3            case 10:
+ 801   3            {
+ 802   4              ONE_WIRE_WP11 = 0;
+ 803   4              tick_delay(OW_A);
+ 804   4          
+ 805   4              ONE_WIRE_WP11 = 1;
+ 806   4              tick_delay(OW_E);
+ 807   4      
+ 808   4              result = ONE_WIRE_WP11;
+ 809   4              EA = 1;
+ 810   4              tick_delay(OW_F);
+ 811   4          
+ 812   4              ONE_WIRE_WP11 = 1;
+ 813   4              break;
+ 814   4            }
+ 815   3            case 11:
+ 816   3            {
+ 817   4              ONE_WIRE_WP12 = 0;
+ 818   4              tick_delay(OW_A);
+ 819   4          
+ 820   4              ONE_WIRE_WP12 = 1;
+ 821   4              tick_delay(OW_E);
+ 822   4      
+ 823   4              result = ONE_WIRE_WP12;
+ 824   4              EA = 1;
+ 825   4              tick_delay(OW_F);
+ 826   4          
+ 827   4              ONE_WIRE_WP12 = 1;
+ 828   4              break;
+ 829   4            }
+ 830   3            default:
+ 831   3              EA = 1;
+ 832   3              break;
+ 833   3          }
+ 834   2        }
+ 835   1          tick_delay(OW_D); 
+ 836   1          return result;
+ 837   1      }
+ 838          
+ 839          
+ 840          void one_wire_write_1(unsigned char cPortNum, unsigned char speed)
+ 841          {
+ 842   1        if(ONE_WIRE_OVERDRIVE_SPEED == speed)
+ 843   1        {
+ 844   2      
+ 845   2            switch(cPortNum)
+ 846   2            {
+ 847   3                case 0:
+ 848   3                {
+ 849   4                    EA = 0;
+ 850   4                    ONE_WIRE_WP1 = 0;
+ 851   4                    tick_delay_one();
+ 852   4          
+ 853   4                    ONE_WIRE_WP1 = 1;
+ 854   4                    EA = 1;
+ 855   4                    break;
+ 856   4                }
+ 857   3                case 1:
+ 858   3                {
+ 859   4                    EA = 0;
+C51 COMPILER V9.52.0.0   DS2431PROCESS                                                     11/05/2015 08:57:07 PAGE 15  
+
+ 860   4                    ONE_WIRE_WP2 = 0;
+ 861   4                    tick_delay_one();
+ 862   4          
+ 863   4                    ONE_WIRE_WP2 = 1;
+ 864   4                    EA = 1;
+ 865   4                    break;
+ 866   4                }
+ 867   3                case 2:
+ 868   3                {
+ 869   4                    EA = 0;
+ 870   4                    ONE_WIRE_WP3 = 0;
+ 871   4                    tick_delay_one();
+ 872   4          
+ 873   4                    ONE_WIRE_WP3 = 1;
+ 874   4                    EA = 1;
+ 875   4                    break;
+ 876   4                }
+ 877   3                case 3:
+ 878   3                {
+ 879   4                    EA = 0;
+ 880   4                    ONE_WIRE_WP4 = 0;
+ 881   4                    tick_delay_one();
+ 882   4          
+ 883   4                    ONE_WIRE_WP4 = 1;
+ 884   4                    EA = 1;
+ 885   4                    break;
+ 886   4                }
+ 887   3                case 4:
+ 888   3                {
+ 889   4                    EA = 0;
+ 890   4                    ONE_WIRE_WP5 = 0;
+ 891   4                    tick_delay_one();
+ 892   4          
+ 893   4                    ONE_WIRE_WP5 = 1;
+ 894   4                    EA = 1;
+ 895   4                    break;
+ 896   4                }
+ 897   3                case 5:
+ 898   3                {
+ 899   4                    EA = 0;
+ 900   4                    ONE_WIRE_WP6 = 0;
+ 901   4                    tick_delay_one();
+ 902   4          
+ 903   4                    ONE_WIRE_WP6 = 1;
+ 904   4                    EA = 1;
+ 905   4                    break;
+ 906   4                }
+ 907   3                case 6:
+ 908   3                {
+ 909   4                    EA = 0;
+ 910   4                    ONE_WIRE_WP7 = 0;
+ 911   4                    tick_delay_one();
+ 912   4          
+ 913   4                    ONE_WIRE_WP7 = 1;
+ 914   4                    EA = 1;
+ 915   4                    break;
+ 916   4                }
+ 917   3                case 7:
+ 918   3                {
+ 919   4                    EA = 0;
+ 920   4                    ONE_WIRE_WP8 = 0;
+ 921   4                    tick_delay_one();
+C51 COMPILER V9.52.0.0   DS2431PROCESS                                                     11/05/2015 08:57:07 PAGE 16  
+
+ 922   4          
+ 923   4                    ONE_WIRE_WP8 = 1;
+ 924   4                    EA = 1;
+ 925   4                    break;
+ 926   4                }
+ 927   3                case 8:
+ 928   3                {
+ 929   4                    EA = 0;
+ 930   4                    ONE_WIRE_WP9 = 0;
+ 931   4                    tick_delay_one();
+ 932   4          
+ 933   4                    ONE_WIRE_WP9 = 1;
+ 934   4                    EA = 1;
+ 935   4                    break;
+ 936   4                }
+ 937   3                case 9:
+ 938   3                {
+ 939   4                    EA = 0;
+ 940   4                    ONE_WIRE_WP10 = 0;
+ 941   4                    tick_delay_one();
+ 942   4          
+ 943   4                    ONE_WIRE_WP10 = 1;
+ 944   4                    EA = 1;
+ 945   4                    break;
+ 946   4                }
+ 947   3                case 10:
+ 948   3                {
+ 949   4                    EA = 0;
+ 950   4                    ONE_WIRE_WP11 = 0;
+ 951   4                    tick_delay_one();
+ 952   4          
+ 953   4                    ONE_WIRE_WP11 = 1;
+ 954   4                    EA = 1;
+ 955   4                    break;
+ 956   4                }
+ 957   3                case 11:
+ 958   3                {
+ 959   4                    EA = 0;
+ 960   4                    ONE_WIRE_WP12 = 0;
+ 961   4                    tick_delay_one();
+ 962   4          
+ 963   4                    ONE_WIRE_WP12 = 1;
+ 964   4                    EA = 1;
+ 965   4                    break;
+ 966   4                }
+ 967   3                default:
+ 968   3                    EA = 1;
+ 969   3                    break;
+ 970   3            
+ 971   3            }
+ 972   2        }
+ 973   1        else
+ 974   1        {
+ 975   2            switch(cPortNum)
+ 976   2            {
+ 977   3                case 0:
+ 978   3                {
+ 979   4                    EA = 0;
+ 980   4                    ONE_WIRE_WP1 = 0;
+ 981   4                    tick_delay(OW_A);
+ 982   4          
+ 983   4                    ONE_WIRE_WP1 = 1;
+C51 COMPILER V9.52.0.0   DS2431PROCESS                                                     11/05/2015 08:57:07 PAGE 17  
+
+ 984   4                    EA = 1;
+ 985   4                    break;
+ 986   4                }
+ 987   3                case 1:
+ 988   3                {
+ 989   4                    EA = 0;
+ 990   4                    ONE_WIRE_WP2 = 0;
+ 991   4                    tick_delay(OW_A);
+ 992   4          
+ 993   4                    ONE_WIRE_WP2 = 1;
+ 994   4                    EA = 1;
+ 995   4                    break;
+ 996   4                }
+ 997   3                case 2:
+ 998   3                {
+ 999   4                    EA = 0;
+1000   4                    ONE_WIRE_WP3 = 0;
+1001   4                    tick_delay(OW_A);
+1002   4          
+1003   4                    ONE_WIRE_WP3 = 1;
+1004   4                    EA = 1;
+1005   4                    break;
+1006   4                }
+1007   3                case 3:
+1008   3                {
+1009   4                    EA = 0;
+1010   4                    ONE_WIRE_WP4 = 0;
+1011   4                    tick_delay(OW_A);
+1012   4          
+1013   4                    ONE_WIRE_WP4 = 1;
+1014   4                    EA = 1;
+1015   4                    break;
+1016   4                }
+1017   3                case 4:
+1018   3                {
+1019   4                    EA = 0;
+1020   4                    ONE_WIRE_WP5 = 0;
+1021   4                    tick_delay(OW_A);
+1022   4          
+1023   4                    ONE_WIRE_WP5 = 1;
+1024   4                    EA = 1;
+1025   4                    break;
+1026   4                }
+1027   3                case 5:
+1028   3                {
+1029   4                    EA = 0;
+1030   4                    ONE_WIRE_WP6 = 0;
+1031   4                    tick_delay(OW_A);
+1032   4          
+1033   4                    ONE_WIRE_WP6 = 1;
+1034   4                    EA = 1;
+1035   4                    break;
+1036   4                }
+1037   3                case 6:
+1038   3                {
+1039   4                    EA = 0;
+1040   4                    ONE_WIRE_WP7 = 0;
+1041   4                    tick_delay(OW_A);
+1042   4          
+1043   4                    ONE_WIRE_WP7 = 1;
+1044   4                    EA = 1;
+1045   4                    break;
+C51 COMPILER V9.52.0.0   DS2431PROCESS                                                     11/05/2015 08:57:07 PAGE 18  
+
+1046   4                }
+1047   3                case 7:
+1048   3                {
+1049   4                    EA = 0;
+1050   4                    ONE_WIRE_WP8 = 0;
+1051   4                    tick_delay(OW_A);
+1052   4          
+1053   4                    ONE_WIRE_WP8 = 1;
+1054   4                    EA = 1;
+1055   4                    break;
+1056   4                }
+1057   3                case 8:
+1058   3                {
+1059   4                    EA = 0;
+1060   4                    ONE_WIRE_WP9 = 0;
+1061   4                    tick_delay(OW_A);
+1062   4          
+1063   4                    ONE_WIRE_WP9 = 1;
+1064   4                    EA = 1;
+1065   4                    break;
+1066   4                }
+1067   3                case 9:
+1068   3                {
+1069   4                    EA = 0;
+1070   4                    ONE_WIRE_WP10 = 0;
+1071   4                    tick_delay(OW_A);
+1072   4          
+1073   4                    ONE_WIRE_WP10 = 1;
+1074   4                    EA = 1;
+1075   4                    break;
+1076   4                }
+1077   3                case 10:
+1078   3                {
+1079   4                    EA = 0;
+1080   4                    ONE_WIRE_WP11 = 0;
+1081   4                    tick_delay(OW_A);
+1082   4          
+1083   4                    ONE_WIRE_WP11 = 1;
+1084   4                    EA = 1;
+1085   4                    break;
+1086   4                }
+1087   3                case 11:
+1088   3                {
+1089   4                    EA = 0;
+1090   4                    ONE_WIRE_WP12 = 0;
+1091   4                    tick_delay(OW_A);
+1092   4          
+1093   4                    ONE_WIRE_WP12 = 1;
+1094   4                    EA = 1;
+1095   4                    break;
+1096   4                }
+1097   3                default:
+1098   3                    EA = 1;
+1099   3                    break;
+1100   3            
+1101   3            }
+1102   2        }
+1103   1          tick_delay(OW_B);
+1104   1      }
+1105          /****************************************************************************
+1106          12个端口都写1
+1107          
+C51 COMPILER V9.52.0.0   DS2431PROCESS                                                     11/05/2015 08:57:07 PAGE 19  
+
+1108          *****************************************************************************/
+1109          void one_wire_write12_1(unsigned char speed)
+1110          {
+1111   1        if(ONE_WIRE_OVERDRIVE_SPEED == speed)
+1112   1        {
+1113   2          EA = 0;
+1114   2          clear_0();
+1115   2          tick_delay_one();
+1116   2          set_1();
+1117   2          EA = 1;
+1118   2            
+1119   2        }
+1120   1        else
+1121   1        {
+1122   2          EA = 0;
+1123   2          clear_0();
+1124   2      
+1125   2          tick_delay(OW_A);
+1126   2      
+1127   2          set_1();
+1128   2          EA = 1;   
+1129   2        }
+1130   1          tick_delay(OW_B);
+1131   1      }
+1132          /***************************************************************************
+1133          12端口写0
+1134          ***************************************************************************/
+1135          void one_wire_write12_0(void)
+1136          {
+1137   1        EA = 0;
+1138   1        clear_0();
+1139   1      
+1140   1        tick_delay(OW_C);
+1141   1      
+1142   1        set_1();
+1143   1        EA = 1;
+1144   1          tick_delay(OW_D);
+1145   1      }
+1146          void one_wire_write_0(unsigned char cPortNum, unsigned char speed)
+1147          {
+1148   1      
+1149   1          switch(cPortNum)
+1150   1          {
+1151   2      
+1152   2              case 0:
+1153   2              {
+1154   3                  EA = 0;
+1155   3                  ONE_WIRE_WP1 = 0;
+1156   3                  tick_delay(OW_C);
+1157   3        
+1158   3                  ONE_WIRE_WP1 = 1;
+1159   3                  EA = 1;
+1160   3                  break;
+1161   3              }
+1162   2              case 1:
+1163   2              {
+1164   3                  EA = 0;
+1165   3                  ONE_WIRE_WP2 = 0;
+1166   3                  tick_delay(OW_C);
+1167   3        
+1168   3                  ONE_WIRE_WP2 = 1;
+1169   3                  EA = 1;
+C51 COMPILER V9.52.0.0   DS2431PROCESS                                                     11/05/2015 08:57:07 PAGE 20  
+
+1170   3                  break;
+1171   3              }
+1172   2              case 2:
+1173   2              {
+1174   3                  EA = 0;
+1175   3                  ONE_WIRE_WP3 = 0;
+1176   3                  tick_delay(OW_C);
+1177   3        
+1178   3                  ONE_WIRE_WP3 = 1;
+1179   3                  EA = 1;
+1180   3                  break;
+1181   3              }
+1182   2              case 3:
+1183   2              {
+1184   3                  EA = 0;
+1185   3                  ONE_WIRE_WP4 = 0;
+1186   3                  tick_delay(OW_C);
+1187   3        
+1188   3                  ONE_WIRE_WP4 = 1;
+1189   3                  EA = 1;
+1190   3                  break;
+1191   3              }
+1192   2              case 4:
+1193   2              {
+1194   3                  EA = 0;
+1195   3                  ONE_WIRE_WP5 = 0;
+1196   3                  tick_delay(OW_C);
+1197   3        
+1198   3                  ONE_WIRE_WP5 = 1;
+1199   3                  EA = 1;
+1200   3                  break;
+1201   3              }
+1202   2              case 5:
+1203   2              {
+1204   3                  EA = 0;
+1205   3                  ONE_WIRE_WP6 = 0;
+1206   3                  tick_delay(OW_C);
+1207   3        
+1208   3                  ONE_WIRE_WP6 = 1;
+1209   3                  EA = 1;
+1210   3                  break;
+1211   3              }
+1212   2              case 6:
+1213   2              {
+1214   3                  EA = 0;
+1215   3                  ONE_WIRE_WP7 = 0;
+1216   3                  tick_delay(OW_C);
+1217   3        
+1218   3                  ONE_WIRE_WP7 = 1;
+1219   3                  EA = 1;
+1220   3                  break;
+1221   3              }
+1222   2              case 7:
+1223   2              {
+1224   3                  EA = 0;
+1225   3                  ONE_WIRE_WP8 = 0;
+1226   3                  tick_delay(OW_C);
+1227   3        
+1228   3                  ONE_WIRE_WP8 = 1;
+1229   3                  EA = 1;
+1230   3                  break;
+1231   3              }
+C51 COMPILER V9.52.0.0   DS2431PROCESS                                                     11/05/2015 08:57:07 PAGE 21  
+
+1232   2              case 8:
+1233   2              {
+1234   3                  EA = 0;
+1235   3                  ONE_WIRE_WP9 = 0;
+1236   3                  tick_delay(OW_C);
+1237   3        
+1238   3                  ONE_WIRE_WP9 = 1;
+1239   3                  EA = 1;
+1240   3                  break;
+1241   3              }
+1242   2              case 9:
+1243   2              {
+1244   3                  EA = 0;
+1245   3                  ONE_WIRE_WP10 = 0;
+1246   3                  tick_delay(OW_C);
+1247   3        
+1248   3                  ONE_WIRE_WP10 = 1;
+1249   3                  EA = 1;
+1250   3                  break;
+1251   3              }
+1252   2              case 10:
+1253   2              {
+1254   3                  EA = 0;
+1255   3                  ONE_WIRE_WP11 = 0;
+1256   3                  tick_delay(OW_C);
+1257   3        
+1258   3                  ONE_WIRE_WP11 = 1;
+1259   3                  EA = 1;
+1260   3                  break;
+1261   3              }
+1262   2              case 11:
+1263   2              {
+1264   3                  EA = 0;
+1265   3                  ONE_WIRE_WP12 = 0;
+1266   3                  tick_delay(OW_C);
+1267   3        
+1268   3                  ONE_WIRE_WP12 = 1;
+1269   3                  EA = 1;
+1270   3                  break;
+1271   3              }
+1272   2              default:
+1273   2                  EA = 1;
+1274   2                  break;
+1275   2          }
+1276   1        
+1277   1          tick_delay(OW_D);
+1278   1      }
+*** WARNING C280 IN LINE 1146 OF eeprom\ds2431Process.c: 'speed': unreferenced local variable
+1279          /**************************************************************************************
+1280          12个端口写1个字节
+1281          ***************************************************************************************/
+1282          void one_wire_write12_byte(unsigned char dat,unsigned char speed)
+1283          {
+1284   1          char i;
+1285   1          unsigned char temp;
+1286   1      
+1287   1          temp = dat;
+1288   1          for(i=0;i<8;i++)
+1289   1          {
+1290   2              if(temp & 0x01)
+1291   2              {
+1292   3                  one_wire_write12_1(speed);
+C51 COMPILER V9.52.0.0   DS2431PROCESS                                                     11/05/2015 08:57:07 PAGE 22  
+
+1293   3              }
+1294   2              else
+1295   2              {
+1296   3                  one_wire_write12_0();
+1297   3              }
+1298   2        
+1299   2              temp >>= 1;
+1300   2          }
+1301   1      }
+1302          
+1303          void one_wire_write_byte(unsigned char dat, unsigned char cPortNum, unsigned char speed)
+1304          {
+1305   1          char i;
+1306   1          unsigned char temp;
+1307   1      
+1308   1          temp = dat;
+1309   1          for(i=0;i<8;i++)
+1310   1          {
+1311   2              if(temp & 0x01)
+1312   2              {
+1313   3                  one_wire_write_1(cPortNum, speed);
+1314   3              }
+1315   2              else
+1316   2              {
+1317   3                  one_wire_write_0(cPortNum, speed);
+1318   3              }
+1319   2        
+1320   2              temp >>= 1;
+1321   2          }
+1322   1      }
+1323          
+1324          /****************************************************************************
+1325          读12个端口1个字节
+1326          *****************************************************************************/
+1327          unsigned char* one_wire_read12_byte(unsigned char speed)
+1328          {
+1329   1          int i,j,ret;
+1330   1          static unsigned char result[12];
+1331   1        memory_clear(result,12);
+1332   1          for ( i = 0; i < 8; i++)
+1333   1          {
+1334   2      
+1335   2          ret = one_wire_read12_bit( speed);
+1336   2          for(j = 0;j < 12;j++)
+1337   2          {
+1338   3                WatchDog();
+1339   3            result[j] >>= 1;
+1340   3                if (ret&(1<<j))
+1341   3                {
+1342   4                    result[j] |= 0x80;
+1343   4                }
+1344   3          }
+1345   2          }
+1346   1        
+1347   1          return result;
+1348   1      }
+1349          /*---------------------------------------------------------------------
+1350           * Read 1 -wire data byte and return it
+1351           *---------------------------------------------------------------------*/
+1352          unsigned char one_wire_read_byte(unsigned char cPortNum, unsigned char speed)
+1353          {
+1354   1          int i;
+C51 COMPILER V9.52.0.0   DS2431PROCESS                                                     11/05/2015 08:57:07 PAGE 23  
+
+1355   1          unsigned result;
+1356   1          result = 0;
+1357   1      
+1358   1          for ( i = 0; i < 8; i++)
+1359   1          { 
+1360   2              result >>= 1;
+1361   2      
+1362   2              if (one_wire_read_bit(cPortNum, speed))
+1363   2              {
+1364   3                  result |= 0x80;
+1365   3              }
+1366   2          }
+1367   1        
+1368   1          return result;
+1369   1      }
+1370          
+1371          #endif
+1372          
+
+
+MODULE INFORMATION:   STATIC OVERLAYABLE
+   CODE SIZE        =   2896    ----
+   CONSTANT SIZE    =   ----    ----
+   XDATA SIZE       =     32      18
+   PDATA SIZE       =   ----    ----
+   DATA SIZE        =   ----    ----
+   IDATA SIZE       =   ----    ----
+   BIT SIZE         =   ----    ----
+END OF MODULE INFORMATION.
+
+
+C51 COMPILATION COMPLETE.  1 WARNING(S),  0 ERROR(S)

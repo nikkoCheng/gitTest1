@@ -1,0 +1,358 @@
+C51 COMPILER V7.09   PROTECTFUN                                                            02/13/2012 10:58:58 PAGE 1   
+
+
+C51 COMPILER V7.09, COMPILATION OF MODULE PROTECTFUN
+OBJECT MODULE PLACED IN .\OUT\protectFun.obj
+COMPILER INVOKED BY: C:\Keil\C51\BIN\C51.EXE protect_j\protectFun.c LARGE BROWSE INCDIR(main,header_files,dataProcess,wa
+                    -tchDog,ledProcess,mcu,adConvert,IDB,protect_j,alarm,key,timer,command) DEBUG OBJECTEXTEND PRINT(.\OUT\protectFun.lst) OB
+                    -JECT(.\OUT\protectFun.obj)
+
+line level    source
+
+   1          
+   2          #include "variable.h"
+   3          
+   4          #include "share.h"
+   5          #include "alarm.h"
+   6          
+   7          #include "e2promAddr.h"
+   8          #include "dataProcess.h"
+   9          #include "hardInfo.h"
+  10          #include "1.h"
+  11          #include "c8051F020.h"
+  12          #include "typeDef.h"
+  13          
+  14          
+  15          
+  16          #define LIGHT_DOWN      1       
+  17          #define LIGHT_OK        0      
+  18          #define FORCEMODE     1
+  19          #define AUTOMODE       0
+  20          #define SENDREMOTECOUNTER    30  
+  21          
+  22          bit mainError;    
+  23          bit standbyError;   
+  24          bit inError;      
+  25          bit standbyError250;   
+  26          bit standbyError500; 
+  27          bit mainError250;       
+  28          bit mainError500;    
+  29          
+  30          
+  31          static bit opswitchFlag;  
+  32          
+  33          unsigned char data waitResumeCounter;            
+  34          unsigned char data resumeSendRemoteCount;     
+  35          
+  36          /***********************************************************
+  37          *每隔50ms调用1次.
+  38          *保持类型的光开关脉冲供电，不保持光开关需持续供电。
+  39          ************************************************************/
+  40          void refresh_opswitch(void)
+  41          {
+  42   1          if(sys.workStatus == SERVICE_AT_STANDBY)
+  43   1              switch_to_standby();
+  44   1              else/*默认在主用*/
+  45   1                  switch_to_main();
+  46   1       
+  47   1      }
+  48          
+  49          
+  50          void protect_action(void)  using 2
+  51          {
+  52   1          EA = 0;
+  53   1          
+C51 COMPILER V7.09   PROTECTFUN                                                            02/13/2012 10:58:58 PAGE 2   
+
+  54   1          sys.enable = 0;      
+  55   1      
+  56   1          mainInfo.switchFlag = 1;
+  57   1          resumeSendRemoteCount = SENDREMOTECOUNTER;
+  58   1          timer.resumeTimer = mainInfo.resumeTimeSecond;    
+  59   1          opswitchFlag = 1;   
+  60   1              
+  61   1          if(sys.workStatus == SERVICE_AT_STANDBY)
+  62   1              switch_to_standby();
+  63   1          else
+  64   1              switch_to_main();
+  65   1          
+  66   1      
+  67   1          EA = 1;    
+  68   1      
+  69   1      }
+  70          
+  71          
+  72           
+  73          
+  74          
+  75          static char bdata remoteVar;
+  76          sbit bStandby_R = remoteVar ^ 0;
+  77          sbit bIn_R      = remoteVar ^ 1;
+  78          sbit bResume_R  = remoteVar ^ 2;
+  79          sbit bForceMain    = remoteVar^3;
+  80          sbit bForceStandby = remoteVar^4;
+  81          sbit bWorkMode   = remoteVar^5;  
+  82          sbit bAutoReturnDelay = remoteVar^6;
+  83           
+  84          
+  85          /********************************************************
+  86          *1:1 2PIN对端入光状态机处理程序
+  87          *
+  88          *********************************************************/
+  89          static char stateCase;
+  90          
+  91          
+  92          /********************************************************
+  93          *是否允许切换的条件判断
+  94          *每50ms调用此程序一次
+  95          *
+  96          *
+  97          *********************************************************/
+  98          char get_stateCase(void)
+  99          {
+ 100   1          return stateCase;
+ 101   1      }
+ 102          
+ 103          
+ 104          void auto_return_process(void)
+ 105          {
+ 106   1          static unsigned char secondCount;
+ 107   1          
+ 108   1      
+ 109   1          if( (mainInfo.workMode != MODE_AUTO_BACK) \
+ 110   1              || (mainInfo.workStatus == SERVICE_AT_MAIN) )
+ 111   1          {
+ 112   2              secondCount = 0;
+ 113   2              
+ 114   2              timer.returnTimer =0;      
+ 115   2              return;
+C51 COMPILER V7.09   PROTECTFUN                                                            02/13/2012 10:58:58 PAGE 3   
+
+ 116   2          }   
+ 117   1      
+ 118   1          
+ 119   1          if(mainError500)     
+ 120   1          {
+ 121   2              secondCount = 0;
+ 122   2              timer.returnTimer = 0;       
+ 123   2              
+ 124   2          }
+ 125   1          else
+ 126   1          {
+ 127   2              secondCount = (secondCount+1) % 20;
+ 128   2              if( secondCount == 0 )
+ 129   2              {
+ 130   3                  timer.returnTimer ++;
+ 131   3              }
+ 132   2          }    
+ 133   1      
+ 134   1          if( timer.returnTimer >= (mainInfo.returnTimeSecond+1) )
+ 135   1          {
+ 136   2             timer.returnTimer = mainInfo.returnTimeSecond + 1;
+ 137   2             if(sys.enable)        
+ 138   2             {          
+ 139   3                         timer.returnTimer = 0;        
+ 140   3                         sys.workStatus = SERVICE_AT_MAIN;
+ 141   3                         protect_action(); 
+ 142   3             }       
+ 143   2          }
+ 144   1      }
+ 145          
+ 146          
+ 147          
+ 148          
+ 149          void enable_process(void)
+ 150          {
+ 151   1          
+ 152   1              static unsigned char secondCount;
+ 153   1          static bit   forceFlag;                           
+ 154   1      
+ 155   1          if( (mainInfo.paramentInit == 0) \
+ 156   1              || (mainInfo.workMode==MODE_FORCE_MAIN) \
+ 157   1              || (mainInfo.workMode==MODE_FORCE_STANDBY) )
+ 158   1          {
+ 159   2              sys.enable = 0;
+ 160   2              timer.resumeTimer = 0;
+ 161   2              mainInfo.switchFlag = 0;
+ 162   2              secondCount = 0;
+ 163   2              stateCase = 0;
+ 164   2                  forceFlag = FORCEMODE;                 
+ 165   2              return;
+ 166   2          } 
+ 167   1              
+ 168   1      
+ 169   1          auto_return_process();
+ 170   1      
+ 171   1                 
+ 172   1          if( timer.resumeTimer )
+ 173   1          {
+ 174   2              sys.enable = 0;
+ 175   2      
+ 176   2          }
+ 177   1          
+C51 COMPILER V7.09   PROTECTFUN                                                            02/13/2012 10:58:58 PAGE 4   
+
+ 178   1          mainInfo.switchFlag = 0;
+ 179   1          if( timer.resumeTimer==0 )
+ 180   1          {
+ 181   2              sys.enable = 1;
+ 182   2          }   
+ 183   1          
+ 184   1      }
+ 185          
+ 186          
+ 187          
+ 188          bit protectFlag;
+ 189          void service_judge(void)  using 2
+ 190          {
+ 191   1          static unsigned char data errorCount = 0;
+ 192   1          static unsigned char data okCount = 0;
+ 193   1      
+ 194   1          if( sys.powerTmp > sys.powerSwitch )
+ 195   1          {
+ 196   2              okCount ++;
+ 197   2      
+ 198   2              if( okCount > 2 )
+ 199   2              {
+ 200   3                  okCount = 100;
+ 201   3                  errorCount = 0;
+ 202   3                  protectFlag = 0;
+ 203   3              }    
+ 204   2          }
+ 205   1          else
+ 206   1          {
+ 207   2              okCount = 0;
+ 208   2              errorCount ++;
+ 209   2      
+ 210   2              if( errorCount > 100 )
+ 211   2              {
+ 212   3                  errorCount = 100;
+ 213   3              }
+ 214   2      
+ 215   2              if( errorCount >= sys.count )  //mainInfo--sys
+ 216   2              {
+ 217   3                  protectFlag = 1;
+ 218   3              }
+ 219   2          }
+ 220   1      
+ 221   1      }
+ 222          
+ 223          
+ 224          
+ 225          void error_process(void)
+ 226          {
+ 227   1          static bit mainBak, standbyBak, inBak;
+ 228   1          static unsigned char mainCount = 0;
+ 229   1          static unsigned char standbyCount = 0;
+ 230   1          static unsigned char inCount = 0;
+ 231   1          unsigned char cTmp;
+ 232   1      
+ 233   1          
+ 234   1      
+ 235   1          mainError500 = mainError250;
+ 236   1          mainError250 = mainError;
+ 237   1      
+ 238   1          standbyError500 = standbyError250;
+ 239   1          standbyError250 = standbyError;   
+C51 COMPILER V7.09   PROTECTFUN                                                            02/13/2012 10:58:58 PAGE 5   
+
+ 240   1          
+ 241   1          if( mainInfo.paramentInit == 0 )
+ 242   1          {
+ 243   2              bMainError = 0;
+ 244   2              bStandbyError = 0;
+ 245   2              bInError = 0;
+ 246   2              bSysError = 0;            
+ 247   2              return;
+ 248   2          }
+ 249   1      
+ 250   1          
+ 251   1          if( mainBak == mainError )
+ 252   1              mainCount = 0;
+ 253   1          else
+ 254   1          {
+ 255   2              mainCount ++;
+ 256   2      
+ 257   2              if(mainCount > 4*3)
+ 258   2              {
+ 259   3                  mainBak = mainError;
+ 260   3      
+ 261   3                  return;
+ 262   3              }
+ 263   2          }
+ 264   1      
+ 265   1         
+ 266   1          if( standbyBak == standbyError )
+ 267   1              standbyCount = 0;
+ 268   1          else
+ 269   1          {
+ 270   2              standbyCount ++;
+ 271   2      
+ 272   2              if(standbyCount > 4*3)
+ 273   2              {
+ 274   3                  standbyBak = standbyError;
+ 275   3      
+ 276   3                  return;
+ 277   3              }
+ 278   2          }
+ 279   1      
+ 280   1          /*取消入光的监测*/
+ 281   1          cTmp = get_device_type();
+ 282   1          if( (cTmp== DEVICE_1PLUS1_2PIN) || (cTmp == DEVICE_CARD_01J))
+ 283   1              {
+ 284   2                  inError = LIGHT_OK;
+ 285   2              }
+ 286   1          
+ 287   1          if( inBak == inError )
+ 288   1              inCount = 0;
+ 289   1          else
+ 290   1          {
+ 291   2              inCount ++;
+ 292   2      
+ 293   2              if(inCount > 4*3)
+ 294   2              {
+ 295   3                  inBak = inError;
+ 296   3                  return;
+ 297   3      
+ 298   3                  if( inBak )
+ 299   3                  { 
+ 300   4                      
+ 301   4                      return;
+C51 COMPILER V7.09   PROTECTFUN                                                            02/13/2012 10:58:58 PAGE 6   
+
+ 302   4                  }
+ 303   3                  else
+ 304   3                  { 
+ 305   4      
+ 306   4                      return;
+ 307   4                  }
+ 308   3              }
+ 309   2          }   
+ 310   1          
+ 311   1          
+ 312   1          bMainError = mainBak;
+ 313   1          bStandbyError = standbyBak;
+ 314   1          bInError = inBak;  
+ 315   1      
+ 316   1      }
+ 317          
+ 318          
+ 319          void init_01j(void)
+ 320          {
+ 321   1          timer.resumeTimer = 5;  /*上电保证5S不倒换*/
+ 322   1      }
+ 323          
+
+
+MODULE INFORMATION:   STATIC OVERLAYABLE
+   CODE SIZE        =    575    ----
+   CONSTANT SIZE    =   ----    ----
+   XDATA SIZE       =      6    ----
+   PDATA SIZE       =   ----    ----
+   DATA SIZE        =      5    ----
+   IDATA SIZE       =   ----    ----
+   BIT SIZE         =     13    ----
+END OF MODULE INFORMATION.
+
+
+C51 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)
